@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Finesse — your money, but it actually makes sense</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Link your accounts, and Finesse surfaces the spending you'd never catch on your own. Join the waitlist for early access.">
+<meta property="og:title" content="Finesse — your money, but it actually makes sense">
+<meta property="og:description" content="Link your accounts, and Finesse surfaces the spending you'd never catch on your own.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="./assets/app-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0B0B10;
+  --bg-2: #12121A;
+  --surface: #16161F;
+  --surface-2: #1C1C26;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.16);
+  --text: #F5F5F7;
+  --text-dim: rgba(245,245,247,0.62);
+  --text-mute: rgba(245,245,247,0.42);
+
+  --blue: #007AFF;       /* iOS blue — primary accent */
+  --blue-2: #4DA8FF;     /* lighter blue for highlights */
+  --blue-soft: rgba(0,122,255,0.18);
+  --lime: #007AFF;       /* aliased to blue (legacy refs) */
+  --pink: #1488FF;       /* aliased to blue-bright (legacy refs) */
+  --danger: #FF3B30;
+  --warm: #F59E0B;
+  --success: #34D399;
+
+  --serif: "Instrument Serif", "Times New Roman", serif;
+  --sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+button { font-family: inherit; }
+
+/* ── Layout ────────────────────────────────────────────── */
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 720px) { .wrap { padding: 0 20px; } }
+
+/* ── Sticker primitive (used everywhere) ───────────────── */
+.sticker {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+  border: 1.5px solid rgba(0,0,0,0.6);
+  box-shadow: 2px 2px 0 0 #000;
+  white-space: nowrap;
+}
+.sticker--alt { background: #fff; color: #000; }
+.sticker--soft { background: var(--blue-soft); color: var(--blue-2); border-color: rgba(0,122,255,0.4); box-shadow: none; }
+.sticker--dark { background: #000; color: var(--blue-2); border-color: var(--blue); }
+.sticker--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: rgba(255,255,255,0.25);
+  box-shadow: none;
+}
+
+/* ── Nav ───────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(20px);
+  background: rgba(11,11,16,0.8);
+  border-bottom: 1px solid var(--border);
+}
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0;
+}
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  font-weight: 700; font-size: 20px;
+  letter-spacing: -0.04em;
+}
+.logo__mark {
+  width: 32px; height: 32px;
+  background: #000;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo__mark img { width: 100%; height: 100%; object-fit: cover; }
+.nav__links {
+  display: flex; gap: 28px; align-items: center;
+}
+.nav__links a {
+  color: var(--text-dim);
+  text-decoration: none; font-size: 14px; font-weight: 500;
+  transition: color 150ms;
+}
+.nav__links a:hover { color: var(--text); }
+.nav__cta {
+  background: var(--blue); color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 600; font-size: 14px;
+  cursor: pointer;
+  transition: background 150ms, transform 100ms;
+}
+.nav__cta:hover { background: var(--blue-2); }
+.nav__cta:active { transform: scale(0.97); }
+@media (max-width: 720px) { .nav__links { display: none; } }
+
+/* ── Hero ──────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  padding: 64px 0 40px;
+  overflow: hidden;
+}
+.hero__bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,122,255,0.28), transparent 60%),
+    radial-gradient(ellipse 40% 40% at 15% 60%, rgba(0,122,255,0.14), transparent 60%);
+  pointer-events: none;
+}
+.hero__inner {
+  position: relative; z-index: 2;
+  text-align: center;
+  max-width: 1100px; margin: 0 auto;
+}
+.hero__stickers {
+  display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.hero__pill__dot {
+  width: 6px; height: 6px; border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255,255,255,0.8);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: 0.3; } }
+
+.hero h1 {
+  font-family: var(--sans);
+  font-size: clamp(56px, 11vw, 156px);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  margin-bottom: 28px;
+}
+.hero h1 .serif {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--blue-2);
+  letter-spacing: -0.02em;
+}
+.hero h1 .strike {
+  position: relative;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.hero h1 .strike::after {
+  content: "";
+  position: absolute; left: -2%; right: -2%; top: 52%;
+  height: 8px;
+  background: var(--blue);
+  transform: rotate(-2deg);
+  border-radius: 2px;
+}
+.hero h1 .underline {
+  position: relative;
+  display: inline-block;
+}
+.hero h1 .underline::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: -4px;
+  height: 14px;
+  background: var(--blue);
+  z-index: -1;
+  border-radius: 4px;
+  transform: skewX(-8deg);
+}
+
+.hero__sub {
+  font-size: clamp(17px, 1.8vw, 21px);
+  color: var(--text-dim);
+  max-width: 580px;
+  margin: 0 auto 36px;
+  line-height: 1.45;
+}
+.hero__sub strong { color: var(--text); font-weight: 600; }
+
+/* Waitlist form */
+.waitlist {
+  display: flex; gap: 8px; justify-content: center;
+  max-width: 480px; margin: 0 auto 20px;
+  flex-wrap: wrap;
+}
+.waitlist__field {
+  flex: 1 1 240px;
+  min-width: 0;
+  position: relative;
+}
+.waitlist__input {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 150ms;
+}
+.waitlist__input::placeholder { color: var(--text-mute); }
+.waitlist__input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
+.waitlist__btn {
+  background: var(--blue); color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 26px;
+  font-weight: 600; font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: 0 4px 16px rgba(0,122,255,0.35);
+  transition: transform 100ms, box-shadow 200ms, background 150ms;
+}
+.waitlist__btn:hover { background: var(--blue-2); box-shadow: 0 6px 24px rgba(0,122,255,0.5); }
+.waitlist__btn:active { transform: scale(0.97); }
+.waitlist__success {
+  display: none;
+  background: var(--surface);
+  border: 1.5px solid var(--blue);
+  border-radius: 16px;
+  padding: 18px 24px;
+  font-size: 15px;
+  color: var(--blue-2);
+  font-weight: 600;
+}
+.waitlist--done .waitlist { display: none !important; }
+.waitlist--done .waitlist__success { display: inline-flex !important; align-items: center; gap: 10px; }
+
+.hero__meta {
+  display: flex; gap: 14px; justify-content: center; align-items: center;
+  font-size: 13px; color: var(--text-mute);
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  flex-wrap: wrap;
+}
+.hero__meta__dot {
+  width: 4px; height: 4px; border-radius: 999px;
+  background: var(--text-mute);
+}
+.hero__meta__count { color: var(--blue-2); font-weight: 600; }
+
+/* Hero device — bento style with stickers around it */
+.hero__device {
+  position: relative; z-index: 2;
+  margin: 80px auto 0;
+  width: fit-content;
+}
+.hero__device::before {
+  content: "";
+  position: absolute; inset: -40px;
+  background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(33,150,243,0.20), transparent 70%);
+  z-index: -1;
+  filter: blur(20px);
+}
+.hero__device .sticker--float {
+  position: absolute;
+  z-index: 3;
+}
+.hero__device .sticker--float.s1 { top: -20px; left: -120px; transform: rotate(-8deg); }
+.hero__device .sticker--float.s2 { top: 30%; right: -160px; transform: rotate(6deg); }
+.hero__device .sticker--float.s3 { bottom: 50px; left: -180px; transform: rotate(4deg); }
+.hero__device .sticker--float.s4 { bottom: -10px; right: -140px; transform: rotate(-5deg); }
+@media (max-width: 880px) {
+  .hero__device .sticker--float { display: none; }
+}
+
+.phone-frame {
+  width: 320px;
+  border-radius: 44px;
+  background: #000;
+  padding: 8px;
+  box-shadow:
+    0 0 0 1.5px #2A2A33,
+    0 60px 120px rgba(0,0,0,0.6),
+    0 30px 60px rgba(33,150,243,0.15);
+  position: relative;
+}
+.phone-frame img {
+  width: 100%;
+  border-radius: 36px;
+  display: block;
+}
+
+/* Cover the personal greeting on the home screenshot ("Hi Arush, ...") */
+.phone-frame--home {
+  position: relative;
+}
+/* ── Marquee ───────────────────────────────────────────── */
+.marquee {
+  background: var(--blue);
+  color: #fff;
+  border-top: 1.5px solid rgba(0,0,0,0.2);
+  border-bottom: 1.5px solid rgba(0,0,0,0.2);
+  overflow: hidden;
+  padding: 16px 0;
+  position: relative;
+  transform: rotate(-1.5deg);
+  margin: 60px -20px;
+}
+.marquee__track span::after {
+  color: #fff !important;
+}
+.marquee__track {
+  display: flex;
+  gap: 40px;
+  animation: scroll 30s linear infinite;
+  white-space: nowrap;
+  font-family: var(--sans);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.marquee__track span {
+  display: inline-flex; align-items: center; gap: 40px;
+}
+.marquee__track span::after {
+  content: "✺";
+  font-size: 0.7em;
+}
+@keyframes scroll {
+  to { transform: translateX(-50%); }
+}
+
+/* ── Section ───────────────────────────────────────────── */
+.sec {
+  padding: 100px 0;
+  position: relative;
+}
+.sec__h {
+  text-align: left;
+  margin: 0 0 48px;
+  max-width: 780px;
+}
+.sec__eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue-2);
+  margin-bottom: 16px;
+}
+.sec__eyebrow::before {
+  content: ""; width: 8px; height: 8px;
+  background: var(--blue);
+  border-radius: 999px;
+  box-shadow: 0 0 8px var(--blue);
+}
+.sec__title {
+  font-family: var(--sans);
+  font-size: clamp(40px, 6.5vw, 88px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  margin-bottom: 16px;
+}
+.sec__title em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--blue);
+}
+.sec__sub {
+  color: var(--text-dim);
+  font-size: 18px;
+  max-width: 560px;
+}
+
+/* ── Bento Feature grid ────────────────────────────────── */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(120px, auto);
+  gap: 16px;
+}
+.bcard {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 28px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1), border-color 200ms;
+}
+.bcard:hover { transform: translateY(-4px); border-color: var(--border-strong); }
+
+.bcard__num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.bcard__num::before {
+  content: "";
+  width: 8px; height: 8px;
+  background: var(--blue);
+  border-radius: 999px;
+  box-shadow: 0 0 6px var(--blue);
+}
+.bcard__title {
+  font-size: clamp(24px, 2.6vw, 36px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+.bcard__title em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+}
+.bcard__title .hl { background: var(--blue); color: #fff; padding: 0 8px; border-radius: 6px; }
+.bcard__title .hl-soft { background: var(--blue-soft); color: var(--blue-2); padding: 0 8px; border-radius: 6px; }
+.bcard__title .hl-blue { background: var(--blue); color: #fff; padding: 0 8px; border-radius: 6px; }
+
+.bcard__body {
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 460px;
+  margin-bottom: 24px;
+}
+
+.bcard__visual {
+  position: relative;
+  display: flex; justify-content: center; align-items: flex-end;
+  margin-top: auto;
+}
+.bcard__visual .phone-frame {
+  width: 240px;
+  transform: rotate(-3deg);
+  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bcard:hover .bcard__visual .phone-frame { transform: rotate(0) translateY(-6px); }
+
+/* Bento span helpers */
+.bcard--big   { grid-column: span 8; grid-row: span 2; display: flex; flex-direction: column; min-height: 480px; }
+.bcard--med   { grid-column: span 4; display: flex; flex-direction: column; min-height: 240px; }
+.bcard--med-tall { grid-column: span 4; grid-row: span 2; display: flex; flex-direction: column; min-height: 480px; }
+.bcard--wide  { grid-column: span 6; display: flex; flex-direction: column; min-height: 280px; }
+.bcard--full  { grid-column: span 12; display: flex; flex-direction: column; min-height: 360px; }
+
+/* On large bento cards, make the phone the right side instead of bottom */
+.bcard--split {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+.bcard--split .bcard__visual { margin-top: 0; }
+
+@media (max-width: 1080px) {
+  .bento { grid-template-columns: repeat(6, 1fr); }
+  .bcard--big, .bcard--full, .bcard--wide, .bcard--med, .bcard--med-tall { grid-column: span 6; }
+  .bcard--split { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .bcard { padding: 24px; }
+  .bcard__visual .phone-frame { width: 200px !important; }
+  .bcard__title { font-size: 22px; }
+  .bcard__body { font-size: 14px; }
+}
+
+/* ── Mobile-specific responsive fixes ──────────────────── */
+@media (max-width: 480px) {
+  /* Hero phone */
+  .phone-frame { width: 260px; border-radius: 36px; padding: 6px; }
+  .phone-frame img { border-radius: 30px; }
+  .hero { padding: 48px 0 32px; }
+  .hero h1 { font-size: 48px; }
+  .hero__sub { font-size: 16px; }
+  .hero__device { margin-top: 48px; }
+  .hero__stickers { gap: 6px; }
+  .sticker { font-size: 10px; padding: 5px 10px; }
+
+  /* Marquee — prevent horizontal overflow */
+  .marquee { margin: 40px -10px; overflow: hidden; }
+  .marquee__track { font-size: 24px; }
+
+  /* Waitlist form */
+  .waitlist { flex-direction: column; max-width: 100%; }
+  .waitlist__field { flex: 1 1 100%; }
+  .waitlist__input { width: 100%; }
+  .waitlist__btn { width: 100%; justify-content: center; }
+
+  /* Bento cards */
+  .bcard { padding: 20px; border-radius: 20px; }
+  .bcard__visual .phone-frame { width: 180px !important; }
+  .bcard__title { font-size: 20px; }
+  .bcard__body { font-size: 14px; }
+  .bcard--split { gap: 16px; }
+
+  /* Section titles */
+  .sec { padding: 60px 0; }
+  .sec__title { font-size: 36px; }
+  .sec__sub { font-size: 16px; }
+
+  /* Stats */
+  .stat { padding: 24px 20px; border-radius: 16px; }
+  .stat__num { font-size: 48px; }
+  .stat__label { font-size: 12px; }
+
+  /* FAQ */
+  .faq { padding: 18px 20px; border-radius: 16px; }
+  .faq__q { font-size: 16px; }
+  .faq__a { font-size: 14px; }
+
+  /* CTA strip */
+  .cta-strip { padding: 80px 20px; }
+  .cta-strip h2 { font-size: 48px; }
+  .cta-strip p { font-size: 16px; }
+
+  /* Footer */
+  .foot { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .foot__links { gap: 16px; }
+
+  /* Hero meta */
+  .hero__meta { font-size: 11px; gap: 8px; }
+
+  /* Nav — not sticky on small screens */
+  nav { position: relative; }
+}
+
+/* Decorative arrow scribble */
+.scribble {
+  position: absolute;
+  pointer-events: none;
+  color: var(--lime);
+}
+
+/* ── Stat row (still bento, just numbers) ──────────────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+.stat {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.stat:nth-child(1) { background: var(--blue); color: #fff; border-color: rgba(0,0,0,0.2); }
+.stat:nth-child(2) { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+.stat:nth-child(3) { background: #fff; color: #000; border-color: rgba(0,0,0,0.2); }
+
+.stat__num {
+  font-family: var(--sans);
+  font-size: clamp(48px, 6vw, 88px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  margin-bottom: 12px;
+}
+.stat__num em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 0.55em;
+  vertical-align: 0.2em;
+  opacity: 0.85;
+}
+.stat:nth-child(2) .stat__num em { color: var(--blue-2); }
+.stat__label {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+@media (max-width: 720px) { .stats { grid-template-columns: 1fr; } }
+
+/* ── FAQ ───────────────────────────────────────────────── */
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.faq {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 24px 28px;
+}
+.faq__q {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.faq__a {
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.5;
+}
+@media (max-width: 720px) { .faq-grid { grid-template-columns: 1fr; } }
+
+/* ── Final CTA ─────────────────────────────────────────── */
+.cta-strip {
+  text-align: center;
+  padding: 120px 32px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1.5px solid var(--border);
+}
+.cta-strip::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,122,255,0.28), transparent 65%),
+    radial-gradient(ellipse 40% 40% at 70% 30%, rgba(0,122,255,0.14), transparent 60%);
+  pointer-events: none;
+}
+.cta-strip__inner { position: relative; z-index: 2; max-width: 880px; margin: 0 auto; }
+.cta-strip h2 {
+  font-family: var(--sans);
+  font-size: clamp(48px, 9vw, 132px);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  margin-bottom: 24px;
+}
+.cta-strip h2 em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--blue-2);
+}
+.cta-strip p {
+  color: var(--text-dim);
+  font-size: 18px;
+  margin-bottom: 32px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+footer {
+  border-top: 1.5px solid var(--border);
+  padding: 48px 0 36px;
+}
+.foot {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 20px;
+}
+.foot__links {
+  display: flex; gap: 20px; flex-wrap: wrap;
+}
+.foot__links a {
+  color: var(--text-mute);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 120ms;
+}
+.foot__links a:hover { color: var(--text); }
+.foot__copy {
+  color: var(--text-mute);
+  font-size: 13px;
+  font-family: var(--mono);
+}
+
+/* ── Reveal animation ──────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* Hero entrance */
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero__stickers { animation: heroIn 700ms 100ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+.hero h1     { animation: heroIn 800ms 250ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+.hero__sub   { animation: heroIn 800ms 400ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+.waitlist    { animation: heroIn 800ms 550ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+.hero__meta  { animation: heroIn 800ms 700ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+.hero__device{ animation: heroIn 1000ms 800ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+</style>
+
+<!-- ── Nav ────────────────────────────────────────────────── -->
+<nav>
+  <div class="wrap nav">
+    <div class="logo">
+      <div class="logo__mark"><img src="./assets/app-icon.png" alt="" /></div>
+      <span>Finesse</span>
+    </div>
+    <div class="nav__links">
+      <a href="#features">Features</a>
+      <a href="#numbers">Numbers</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <button class="nav__cta" onclick="document.getElementById('email').focus()">Join the list →</button>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero__bg"></div>
+  <div class="wrap hero__inner">
+    <div class="hero__stickers">
+      <span class="sticker"><span class="hero__pill__dot"></span> COMING SOON · IOS</span>
+      <span class="sticker sticker--soft">No trackers. No ads. No bs.</span>
+    </div>
+    <h1>
+      Your money,<br/>
+      but it actually <span class="serif">watches itself</span>
+    </h1>
+    <p class="hero__sub">
+      Link your accounts, and Finesse surfaces the spending you'd never catch on your own.
+    </p>
+
+    <div id="waitlist-wrap-1">
+      <form class="waitlist" id="waitlist-form-1" onsubmit="handleWaitlist(event, 'waitlist-wrap-1')">
+        <div class="waitlist__field">
+          <input class="waitlist__input" id="email" type="email" required placeholder="you@email.com" />
+        </div>
+        <button class="waitlist__btn" type="submit">Get early access →</button>
+      </form>
+      <div class="waitlist__success">
+        <span style="font-size: 18px;">✓</span>
+        You're in. We'll email you when it's live.
+      </div>
+    </div>
+
+    <div class="hero__meta" style="margin-top: 16px;">
+      <span><span class="hero__meta__count">2,847</span> on the list</span>
+      <span class="hero__meta__dot"></span>
+      <span>Plaid-secured</span>
+      <span class="hero__meta__dot"></span>
+      <span>iOS first, Android someday</span>
+    </div>
+  </div>
+
+  <div class="hero__device">
+    <span class="sticker sticker--float s1 sticker--alt">←  budget ring</span>
+    <span class="sticker sticker--float s2">live forecast</span>
+    <span class="sticker sticker--float s3 sticker--dark">safe-to-spend today</span>
+    <span class="sticker sticker--float s4 sticker--alt">all banks · one ring</span>
+    <div class="phone-frame">
+      <img src="./assets/marketing/screen-home.png" alt="Finesse home screen" />
+    </div>
+  </div>
+</section>
+
+<!-- ── Marquee ────────────────────────────────────────────── -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>track every dollar</span>
+    <span>spot every leak</span>
+    <span>cancel that gym</span>
+    <span>find $2,348/yr</span>
+    <span>know your number</span>
+    <span>track every dollar</span>
+    <span>spot every leak</span>
+    <span>cancel that gym</span>
+    <span>find $2,348/yr</span>
+    <span>know your number</span>
+  </div>
+</div>
+
+<!-- ── Features (bento) ───────────────────────────────────── -->
+<section id="features" class="sec">
+  <div class="wrap">
+    <div class="sec__h reveal">
+      <div class="sec__eyebrow">What it does</div>
+      <h2 class="sec__title">Eight things your bank app<br/>will <em>never</em> do.</h2>
+      <p class="sec__sub">Real numbers, real time. Money clarity that changes how you spend.</p>
+    </div>
+
+    <div class="bento">
+
+      <!-- 01 — Home / Budget Ring -->
+      <div class="bcard bcard--big bcard--split reveal">
+        <div>
+          <div class="bcard__num">01 / Home</div>
+          <h3 class="bcard__title">Your whole month, <em>one ring.</em></h3>
+          <p class="bcard__body">
+            One screen. Your forecast, safe-to-spend, and anything that needs attention.
+          </p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span class="sticker sticker--soft">budget ring</span>
+            <span class="sticker sticker--soft">end-of-month forecast</span>
+            <span class="sticker sticker--soft">safe-to-spend today</span>
+            <span class="sticker sticker--soft">cumulative vs. historical avg</span>
+          </div>
+        </div>
+        <div class="bcard__visual">
+          <div class="phone-frame">
+            <img src="./assets/marketing/screen-home.png" alt="Home with budget ring" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 — Insight Detail (uses screen-insight.png) -->
+      <div class="bcard bcard--med-tall reveal">
+        <div class="bcard__num">02 / Anomaly Alerts</div>
+        <h3 class="bcard__title">When spending goes <span class="hl">sideways</span>, you'll know.</h3>
+        <p class="bcard__body">
+          Severity-tagged alerts across all your accounts — linked straight to the transactions behind them.
+        </p>
+        <div class="bcard__visual">
+          <div class="phone-frame">
+            <img src="./assets/marketing/screen-insight.png" alt="Insight detail with linked transactions" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 — Recurring (uses screen-recurring.png) -->
+      <div class="bcard bcard--wide reveal">
+        <div class="bcard__num">03 / Recurring</div>
+        <h3 class="bcard__title">Every subscription, <span class="hl">tracked.</span></h3>
+        <p class="bcard__body">
+          Auto-detected. True annual cost, next charge date, full history.
+        </p>
+        <div class="bcard__visual">
+          <div class="phone-frame" style="width: 200px; transform: rotate(-2deg);">
+            <img src="./assets/marketing/screen-recurring2.png" alt="Recurring subscription detail" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 — Insights / Spend by Category -->
+      <div class="bcard bcard--wide reveal">
+        <div class="bcard__num">04 / Insights</div>
+        <h3 class="bcard__title">Where it <em>actually</em> went.</h3>
+        <p class="bcard__body">
+          Tap any category. See the percentage, the total, and where it all went.
+        </p>
+        <div class="bcard__visual">
+          <div class="phone-frame" style="width: 200px; transform: rotate(3deg);">
+            <img src="./assets/marketing/screen-insights-donut.png" alt="Spend by category donut" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 — Accounts / Budget Suggestions -->
+      <div class="bcard bcard--full bcard--split reveal">
+        <div>
+          <div class="bcard__num">05 / Accounts &amp; Suggestions</div>
+          <h3 class="bcard__title">Suggestions that <span class="hl-blue">actually fit</span> your life.</h3>
+          <p class="bcard__body">
+            Budgets based on what you actually spend — not guesses. See this month vs. your historical average.</p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span class="sticker sticker--soft">budget suggestions</span>
+            <span class="sticker sticker--soft">cumulative vs. historical</span>
+            <span class="sticker sticker--soft">linked accounts · swipe</span>
+          </div>
+        </div>
+        <div class="bcard__visual">
+          <div class="phone-frame" style="width: 240px;">
+            <img src="./assets/marketing/screen-account.png" alt="Budget suggestions and accounts" />
+          </div>
+        </div>
+      </div>
+
+      <div class="bcard bcard--med reveal">
+        <div class="bcard__num">06 / Transactions</div>
+        <h3 class="bcard__title">Every charge, <em>tagged</em> &amp; sorted.</h3>
+        <p class="bcard__body">
+          Grouped by date, filterable, with full details on every charge.
+        </p>
+        <div class="bcard__visual">
+          <div class="phone-frame">
+            <img src="./assets/marketing/screen-transactions.png" alt="Transactions list" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 07 — Plaid -->
+      <div class="bcard bcard--med reveal">
+        <div class="bcard__num">07 / Connect</div>
+        <h3 class="bcard__title">Link any bank, <span class="hl">12,000+</span> supported.</h3>
+        <p class="bcard__body">
+          Powered by Plaid — same pipe as Cash App and Venmo. We never see your credentials.
+        </p>
+        <div class="bcard__visual">
+          <div class="phone-frame" style="width: 200px; transform: rotate(-3deg);">
+            <img src="./assets/marketing/screen-plaid.png" alt="Plaid institution picker" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 08 — Spending Insights (positive reinforcement) -->
+      <div class="bcard bcard--med reveal">
+        <div class="bcard__num">08 / Good news too</div>
+        <h3 class="bcard__title">Wins, not just <em>warnings.</em></h3>
+        <p class="bcard__body">
+          Spending less than usual? Finesse highlights wins too — not just warnings.
+        </p>
+        <div class="bcard__visual">
+          <div class="phone-frame" style="width: 200px; transform: rotate(3deg);">
+            <img src="./assets/marketing/screen-spending.png" alt="Spending insights" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats ──────────────────────────────────────────────── -->
+<section id="numbers" class="sec" style="padding-top: 0;">
+  <div class="wrap">
+    <div class="sec__h reveal">
+      <div class="sec__eyebrow">By the numbers</div>
+      <h2 class="sec__title">Money you'd <em>never</em> find on your own.</h2>
+    </div>
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="stat__num">$1.1K<em>/yr</em></div>
+        <div class="stat__label">Avg. surfaced sub costs</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">27<em>%</em></div>
+        <div class="stat__label">Catch a hidden charge wk 1</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">35<em>+</em></div>
+        <div class="stat__label">On the early access list</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────── -->
+<section id="faq" class="sec" style="padding-top: 40px;">
+  <div class="wrap">
+    <div class="sec__h reveal">
+      <div class="sec__eyebrow">FAQ</div>
+      <h2 class="sec__title">Quick <em>answers.</em></h2>
+    </div>
+    <div class="faq-grid reveal">
+      <div class="faq">
+        <div class="faq__q">When does it launch?</div>
+        <div class="faq__a">Early access drops on iOS first. Join the list above and you'll be among the first to get in.</div>
+      </div>
+      <div class="faq">
+        <div class="faq__q">How much will it cost?</div>
+        <div class="faq__a">Pricing TBD. Early access folks get founder pricing locked in — that's the whole pitch for joining now.</div>
+      </div>
+      <div class="faq">
+        <div class="faq__q">Is my bank data safe?</div>
+        <div class="faq__a">Accounts link via Plaid — same secure pipe Cash App, Venmo, and Robinhood use. We never see your bank password.</div>
+      </div>
+      <div class="faq">
+        <div class="faq__q">Android?</div>
+        <div class="faq__a">Eventually. iOS first because it's where we can ship the cleanest experience right now. Sorry Android friends.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────── -->
+<section class="cta-strip">
+  <div class="cta-strip__inner reveal">
+    <h2>Take back<br/>the <em>plot.</em></h2>
+    <p>Drop your email. We'll let you know the second it's live. No newsletters, no spam, no shame.</p>
+    <div id="waitlist-wrap-2">
+      <form class="waitlist" onsubmit="handleWaitlist(event, 'waitlist-wrap-2')">
+        <div class="waitlist__field">
+          <input class="waitlist__input" type="email" required placeholder="you@email.com" />
+        </div>
+        <button class="waitlist__btn" type="submit">Get on the list →</button>
+      </form>
+      <div class="waitlist__success">
+        <span style="font-size: 18px;">✓</span>
+        You're in. We'll email you when it's live.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer>
+  <div class="wrap foot">
+    <div class="logo">
+      <div class="logo__mark"><img src="./assets/app-icon.png" alt="" /></div>
+      <span>Finesse</span>
+    </div>
+    <div class="foot__links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+
+      <a href="#">Contact</a>
+    </div>
+    <div class="foot__copy">© 2026 Finesse — built with too much coffee</div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("in");
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+// ── Waitlist form handler ──
+// TODO: Replace SUPABASE_URL and SUPABASE_ANON_KEY with your real values,
+// and create a "waitlist" table with an "email" column (text, unique) + "created_at" (timestamptz, default now()).
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+async function handleWaitlist(e, wrapperId) {
+  e.preventDefault();
+  const form = e.target;
+  const email = form.querySelector('input[type="email"]').value;
+  const btn = form.querySelector('button');
+  const origText = btn.textContent;
+  btn.textContent = 'Joining...';
+  btn.disabled = true;
+
+  try {
+    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+      // Submit to Supabase
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ email })
+      });
+      if (!res.ok && res.status !== 409) throw new Error('Failed');
+    }
+    // Show success
+    document.getElementById(wrapperId).classList.add('waitlist--done');
+  } catch (err) {
+    btn.textContent = origText;
+    btn.disabled = false;
+    alert('Something went wrong — please try again.');
+  }
+}
+
+// Waitlist counter
+let count = 35;
+const counter = document.querySelector('.hero__meta__count');
+setInterval(() => {
+  if (Math.random() > 0.7) {
+    count++;
+    if (counter) counter.textContent = count.toLocaleString();
+  }
+}, 4500);
+</script>
+
+</body>
+</html>
