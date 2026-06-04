@@ -7,8 +7,10 @@
 <meta name="description" content="Link your accounts, and Finesse surfaces the spending you'd never catch on your own. Join the waitlist for early access.">
 <meta property="og:title" content="Finesse — your money, but it actually makes sense">
 <meta property="og:description" content="Link your accounts, and Finesse surfaces the spending you'd never catch on your own.">
+<meta property="og:image" content="https://finesse-waitlist.vercel.app/assets/og-preview.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://finesse-waitlist.vercel.app/assets/og-preview.png">
 <link rel="icon" type="image/png" href="./assets/app-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -212,7 +214,7 @@ nav {
 /* Waitlist form */
 .waitlist {
   display: flex; gap: 8px; justify-content: center;
-  max-width: 480px; margin: 0 auto 20px;
+  max-width: 520px; margin: 0 auto 20px;
   flex-wrap: wrap;
 }
 .waitlist__field {
@@ -258,8 +260,20 @@ nav {
   color: var(--blue-2);
   font-weight: 600;
 }
-.waitlist--done .waitlist { display: none !important; }
+.waitlist--done .waitlist,
+.waitlist--duplicate .waitlist { display: none !important; }
 .waitlist--done .waitlist__success { display: inline-flex !important; align-items: center; gap: 10px; }
+.waitlist--duplicate .waitlist__already { display: inline-flex !important; align-items: center; gap: 10px; }
+.waitlist__already {
+  display: none;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 18px 24px;
+  font-size: 15px;
+  color: var(--text-dim);
+  font-weight: 600;
+}
 
 .hero__meta {
   display: flex; gap: 14px; justify-content: center; align-items: center;
@@ -747,6 +761,7 @@ footer {
 
     <div id="waitlist-wrap-1">
       <form class="waitlist" id="waitlist-form-1" onsubmit="handleWaitlist(event, 'waitlist-wrap-1')">
+        <input type="text" id="honeypot" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;" />
         <div class="waitlist__field">
           <input class="waitlist__input" id="email" type="email" required placeholder="you@email.com" />
         </div>
@@ -756,10 +771,14 @@ footer {
         <span style="font-size: 18px;">✓</span>
         You're in. We'll email you when it's live.
       </div>
+      <div class="waitlist__already">
+        <span style="font-size: 18px;">→</span>
+        You're already on the list. We'll be in touch.
+      </div>
     </div>
 
     <div class="hero__meta" style="margin-top: 16px;">
-      <span><span class="hero__meta__count">2,847</span> on the list</span>
+      <span><span class="hero__meta__count">20</span> on the list</span>
       <span class="hero__meta__dot"></span>
       <span>Plaid-secured</span>
       <span class="hero__meta__dot"></span>
@@ -951,7 +970,7 @@ footer {
         <div class="stat__label">Catch a hidden charge wk 1</div>
       </div>
       <div class="stat">
-        <div class="stat__num">35<em>+</em></div>
+        <div class="stat__num"><span id="stat-count">20</span><em>+</em></div>
         <div class="stat__label">On the early access list</div>
       </div>
     </div>
@@ -993,6 +1012,7 @@ footer {
     <p>Drop your email. We'll let you know the second it's live. No newsletters, no spam, no shame.</p>
     <div id="waitlist-wrap-2">
       <form class="waitlist" onsubmit="handleWaitlist(event, 'waitlist-wrap-2')">
+        <input type="text" id="honeypot2" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;" />
         <div class="waitlist__field">
           <input class="waitlist__input" type="email" required placeholder="you@email.com" />
         </div>
@@ -1001,6 +1021,10 @@ footer {
       <div class="waitlist__success">
         <span style="font-size: 18px;">✓</span>
         You're in. We'll email you when it's live.
+      </div>
+      <div class="waitlist__already">
+        <span style="font-size: 18px;">→</span>
+        You're already on the list. We'll be in touch.
       </div>
     </div>
   </div>
@@ -1014,10 +1038,8 @@ footer {
       <span>Finesse</span>
     </div>
     <div class="foot__links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-
-      <a href="#">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
     </div>
     <div class="foot__copy">© 2026 Finesse — built with too much coffee</div>
   </div>
@@ -1035,38 +1057,60 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-// ── Waitlist form handler ──
-// TODO: Replace SUPABASE_URL and SUPABASE_ANON_KEY with your real values,
-// and create a "waitlist" table with an "email" column (text, unique) + "created_at" (timestamptz, default now()).
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+// ── Bot protection ──
+const PAGE_LOAD_TIME = Date.now();
+const DISPOSABLE_DOMAINS = new Set([
+  'mailinator.com', 'guerrillamail.com', 'tempmail.com', 'throwam.com',
+  'yopmail.com', 'trashmail.com', 'fakeinbox.com', '10minutemail.com',
+  'sharklasers.com'
+]);
 
+function isBot(form, email) {
+  // Layer 1 — honeypot
+  const honeypot = form.querySelector('input[name="website"]');
+  if (honeypot && honeypot.value) return true;
+  // Layer 2 — time check (< 3s = bot)
+  if (Date.now() - PAGE_LOAD_TIME < 3000) return true;
+  // Layer 3 — disposable email
+  const domain = email.split('@')[1]?.toLowerCase();
+  if (DISPOSABLE_DOMAINS.has(domain)) return true;
+  return false;
+}
+
+// ── Waitlist form handler ──
 async function handleWaitlist(e, wrapperId) {
   e.preventDefault();
-  const form = e.target;
+  const wrapper = document.getElementById(wrapperId);
+  const form = wrapper.querySelector('form');
   const email = form.querySelector('input[type="email"]').value;
+
+  // Silent reject if bot detected
+  if (isBot(form, email)) {
+    wrapper.classList.add('waitlist--done');
+    return;
+  }
+
   const btn = form.querySelector('button');
   const origText = btn.textContent;
   btn.textContent = 'Joining...';
   btn.disabled = true;
 
+  const body = { email };
+
   try {
-    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-      // Submit to Supabase
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ email })
-      });
-      if (!res.ok && res.status !== 409) throw new Error('Failed');
+    const res = await fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error('Failed');
+    const data = await res.json();
+    if (data.message === 'Already on the list') {
+      wrapper.classList.add('waitlist--duplicate');
+    } else {
+      wrapper.classList.add('waitlist--done');
+      fetchCount();
     }
-    // Show success
-    document.getElementById(wrapperId).classList.add('waitlist--done');
   } catch (err) {
     btn.textContent = origText;
     btn.disabled = false;
@@ -1074,15 +1118,26 @@ async function handleWaitlist(e, wrapperId) {
   }
 }
 
-// Waitlist counter
-let count = 35;
-const counter = document.querySelector('.hero__meta__count');
-setInterval(() => {
-  if (Math.random() > 0.7) {
-    count++;
-    if (counter) counter.textContent = count.toLocaleString();
-  }
-}, 4500);
+// ── Live waitlist count ──
+const heroCounter = document.querySelector('.hero__meta__count');
+const statCounter = document.getElementById('stat-count');
+
+function updateCounters(count) {
+  if (heroCounter) heroCounter.textContent = count.toLocaleString();
+  if (statCounter) statCounter.textContent = count.toLocaleString();
+}
+
+async function fetchCount() {
+  try {
+    const res = await fetch('/api/waitlist');
+    if (res.ok) {
+      const { count } = await res.json();
+      updateCounters(count);
+    }
+  } catch (_) {}
+}
+
+fetchCount();
 </script>
 
 </body>
