@@ -107,11 +107,17 @@ nav {
 /* Footer */
 footer { border-top: 1px solid var(--border); padding: 40px 0; }
 .foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; max-width: 1320px; margin: 0 auto; padding: 0 32px; }
-@media (max-width: 720px) { .foot { padding: 0 20px; } }
+@media (max-width: 720px) {
+  .foot { padding: 0 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .foot .logo, .foot__links, .foot__copy { flex: none; }
+  .foot__links { justify-content: flex-start; }
+  .foot__copy { text-align: left; }
+}
+.foot .logo { flex: 1; }
 .foot__links { display: flex; gap: 24px; flex: 1; justify-content: center; }
 .foot__links a { color: var(--text-dim); font-size: 14px; }
 .foot__links a:hover { color: var(--text); text-decoration: none; }
-.foot__copy { color: var(--text-mute); font-size: 13px; }
+.foot__copy { flex: 1; text-align: right; color: var(--text-mute); font-size: 13px; }
 </style>
 </head>
 <body>
