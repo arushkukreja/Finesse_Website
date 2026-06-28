@@ -543,7 +543,7 @@ nav.is-island .nav {
 
 /* ── Section ───────────────────────────────────────────── */
 .sec {
-  padding: 100px 0;
+  padding: 150px 0;
   position: relative;
 }
 .sec__h {
@@ -710,7 +710,7 @@ nav.is-island .nav {
   .bcard--split { gap: 16px; }
 
   /* Section titles */
-  .sec { padding: 60px 0; }
+  .sec { padding: 90px 0; }
   .sec__title { font-size: 36px; }
   .sec__sub { font-size: 16px; }
 
@@ -826,6 +826,49 @@ nav.is-island .nav {
 .faq__a a { color: var(--blue-2); text-decoration: underline; text-underline-offset: 2px; }
 .faq__a a:hover { color: var(--blue); }
 @media (max-width: 720px) { .faq-grid { grid-template-columns: 1fr; } }
+
+/* ── How it works ──────────────────────────────────────── */
+.sec__h--center { text-align: center; margin-left: auto; margin-right: auto; }
+.sec__h--center .sec__eyebrow::before { display: none; }
+.how {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  position: relative;
+  margin-top: 64px;
+}
+.how::before {
+  content: "";
+  position: absolute;
+  top: 31px; left: 4%; right: 4%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,122,255,0.35) 12%, rgba(0,122,255,0.35) 88%, transparent);
+  z-index: 0;
+}
+.how__step { position: relative; z-index: 1; }
+.how__icon {
+  width: 64px; height: 64px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--blue-2);
+  margin-bottom: 28px;
+  box-shadow: 0 0 0 8px var(--bg);
+}
+.how__icon svg { width: 28px; height: 28px; }
+.how__title {
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
+  margin-bottom: 14px;
+}
+.how__desc { color: var(--text-dim); font-size: 16px; line-height: 1.55; max-width: 320px; }
+@media (max-width: 820px) {
+  .how { grid-template-columns: 1fr; gap: 36px; }
+  .how::before { display: none; }
+  .how__icon { margin-bottom: 18px; }
+  .how__desc { max-width: 100%; }
+}
 
 /* ── Final CTA ─────────────────────────────────────────── */
 .cta-strip {
@@ -953,11 +996,13 @@ footer {
   height: 240px;
 }
 .ftext {
-  display: flex; flex-direction: column; justify-content: center;
+  display: flex; flex-direction: column; justify-content: flex-start;
   max-width: 520px;
 }
 .fstack.is-ready .ftext {
-  position: absolute; inset: 0; margin: 0;
+  /* top-anchored (not inset:0) so every feature starts at the same y —
+     extra copy flows onto lines below instead of shifting the block up/down */
+  position: absolute; top: 0; left: 0; right: 0; margin: 0;
   will-change: transform, opacity;
 }
 .ftext__title {
@@ -1199,8 +1244,41 @@ footer {
   </div>
 </section>
 
+<!-- ── How it works ───────────────────────────────────────── -->
+<section id="how" class="sec">
+  <div class="wrap">
+    <div class="sec__h sec__h--center reveal">
+      <div class="sec__eyebrow">How it works</div>
+      <h2 class="sec__title">Finesse, in <em>three steps.</em></h2>
+    </div>
+    <div class="how">
+      <div class="how__step reveal">
+        <div class="how__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <h3 class="how__title">Link your accounts</h3>
+        <p class="how__desc">Securely connect your banks with Plaid in seconds. Finesse pulls in your transactions automatically — we never see your credentials.</p>
+      </div>
+      <div class="how__step reveal">
+        <div class="how__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3 class="how__title">Finesse does the watching</h3>
+        <p class="how__desc">It tags every charge, detects recurring subscriptions, and builds budgets from how you actually spend — not guesses.</p>
+      </div>
+      <div class="how__step reveal">
+        <div class="how__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        </div>
+        <h3 class="how__title">Get alerts that matter</h3>
+        <p class="how__desc">Anomaly and profile-based alerts flag unusual spending the moment it happens — and celebrate the weeks you come in under budget.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Stats ──────────────────────────────────────────────── -->
-<section id="numbers" class="sec" style="padding-top: 0;">
+<section id="numbers" class="sec" style="padding-top: 90px;">
   <div class="wrap">
     <div class="sec__h reveal">
       <div class="sec__eyebrow">By the numbers</div>
