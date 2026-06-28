@@ -44,6 +44,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
+  position: relative;
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
@@ -51,6 +52,48 @@ body {
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+/* Soft drifting colour blobs — give the frosted glass something to refract */
+body::before {
+  content: "";
+  position: fixed; inset: -25%;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 38% at 20% 22%, rgba(0,122,255,0.20), transparent 70%),
+    radial-gradient(34% 34% at 82% 30%, rgba(77,168,255,0.16), transparent 70%),
+    radial-gradient(42% 42% at 66% 82%, rgba(0,122,255,0.14), transparent 70%),
+    radial-gradient(30% 30% at 12% 78%, rgba(20,136,255,0.12), transparent 70%);
+  filter: blur(40px);
+  animation: auroraDrift 26s ease-in-out infinite alternate;
+}
+@keyframes auroraDrift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 2.5%, 0) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+
+/* Readability plate — soft black rounded backing behind text so the
+   falling pills don't reduce legibility. Sits above the pills, below the text. */
+.hero h1,
+.sec__h,
+.fstack__lead,
+.ftext,
+.cta-strip h2,
+.cta-strip p { position: relative; z-index: 0; }
+.hero h1::before,
+.sec__h::before,
+.fstack__lead::before,
+.ftext::before,
+.cta-strip h2::before,
+.cta-strip p::before {
+  content: "";
+  position: absolute; inset: -22px -34px;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.34) 48%, rgba(0,0,0,0) 80%);
+  border-radius: 30px;
+  filter: blur(20px);
+  pointer-events: none;
 }
 img { display: block; max-width: 100%; }
 button { font-family: inherit; }
@@ -88,9 +131,30 @@ button { font-family: inherit; }
 /* ── Nav ───────────────────────────────────────────────── */
 nav {
   position: sticky; top: 0; z-index: 50;
-  backdrop-filter: blur(20px);
-  background: rgba(11,11,16,0.8);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  background: rgba(11,11,16,0.6);
   border-bottom: 1px solid var(--border);
+  transition: background 300ms ease, border-color 300ms ease, top 320ms ease;
+}
+.nav { transition: max-width 380ms cubic-bezier(0.32,0.72,0,1), margin 380ms cubic-bezier(0.32,0.72,0,1), padding 320ms ease, background 320ms ease, border-radius 320ms ease, box-shadow 320ms ease, border-color 320ms ease; }
+/* On scroll the bar detaches into a floating island */
+nav.is-island {
+  top: 16px;
+  background: transparent;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+nav.is-island .nav {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 8px 10px 8px 22px;
+  background: rgba(16,16,24,0.72);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  box-shadow: 0 16px 44px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
 }
 .nav {
   display: flex; align-items: center; justify-content: space-between;
@@ -120,12 +184,14 @@ nav {
 }
 .nav__links a:hover { color: var(--text); }
 .nav__cta {
+  display: inline-flex; align-items: center;
   background: var(--blue); color: #fff;
   border: 0;
   border-radius: 999px;
   padding: 10px 18px;
   font-weight: 600; font-size: 14px;
   cursor: pointer;
+  text-decoration: none;
   transition: background 150ms, transform 100ms;
 }
 .nav__cta:hover { background: var(--blue-2); }
@@ -290,10 +356,113 @@ nav {
 }
 .hero__meta__count { color: var(--blue-2); font-weight: 600; }
 
-/* Hero device — bento style with stickers around it */
+/* Founding-member offer card */
+.offer {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 14px;
+  max-width: 480px; margin: 0 auto;
+  padding: 28px 36px 26px;
+  background: rgba(22,22,31,0.55);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1.5px solid rgba(255,255,255,0.14);
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,122,255,0.18), inset 0 1px 0 rgba(255,255,255,0.14);
+}
+.offer__badge {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--blue-2);
+  background: var(--blue-soft);
+  border: 1px solid rgba(0,122,255,0.4);
+  padding: 6px 14px; border-radius: 999px;
+}
+.offer__price { display: flex; align-items: baseline; gap: 8px; }
+.offer__amt {
+  font-family: var(--sans);
+  font-size: clamp(52px, 8vw, 76px);
+  font-weight: 700; letter-spacing: -0.05em; line-height: 1;
+}
+.offer__per { font-family: var(--serif); font-style: italic; font-size: 24px; color: var(--text-dim); }
+.offer__note { color: var(--text-dim); font-size: 14px; line-height: 1.5; max-width: 380px; }
+.offer__note strong { color: var(--text); font-weight: 600; }
+.offer__btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--blue); color: #fff;
+  border-radius: 999px;
+  padding: 16px 34px;
+  font-weight: 600; font-size: 16px;
+  text-decoration: none;
+  box-shadow: 0 6px 24px rgba(0,122,255,0.45);
+  transition: transform 100ms, box-shadow 200ms, background 150ms;
+}
+.offer__btn:hover { background: var(--blue-2); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,122,255,0.55); }
+.offer__btn:active { transform: scale(0.98); }
+.offer__alt {
+  font-family: var(--mono); font-size: 13px;
+  color: var(--text-mute); text-decoration: none;
+  transition: color 120ms;
+}
+.offer__alt:hover { color: var(--text); }
+@media (max-width: 480px) {
+  .offer { padding: 24px 22px; max-width: 100%; }
+  .offer__btn { width: 100%; justify-content: center; }
+}
+
+/* Centered founding offer inside the hero */
+.hero__inner .offer {
+  margin-top: 180px;
+  animation: heroIn 800ms 600ms cubic-bezier(0.32, 0.72, 0, 1) backwards;
+}
+@media (max-width: 600px) { .hero__inner .offer { margin-top: 104px; } }
+
+/* Ambient finance pills that slowly fall through the viewport.
+   Fixed, so they rain independently of scroll — same feel in every
+   section (including the pinned features section) and they never
+   affect page height. */
+.pagefall {
+  position: fixed;
+  inset: 0;
+  z-index: -1;                /* behind in-flow content, above body background */
+  overflow: hidden;
+  pointer-events: none;
+}
+.fpill {
+  position: absolute;
+  top: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 15px;
+  border-radius: 999px;
+  font-size: 13px; font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1.5px solid var(--border-strong);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+  opacity: 0.5;
+  will-change: transform;
+  backface-visibility: hidden;
+  animation: fallPill var(--dur, 44s) linear infinite;
+  animation-delay: var(--d, 0s);
+}
+.fpill b { font-weight: 700; }
+.fpill--blue  { background: var(--blue); color: #fff; border-color: rgba(0,0,0,0.25); }
+.fpill--soft  { background: var(--blue-soft); color: var(--blue-2); border-color: rgba(0,122,255,0.4); }
+.fpill--light { background: #fff; color: #0B0B10; border-color: rgba(0,0,0,0.15); }
+@keyframes fallPill {
+  from { transform: translate3d(0, -14vh, 0) rotate(var(--r, 0deg)); }
+  to   { transform: translate3d(0, 114vh, 0) rotate(var(--r, 0deg)); }
+}
+@media (max-width: 600px) {
+  .fpill { font-size: 12px; padding: 7px 12px; opacity: 0.4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pagefall { display: none; }
+}
+
+/* Hero device */
 .hero__device {
   position: relative; z-index: 2;
-  margin: 80px auto 0;
+  margin: 0 auto;
   width: fit-content;
 }
 .hero__device::before {
@@ -588,15 +757,18 @@ nav {
   margin-top: 32px;
 }
 .stat {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
+  background: rgba(22,22,31,0.5);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1.5px solid rgba(255,255,255,0.12);
   border-radius: 24px;
   padding: 36px 28px;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
 }
 .stat:nth-child(1) { background: var(--blue); color: #fff; border-color: rgba(0,0,0,0.2); }
-.stat:nth-child(2) { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+.stat:nth-child(2) { background: rgba(22,22,31,0.5); color: var(--text); border-color: rgba(255,255,255,0.14); }
 .stat:nth-child(3) { background: #fff; color: #000; border-color: rgba(0,0,0,0.2); }
 
 .stat__num {
@@ -631,10 +803,13 @@ nav {
   gap: 16px;
 }
 .faq {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
+  background: rgba(22,22,31,0.5);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1.5px solid rgba(255,255,255,0.10);
   border-radius: 20px;
   padding: 24px 28px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
 }
 .faq__q {
   font-size: 18px;
@@ -647,6 +822,9 @@ nav {
   font-size: 15px;
   line-height: 1.5;
 }
+.faq__a strong { color: var(--text); font-weight: 600; }
+.faq__a a { color: var(--blue-2); text-decoration: underline; text-underline-offset: 2px; }
+.faq__a a:hover { color: var(--blue); }
 @media (max-width: 720px) { .faq-grid { grid-template-columns: 1fr; } }
 
 /* ── Final CTA ─────────────────────────────────────────── */
@@ -655,7 +833,6 @@ nav {
   padding: 120px 32px;
   position: relative;
   overflow: hidden;
-  border-top: 1.5px solid var(--border);
 }
 .cta-strip::before {
   content: "";
@@ -732,7 +909,137 @@ footer {
 .waitlist    { animation: heroIn 800ms 550ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
 .hero__meta  { animation: heroIn 800ms 700ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
 .hero__device{ animation: heroIn 1000ms 800ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+
+/* ── Features (scroll-driven: text left, device right) ─── */
+.sec--stack { padding: 0; }
+
+.fstack { position: relative; height: auto; }              /* fallback height when JS off */
+.fstack.is-ready { height: 600vh; }                        /* tall scroll track when active */
+
+.fstack__stage { position: static; }
+.fstack.is-ready .fstack__stage {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+}
+
+.fstack__inner {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 56px;
+  align-items: center;
+  width: 100%;
+}
+
+/* LEFT — persistent heading sits above the rotating feature text */
+.fstack__left {
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 28px;
+  min-height: min(640px, 74vh);
+}
+.fstack__lead { max-width: 520px; }
+.fstack__lead .sec__eyebrow { margin-bottom: 12px; }
+.fstack__heading {
+  font-family: var(--sans);
+  font-size: clamp(28px, 3.4vw, 52px);
+  font-weight: 700; line-height: 0.95; letter-spacing: -0.04em;
+}
+.fstack__heading em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--blue); }
+
+/* LEFT — text layer (one feature visible at a time) */
+.fstack__text {
+  position: relative;
+  height: 240px;
+}
+.ftext {
+  display: flex; flex-direction: column; justify-content: center;
+  max-width: 520px;
+}
+.fstack.is-ready .ftext {
+  position: absolute; inset: 0; margin: 0;
+  will-change: transform, opacity;
+}
+.ftext__title {
+  font-size: clamp(28px, 3vw, 48px);
+  font-weight: 700; line-height: 1.0; letter-spacing: -0.03em;
+  margin: 14px 0 18px;
+}
+.ftext__title em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--blue); }
+.ftext__title .hl { background: var(--blue); color: #fff; padding: 0 8px; border-radius: 6px; }
+.ftext__title .hl-blue { background: var(--blue); color: #fff; padding: 0 8px; border-radius: 6px; }
+.ftext .bcard__body { font-size: 18px; max-width: 480px; margin-bottom: 0; }
+.ftext__stickers { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+
+/* RIGHT — device-only stack (no card box, no background) */
+.fstack__cards {
+  position: relative;
+  height: min(720px, 80vh);
+  perspective: 1700px;
+}
+.fdevice {
+  display: flex; align-items: center; justify-content: center;
+}
+.fstack.is-ready .fdevice {
+  position: absolute; inset: 0; margin: 0;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-origin: 50% 50%;
+}
+.fdevice .phone-frame {
+  width: 300px;
+  box-shadow: 0 0 0 1.5px #2A2A33, 0 60px 120px rgba(0,0,0,0.6), 0 30px 70px rgba(0,122,255,0.16);
+}
+
+/* Fallback (JS off): simple vertical flow */
+.fstack:not(.is-ready) .fstack__left { min-height: 0; }
+.fstack:not(.is-ready) .fstack__text,
+.fstack:not(.is-ready) .fstack__cards { display: flex; flex-direction: column; gap: 24px; height: auto; }
+.fstack:not(.is-ready) .ftext { max-width: 100%; }
+
+@media (max-width: 1080px) {
+  .fstack.is-ready { height: 560vh; }
+  .fstack__inner { grid-template-columns: 1fr; gap: 22px; align-content: center; justify-items: center; }
+  .fstack__left { order: 2; min-height: 0; gap: 20px; align-items: center; text-align: center; width: 100%; max-width: 540px; }
+  .fstack__lead { max-width: 100%; }
+  .fstack__text { height: auto; min-height: 200px; width: 100%; }
+  .ftext { text-align: center; align-items: center; max-width: 100%; }
+  .fstack__cards { order: 1; height: min(520px, 58vh); width: 100%; }
+  .fdevice .phone-frame { width: 280px; }
+}
+@media (max-width: 640px) {
+  .fstack.is-ready { height: 540vh; }
+  .fstack__heading { font-size: 30px; }
+  .ftext__title { font-size: 26px; }
+  .ftext .bcard__body { font-size: 15px; }
+  .fdevice .phone-frame { width: 220px; }
+  .fstack__cards { height: min(440px, 50vh); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fstack.is-ready { height: auto; }
+  .fstack.is-ready .fstack__stage { position: static; height: auto; overflow: visible; }
+  .fstack.is-ready .fstack__left { min-height: 0; }
+  .fstack.is-ready .ftext,
+  .fstack.is-ready .fdevice { position: relative; inset: auto; }
+  .fstack.is-ready .fstack__text,
+  .fstack.is-ready .fstack__cards { display: flex; flex-direction: column; gap: 24px; height: auto; }
+}
 </style>
+
+<!-- ── Falling finance pills (page-wide ambient background) ─ -->
+<div class="pagefall" aria-hidden="true">
+  <span class="fpill"             style="left:6%;  --r:-5deg; --dur:46s; --d:-3s">🏦 Linked · 4 accounts</span>
+  <span class="fpill fpill--blue" style="left:88%; --r:4deg;  --dur:52s; --d:-31s">Safe to spend · <b>$312</b></span>
+  <span class="fpill fpill--soft" style="left:18%; --r:3deg;  --dur:56s; --d:-44s">☕ Coffee · $4.50</span>
+  <span class="fpill fpill--light" style="left:72%; --r:-3deg; --dur:48s; --d:-14s">Netflix · $15.49</span>
+  <span class="fpill fpill--soft" style="left:3%;  --r:5deg;  --dur:54s; --d:-38s">🍔 Dining · $128</span>
+  <span class="fpill fpill--blue" style="left:60%; --r:-6deg; --dur:44s; --d:-22s">📈 On budget</span>
+  <span class="fpill"             style="left:42%; --r:-4deg; --dur:58s; --d:-49s">Rent · $1,850</span>
+  <span class="fpill"             style="left:82%; --r:2deg;  --dur:52s; --d:-35s">Income · <b>+$3,200</b></span>
+  <span class="fpill fpill--soft" style="left:12%; --r:-3deg; --dur:45s; --d:-19s">🛒 Groceries · $96</span>
+  <span class="fpill fpill--blue" style="left:52%; --r:3deg;  --dur:55s; --d:-12s">⚠️ Unusual charge</span>
+  <span class="fpill fpill--light" style="left:68%; --r:-5deg; --dur:49s; --d:-42s">$1.1K/yr in subs found</span>
+</div>
 
 <!-- ── Nav ────────────────────────────────────────────────── -->
 <nav>
@@ -743,63 +1050,42 @@ footer {
     </div>
     <div class="nav__links">
       <a href="#features">Features</a>
-      <a href="#numbers">Numbers</a>
+      <a href="/pricing.html">Pricing</a>
       <a href="#faq">FAQ</a>
     </div>
-    <button class="nav__cta" onclick="document.getElementById('email').focus()">Join the list →</button>
+    <a class="nav__cta" href="#founding">Founding · $49.99 →</a>
   </div>
 </nav>
 
 <!-- ── Hero ───────────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero__bg"></div>
+
   <div class="wrap hero__inner">
     <div class="hero__stickers">
-      <span class="sticker"><span class="hero__pill__dot"></span> COMING SOON · IOS</span>
+      <span class="sticker"><span class="hero__pill__dot"></span> LAUNCHING JULY · IOS</span>
       <span class="sticker sticker--soft">No trackers. No ads. No bs.</span>
     </div>
     <h1>
       Your money,<br/>
       but it actually <span class="serif">watches itself</span>
     </h1>
-    <p class="hero__sub">
-      Link your accounts, and Finesse surfaces the spending you'd never catch on your own.
-    </p>
 
-    <div id="waitlist-wrap-1">
-      <form class="waitlist" id="waitlist-form-1" onsubmit="handleWaitlist(event, 'waitlist-wrap-1')">
-        <input type="text" id="honeypot" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;" />
-        <div class="waitlist__field">
-          <input class="waitlist__input" id="email" type="email" required placeholder="you@email.com" />
-        </div>
-        <button class="waitlist__btn" type="submit">Get early access →</button>
-      </form>
-      <div class="waitlist__success">
-        <span style="font-size: 18px;">✓</span>
-        You're in. We'll email you when it's live.
+    <!-- Founding-member prelaunch offer — centered -->
+    <div class="offer" id="founding">
+      <span class="offer__badge">Founding member · limited spots</span>
+      <div class="offer__price">
+        <span class="offer__amt">$49.99</span>
+        <span class="offer__per">/ year</span>
       </div>
-      <div class="waitlist__already">
-        <span style="font-size: 18px;">→</span>
-        You're already on the list. We'll be in touch.
-      </div>
-    </div>
-
-    <div class="hero__meta" style="margin-top: 16px;">
-      <span><span class="hero__meta__count">20</span> on the list</span>
-      <span class="hero__meta__dot"></span>
-      <span>Plaid-secured</span>
-      <span class="hero__meta__dot"></span>
-      <span>iOS first, Android someday</span>
-    </div>
-  </div>
-
-  <div class="hero__device">
-    <span class="sticker sticker--float s1 sticker--alt">←  budget ring</span>
-    <span class="sticker sticker--float s2">live forecast</span>
-    <span class="sticker sticker--float s3 sticker--dark">safe-to-spend today</span>
-    <span class="sticker sticker--float s4 sticker--alt">all banks · one ring</span>
-    <div class="phone-frame">
-      <img src="./assets/marketing/screen-home.png" alt="Finesse home screen" />
+      <p class="offer__note">
+        A full year of Finesse <strong>Pro</strong> at the prelaunch price. A limited founding rate before we launch this July — once the spots are gone, they're gone.
+      </p>
+      <!-- TODO: replace href with your live Stripe Payment Link (https://buy.stripe.com/...) -->
+      <a class="offer__btn" href="https://buy.stripe.com/REPLACE_WITH_YOUR_LINK" target="_blank" rel="noopener">
+        Claim founding membership →
+      </a>
+      <a class="offer__alt" href="#join">or join the free waitlist ↓</a>
     </div>
   </div>
 </section>
@@ -820,142 +1106,95 @@ footer {
   </div>
 </div>
 
-<!-- ── Features (bento) ───────────────────────────────────── -->
-<section id="features" class="sec">
-  <div class="wrap">
-    <div class="sec__h reveal">
-      <div class="sec__eyebrow">What it does</div>
-      <h2 class="sec__title">Eight things your bank app<br/>will <em>never</em> do.</h2>
-      <p class="sec__sub">Real numbers, real time. Money clarity that changes how you spend.</p>
-    </div>
+<!-- ── Features (scroll-driven: text left, device right) ─── -->
+<section id="features" class="sec sec--stack">
+  <div class="fstack" id="fstack">
+    <div class="fstack__stage">
+      <div class="wrap fstack__inner">
 
-    <div class="bento">
+        <!-- LEFT — persistent heading + rotating feature text -->
+        <div class="fstack__left">
+          <div class="fstack__lead">
+            <div class="sec__eyebrow">What it does</div>
+            <h2 class="fstack__heading">Eight things your bank app will <em>never</em> do.</h2>
+          </div>
 
-      <!-- 01 — Home / Budget Ring -->
-      <div class="bcard bcard--big bcard--split reveal">
-        <div>
-          <div class="bcard__num">01 / Home</div>
-          <h3 class="bcard__title">Your whole month, <em>one ring.</em></h3>
-          <p class="bcard__body">
-            One screen. Your forecast, safe-to-spend, and anything that needs attention.
-          </p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span class="sticker sticker--soft">budget ring</span>
-            <span class="sticker sticker--soft">end-of-month forecast</span>
-            <span class="sticker sticker--soft">safe-to-spend today</span>
-            <span class="sticker sticker--soft">cumulative vs. historical avg</span>
+          <div class="fstack__text" id="fstackText">
+
+          <article class="ftext">
+            <div class="bcard__num">01 / Home</div>
+            <h3 class="ftext__title">Your whole month, <em>one ring.</em></h3>
+            <p class="bcard__body">One screen. Your forecast, safe-to-spend, and anything that needs attention.</p>
+            <div class="ftext__stickers">
+              <span class="sticker sticker--soft">budget ring</span>
+              <span class="sticker sticker--soft">end-of-month forecast</span>
+              <span class="sticker sticker--soft">safe-to-spend today</span>
+            </div>
+          </article>
+
+          <article class="ftext">
+            <div class="bcard__num">02 / Anomaly Alerts</div>
+            <h3 class="ftext__title">When spending goes <span class="hl">sideways</span>, you'll know.</h3>
+            <p class="bcard__body">Severity-tagged alerts across all your accounts — linked straight to the transactions behind them.</p>
+          </article>
+
+          <article class="ftext">
+            <div class="bcard__num">03 / Recurring</div>
+            <h3 class="ftext__title">Every subscription, <span class="hl">tracked.</span></h3>
+            <p class="bcard__body">Auto-detected. True annual cost, next charge date, full history.</p>
+          </article>
+
+          <article class="ftext">
+            <div class="bcard__num">04 / Insights</div>
+            <h3 class="ftext__title">Where it <em>actually</em> went.</h3>
+            <p class="bcard__body">Tap any category. See the percentage, the total, and where it all went.</p>
+          </article>
+
+          <article class="ftext">
+            <div class="bcard__num">05 / Accounts &amp; Suggestions</div>
+            <h3 class="ftext__title">Suggestions that <span class="hl-blue">actually fit</span> your life.</h3>
+            <p class="bcard__body">Budgets based on what you actually spend — not guesses. See this month vs. your historical average.</p>
+            <div class="ftext__stickers">
+              <span class="sticker sticker--soft">budget suggestions</span>
+              <span class="sticker sticker--soft">cumulative vs. historical</span>
+              <span class="sticker sticker--soft">linked accounts · swipe</span>
+            </div>
+          </article>
+
+          <article class="ftext">
+            <div class="bcard__num">06 / Transactions</div>
+            <h3 class="ftext__title">Every charge, <em>tagged</em> &amp; sorted.</h3>
+            <p class="bcard__body">Grouped by date, filterable, with full details on every charge.</p>
+          </article>
+
+          <article class="ftext">
+            <div class="bcard__num">07 / Connect</div>
+            <h3 class="ftext__title">Link any bank, <span class="hl">12,000+</span> supported.</h3>
+            <p class="bcard__body">Powered by Plaid — same pipe as Cash App and Venmo. We never see your credentials.</p>
+          </article>
+
+          <article class="ftext">
+            <div class="bcard__num">08 / Good news too</div>
+            <h3 class="ftext__title">Wins, not just <em>warnings.</em></h3>
+            <p class="bcard__body">Spending less than usual? Finesse highlights wins too — not just warnings.</p>
+          </article>
+
           </div>
         </div>
-        <div class="bcard__visual">
-          <div class="phone-frame">
-            <img src="./assets/marketing/screen-home.png" alt="Home with budget ring" />
-          </div>
+
+        <!-- RIGHT — device only, no card box / background -->
+        <div class="fstack__cards" id="fstackCards">
+          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-home.png" alt="Home with budget ring" /></div></div>
+          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-insight.png" alt="Insight detail with linked transactions" /></div></div>
+          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-recurring2.png" alt="Recurring subscription detail" /></div></div>
+          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-insights-donut.png" alt="Spend by category donut" /></div></div>
+          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-account.png" alt="Budget suggestions and accounts" /></div></div>
+          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-transactions.png" alt="Transactions list" /></div></div>
+          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-plaid.png" alt="Plaid institution picker" /></div></div>
+          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-spending.png" alt="Spending insights" /></div></div>
         </div>
+
       </div>
-
-      <!-- 02 — Insight Detail (uses screen-insight.png) -->
-      <div class="bcard bcard--med-tall reveal">
-        <div class="bcard__num">02 / Anomaly Alerts</div>
-        <h3 class="bcard__title">When spending goes <span class="hl">sideways</span>, you'll know.</h3>
-        <p class="bcard__body">
-          Severity-tagged alerts across all your accounts — linked straight to the transactions behind them.
-        </p>
-        <div class="bcard__visual">
-          <div class="phone-frame">
-            <img src="./assets/marketing/screen-insight.png" alt="Insight detail with linked transactions" />
-          </div>
-        </div>
-      </div>
-
-      <!-- 03 — Recurring (uses screen-recurring.png) -->
-      <div class="bcard bcard--wide reveal">
-        <div class="bcard__num">03 / Recurring</div>
-        <h3 class="bcard__title">Every subscription, <span class="hl">tracked.</span></h3>
-        <p class="bcard__body">
-          Auto-detected. True annual cost, next charge date, full history.
-        </p>
-        <div class="bcard__visual">
-          <div class="phone-frame" style="width: 200px; transform: rotate(-2deg);">
-            <img src="./assets/marketing/screen-recurring2.png" alt="Recurring subscription detail" />
-          </div>
-        </div>
-      </div>
-
-      <!-- 04 — Insights / Spend by Category -->
-      <div class="bcard bcard--wide reveal">
-        <div class="bcard__num">04 / Insights</div>
-        <h3 class="bcard__title">Where it <em>actually</em> went.</h3>
-        <p class="bcard__body">
-          Tap any category. See the percentage, the total, and where it all went.
-        </p>
-        <div class="bcard__visual">
-          <div class="phone-frame" style="width: 200px; transform: rotate(3deg);">
-            <img src="./assets/marketing/screen-insights-donut.png" alt="Spend by category donut" />
-          </div>
-        </div>
-      </div>
-
-      <!-- 05 — Accounts / Budget Suggestions -->
-      <div class="bcard bcard--full bcard--split reveal">
-        <div>
-          <div class="bcard__num">05 / Accounts &amp; Suggestions</div>
-          <h3 class="bcard__title">Suggestions that <span class="hl-blue">actually fit</span> your life.</h3>
-          <p class="bcard__body">
-            Budgets based on what you actually spend — not guesses. See this month vs. your historical average.</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span class="sticker sticker--soft">budget suggestions</span>
-            <span class="sticker sticker--soft">cumulative vs. historical</span>
-            <span class="sticker sticker--soft">linked accounts · swipe</span>
-          </div>
-        </div>
-        <div class="bcard__visual">
-          <div class="phone-frame" style="width: 240px;">
-            <img src="./assets/marketing/screen-account.png" alt="Budget suggestions and accounts" />
-          </div>
-        </div>
-      </div>
-
-      <div class="bcard bcard--med reveal">
-        <div class="bcard__num">06 / Transactions</div>
-        <h3 class="bcard__title">Every charge, <em>tagged</em> &amp; sorted.</h3>
-        <p class="bcard__body">
-          Grouped by date, filterable, with full details on every charge.
-        </p>
-        <div class="bcard__visual">
-          <div class="phone-frame">
-            <img src="./assets/marketing/screen-transactions.png" alt="Transactions list" />
-          </div>
-        </div>
-      </div>
-
-      <!-- 07 — Plaid -->
-      <div class="bcard bcard--med reveal">
-        <div class="bcard__num">07 / Connect</div>
-        <h3 class="bcard__title">Link any bank, <span class="hl">12,000+</span> supported.</h3>
-        <p class="bcard__body">
-          Powered by Plaid — same pipe as Cash App and Venmo. We never see your credentials.
-        </p>
-        <div class="bcard__visual">
-          <div class="phone-frame" style="width: 200px; transform: rotate(-3deg);">
-            <img src="./assets/marketing/screen-plaid.png" alt="Plaid institution picker" />
-          </div>
-        </div>
-      </div>
-
-      <!-- 08 — Spending Insights (positive reinforcement) -->
-      <div class="bcard bcard--med reveal">
-        <div class="bcard__num">08 / Good news too</div>
-        <h3 class="bcard__title">Wins, not just <em>warnings.</em></h3>
-        <p class="bcard__body">
-          Spending less than usual? Finesse highlights wins too — not just warnings.
-        </p>
-        <div class="bcard__visual">
-          <div class="phone-frame" style="width: 200px; transform: rotate(3deg);">
-            <img src="./assets/marketing/screen-spending.png" alt="Spending insights" />
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
@@ -993,12 +1232,20 @@ footer {
     </div>
     <div class="faq-grid reveal">
       <div class="faq">
-        <div class="faq__q">When does it launch?</div>
-        <div class="faq__a">Early access drops on iOS first. Join the list above and you'll be among the first to get in.</div>
+        <div class="faq__q">When does Finesse launch?</div>
+        <div class="faq__a">This July, on iOS first. Claim the founding-member rate now and you're set the moment we go live.</div>
       </div>
       <div class="faq">
-        <div class="faq__q">How much will it cost?</div>
-        <div class="faq__a">Pricing TBD. Early access folks get founder pricing locked in — that's the whole pitch for joining now.</div>
+        <div class="faq__q">What's the $49.99 founding membership?</div>
+        <div class="faq__a">A full year of Finesse <strong>Pro</strong> at the prelaunch price — a limited founding rate. Once the spots are claimed it's gone, and pricing returns to the standard plans.</div>
+      </div>
+      <div class="faq">
+        <div class="faq__q">What will it cost after launch?</div>
+        <div class="faq__a">All budgeting features are free. <strong>Pro</strong> is $9.99/mo or $84.99/yr. See the full breakdown on the <a href="/pricing.html">pricing page</a>.</div>
+      </div>
+      <div class="faq">
+        <div class="faq__q">What's the difference between Free and Pro?</div>
+        <div class="faq__a">Free covers budgeting — budgets, transactions, recurring detection, and spending insights. Pro adds account monitoring, anomaly &amp; custom alerts, profile-based alerting, and deeper insights.</div>
       </div>
       <div class="faq">
         <div class="faq__q">Is my bank data safe?</div>
@@ -1013,10 +1260,10 @@ footer {
 </section>
 
 <!-- ── CTA ────────────────────────────────────────────────── -->
-<section class="cta-strip">
+<section class="cta-strip" id="join">
   <div class="cta-strip__inner reveal">
-    <h2>Take back<br/>the <em>plot.</em></h2>
-    <p>Drop your email. We'll let you know the second it's live. No newsletters, no spam, no shame.</p>
+    <h2>Not ready to<br/><em>commit?</em></h2>
+    <p>Join the free waitlist and we'll email you the moment Finesse goes live this July. No newsletters, no spam, no shame.</p>
     <div id="waitlist-wrap-2">
       <form class="waitlist" onsubmit="handleWaitlist(event, 'waitlist-wrap-2')">
         <input type="text" id="honeypot2" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;" />
@@ -1146,6 +1393,126 @@ async function fetchCount() {
 }
 
 fetchCount();
+
+// ── Nav: detach into a floating island once scrolled ──
+(function () {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+  function onScroll() { nav.classList.toggle('is-island', window.scrollY > 24); }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
+// ── Features: scroll-driven sticky card stack ──
+(function () {
+  const stack = document.getElementById('fstack');
+  if (!stack) return;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return; // keep the simple vertical fallback
+
+  const devices = Array.prototype.slice.call(stack.querySelectorAll('#fstackCards .fdevice'));
+  const texts = Array.prototype.slice.call(stack.querySelectorAll('#fstackText .ftext'));
+  const n = devices.length;
+  if (!n) return;
+
+  stack.classList.add('is-ready');
+
+  let ticking = false;
+  let snapTimer = null;
+  let releaseTimer = null;
+  let snapping = false;
+
+  function render() {
+    ticking = false;
+    const pinDist = stack.offsetHeight - window.innerHeight;
+    if (pinDist <= 0) return;
+    const scrolled = Math.min(Math.max(-stack.getBoundingClientRect().top, 0), pinDist);
+    const p = scrolled / pinDist;            // 0 → 1 across the pinned track
+
+    // Ease within each step so the view DWELLS on a settled screen and
+    // moves quickly through the blurry in-between (paired with snap below).
+    const raw = p * (n - 1);
+    const base = Math.floor(raw);
+    const frac = raw - base;
+    const eased = frac * frac * (3 - 2 * frac);   // smoothstep
+    const pos = Math.min(base + eased, n - 1);    // continuous "active" feature index
+
+    for (let i = 0; i < n; i++) {
+      const offset = i - pos;                 // >0 upcoming (behind), <0 leaving (gone up)
+
+      // RIGHT — device stack: peek behind, then slide up & rotate away
+      let dTransform, dOpacity, dZ;
+      if (offset >= 0) {
+        const k = Math.min(offset, 4);
+        const y = k * 24;                     // px downward
+        const scale = 1 - k * 0.05;
+        dTransform = 'translate3d(0,' + y + 'px,0) scale(' + scale + ')';
+        dOpacity = offset > 3 ? 0 : 1 - k * 0.14;
+        dZ = n - i;
+      } else {
+        const k = Math.min(-offset, 1);
+        const scale = 1 - k * 0.06;
+        const rot = -k * 7;
+        dTransform = 'translate3d(0,' + (-k * 120) + '%,0) rotate(' + rot + 'deg) scale(' + scale + ')';
+        dOpacity = 1 - k;
+        dZ = n + i;
+      }
+      const dev = devices[i];
+      dev.style.transform = dTransform;
+      dev.style.opacity = dOpacity;
+      dev.style.zIndex = dZ;
+
+      // LEFT — text: only the active one visible, gentle slide + cross-fade
+      const txt = texts[i];
+      if (txt) {
+        const d = Math.abs(offset);
+        const ty = offset * -28;              // px: leaving slides up, upcoming starts lower
+        txt.style.transform = 'translate3d(0,' + ty + 'px,0)';
+        txt.style.opacity = d < 1 ? 1 - d : 0;
+        txt.style.zIndex = d < 0.5 ? 2 : 1;
+        txt.style.pointerEvents = d < 0.5 ? 'auto' : 'none';
+      }
+    }
+  }
+
+  // Snap to the nearest feature once scrolling settles, so you always
+  // land on one screen instead of an awkward halfway state.
+  function maybeSnap() {
+    if (snapping) return;
+    const rect = stack.getBoundingClientRect();
+    const pinDist = stack.offsetHeight - window.innerHeight;
+    if (pinDist <= 0) return;
+    const pinned = rect.top <= 0 && rect.bottom >= window.innerHeight;
+    if (!pinned) return;
+    const scrolled = Math.min(Math.max(-rect.top, 0), pinDist);
+    const raw = (scrolled / pinDist) * (n - 1);
+    const nearest = Math.round(raw);
+    if (Math.abs(raw - nearest) < 0.015) return;   // already aligned
+    const target = window.scrollY + rect.top + (nearest / (n - 1)) * pinDist;
+    snapping = true;
+    window.scrollTo({ top: Math.round(target), behavior: 'smooth' });
+    clearTimeout(releaseTimer);
+    releaseTimer = setTimeout(function () { snapping = false; }, 650);
+  }
+
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(render); }
+    if (snapping) return;                  // don't fight our own smooth scroll
+    clearTimeout(snapTimer);
+    snapTimer = setTimeout(maybeSnap, 120);
+  }
+
+  // Let an active user override an in-progress snap immediately.
+  function cancelSnap() { snapping = false; clearTimeout(releaseTimer); }
+  ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
+    window.addEventListener(ev, cancelSnap, { passive: true });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  render();
+})();
 </script>
 
 </body>

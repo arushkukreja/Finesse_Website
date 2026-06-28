@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pricing — Finesse</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Finesse pricing. All budgeting features are free. Pro adds monitoring, custom alerts, profile-based alerting and deeper insights — $9.99/mo or $84.99/yr. Founding members lock in a year of Pro for $49.99.">
+<link rel="canonical" href="https://finessefinance.us/pricing.html">
+<link rel="icon" type="image/png" href="./assets/app-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0B0B10;
+  --surface: #16161F;
+  --surface-2: #1C1C26;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.16);
+  --text: #F5F5F7;
+  --text-dim: rgba(245,245,247,0.62);
+  --text-mute: rgba(245,245,247,0.42);
+  --blue: #007AFF;
+  --blue-2: #4DA8FF;
+  --blue-soft: rgba(0,122,255,0.18);
+  --success: #34D399;
+  --serif: "Instrument Serif", "Times New Roman", serif;
+  --sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  position: relative;
+  background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 16px; line-height: 1.45;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: -25%; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(38% 38% at 20% 22%, rgba(0,122,255,0.20), transparent 70%),
+    radial-gradient(34% 34% at 82% 30%, rgba(77,168,255,0.16), transparent 70%),
+    radial-gradient(42% 42% at 66% 82%, rgba(0,122,255,0.14), transparent 70%),
+    radial-gradient(30% 30% at 12% 78%, rgba(20,136,255,0.12), transparent 70%);
+  filter: blur(40px);
+  animation: auroraDrift 26s ease-in-out infinite alternate;
+}
+@keyframes auroraDrift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 2.5%, 0) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; }
+a { color: inherit; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 720px) { .wrap { padding: 0 20px; } }
+
+/* Sticker */
+.sticker {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px; background: var(--blue); color: #fff;
+  border-radius: 999px; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase; font-family: var(--mono);
+  border: 1.5px solid rgba(0,0,0,0.6); box-shadow: 2px 2px 0 0 #000; white-space: nowrap;
+}
+.sticker--soft { background: var(--blue-soft); color: var(--blue-2); border-color: rgba(0,122,255,0.4); box-shadow: none; }
+
+/* Nav */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  background: rgba(11,11,16,0.6);
+  border-bottom: 1px solid var(--border);
+  transition: background 300ms ease, border-color 300ms ease, top 320ms ease;
+}
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; transition: max-width 380ms cubic-bezier(0.32,0.72,0,1), margin 380ms cubic-bezier(0.32,0.72,0,1), padding 320ms ease, background 320ms ease, border-radius 320ms ease, box-shadow 320ms ease, border-color 320ms ease; }
+nav.is-island { top: 16px; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border-bottom-color: transparent; }
+nav.is-island .nav {
+  max-width: 940px; margin: 0 auto; padding: 8px 10px 8px 22px;
+  background: rgba(16,16,24,0.72);
+  backdrop-filter: blur(24px) saturate(160%); -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--border-strong); border-radius: 999px;
+  box-shadow: 0 16px 44px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; text-decoration: none; color: var(--text); }
+.logo__mark { width: 32px; height: 32px; background: #000; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.logo__mark img { width: 100%; height: 100%; object-fit: cover; }
+.nav__links { display: flex; gap: 28px; align-items: center; }
+.nav__links a { color: var(--text-dim); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 150ms; }
+.nav__links a:hover, .nav__links a.is-active { color: var(--text); }
+.nav__cta { display: inline-flex; align-items: center; background: var(--blue); color: #fff; border: 0; border-radius: 999px; padding: 10px 18px; font-weight: 600; font-size: 14px; text-decoration: none; transition: background 150ms; }
+.nav__cta:hover { background: var(--blue-2); }
+@media (max-width: 720px) { .nav__links { display: none; } }
+
+/* Page header */
+.phead { text-align: center; padding: 80px 0 32px; position: relative; z-index: 2; }
+.phead__eyebrow {
+  display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue-2); margin-bottom: 18px;
+}
+.phead__eyebrow::before { content: ""; width: 8px; height: 8px; background: var(--blue); border-radius: 999px; box-shadow: 0 0 8px var(--blue); }
+.phead h1 { font-size: clamp(44px, 8vw, 96px); font-weight: 700; line-height: 0.92; letter-spacing: -0.04em; margin-bottom: 18px; }
+.phead h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--blue-2); }
+.phead p { color: var(--text-dim); font-size: 18px; max-width: 540px; margin: 0 auto; }
+
+/* Billing toggle */
+.toggle { display: inline-flex; align-items: center; gap: 4px; margin: 28px auto 0; padding: 4px; background: rgba(22,22,31,0.55); backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); border: 1.5px solid rgba(255,255,255,0.14); border-radius: 999px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.10); }
+.toggle button { background: transparent; border: 0; color: var(--text-dim); font-weight: 600; font-size: 14px; padding: 9px 20px; border-radius: 999px; cursor: pointer; transition: color 150ms, background 150ms; }
+.toggle button.is-active { background: var(--blue); color: #fff; }
+.toggle__save { font-family: var(--mono); font-size: 11px; color: var(--success); margin-left: 8px; }
+
+/* Plans */
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 920px; margin: 48px auto 0; position: relative; z-index: 2; }
+.plan {
+  background: rgba(22,22,31,0.5);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1.5px solid rgba(255,255,255,0.12); border-radius: 28px;
+  padding: 36px; display: flex; flex-direction: column;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+}
+.plan--pro { border-color: var(--blue); background: rgba(20,28,44,0.5); box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,122,255,0.25), inset 0 1px 0 rgba(255,255,255,0.12); }
+.plan__tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.plan--pro .plan__tag { color: var(--blue-2); }
+.plan__name { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px; }
+.plan__price { display: flex; align-items: baseline; gap: 8px; margin: 10px 0 4px; }
+.plan__amt { font-size: clamp(40px, 5vw, 56px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+.plan__per { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--text-dim); }
+.plan__sub { color: var(--text-dim); font-size: 14px; min-height: 20px; margin-bottom: 22px; }
+.plan__cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 999px; padding: 14px 24px; font-weight: 600; font-size: 15px;
+  text-decoration: none; transition: transform 100ms, box-shadow 200ms, background 150ms; margin-bottom: 26px;
+}
+.plan__cta--ghost { background: transparent; color: var(--text); border: 1.5px solid var(--border-strong); }
+.plan__cta--ghost:hover { border-color: var(--text); }
+.plan__cta--solid { background: var(--blue); color: #fff; box-shadow: 0 6px 24px rgba(0,122,255,0.45); }
+.plan__cta--solid:hover { background: var(--blue-2); transform: translateY(-1px); }
+.plan__feats { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+.plan__feats li { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; color: var(--text-dim); line-height: 1.4; }
+.plan__feats li::before { content: ""; flex: 0 0 auto; width: 18px; height: 18px; margin-top: 1px; border-radius: 999px; background: var(--blue-soft); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234DA8FF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"); background-size: 12px; background-repeat: no-repeat; background-position: center; }
+.plan__feats li strong { color: var(--text); font-weight: 600; }
+.plan__feats li.muted { color: var(--text-mute); }
+.plan__feats li.muted::before { background-color: rgba(255,255,255,0.05); background-image: none; }
+@media (max-width: 760px) { .plans { grid-template-columns: 1fr; } }
+
+/* Founding callout */
+.founding {
+  max-width: 920px; margin: 28px auto 0; position: relative; z-index: 2;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px;
+  background: linear-gradient(120deg, rgba(0,122,255,0.22), rgba(0,122,255,0.05));
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1.5px solid rgba(0,122,255,0.45); border-radius: 28px; padding: 28px 32px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.founding__l { display: flex; flex-direction: column; gap: 8px; max-width: 520px; }
+.founding__badge { align-self: flex-start; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-2); background: var(--blue-soft); border: 1px solid rgba(0,122,255,0.4); padding: 5px 12px; border-radius: 999px; }
+.founding__title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.founding__title b { color: var(--blue-2); }
+.founding__title em { font-family: var(--serif); font-style: italic; font-weight: 400; }
+.founding__note { color: var(--text-dim); font-size: 14px; }
+.founding__btn { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; background: var(--blue); color: #fff; border-radius: 999px; padding: 16px 30px; font-weight: 600; font-size: 16px; text-decoration: none; box-shadow: 0 6px 24px rgba(0,122,255,0.45); transition: transform 100ms, background 150ms; }
+.founding__btn:hover { background: var(--blue-2); transform: translateY(-1px); }
+
+.pnote { text-align: center; color: var(--text-mute); font-size: 13px; max-width: 620px; margin: 40px auto 0; position: relative; z-index: 2; line-height: 1.6; }
+
+/* Footer */
+footer { border-top: 1.5px solid var(--border); padding: 48px 0 36px; margin-top: 96px; position: relative; z-index: 2; }
+.foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.foot__links { display: flex; gap: 20px; flex-wrap: wrap; }
+.foot__links a { color: var(--text-mute); text-decoration: none; font-size: 13px; transition: color 120ms; }
+.foot__links a:hover { color: var(--text); }
+.foot__copy { color: var(--text-mute); font-size: 13px; font-family: var(--mono); }
+
+/* Falling pills (same system as home) — fixed, scroll-independent */
+.pagefall { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.fpill {
+  position: absolute; top: 0; display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 15px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap;
+  letter-spacing: -0.01em; background: var(--surface-2); color: var(--text);
+  border: 1.5px solid var(--border-strong); box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+  opacity: 0.5; will-change: transform; backface-visibility: hidden;
+  animation: fallPill var(--dur, 44s) linear infinite; animation-delay: var(--d, 0s);
+}
+.fpill b { font-weight: 700; }
+.fpill--blue { background: var(--blue); color: #fff; border-color: rgba(0,0,0,0.25); }
+.fpill--soft { background: var(--blue-soft); color: var(--blue-2); border-color: rgba(0,122,255,0.4); }
+.fpill--light { background: #fff; color: #0B0B10; border-color: rgba(0,0,0,0.15); }
+@keyframes fallPill {
+  from { transform: translate3d(0, -14vh, 0) rotate(var(--r, 0deg)); }
+  to   { transform: translate3d(0, 114vh, 0) rotate(var(--r, 0deg)); }
+}
+@media (max-width: 600px) { .fpill { font-size: 12px; padding: 7px 12px; opacity: 0.4; } }
+@media (prefers-reduced-motion: reduce) { .pagefall { display: none; } }
+
+/* Readability plate behind text over the pills */
+.phead h1, .phead p, .pnote { position: relative; z-index: 0; }
+.phead h1::before, .phead p::before, .pnote::before {
+  content: ""; position: absolute; inset: -22px -34px; z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.34) 48%, rgba(0,0,0,0) 80%);
+  border-radius: 30px; filter: blur(20px); pointer-events: none;
+}
+</style>
+</head>
+
+<!-- Falling finance pills -->
+<div class="pagefall" aria-hidden="true">
+  <span class="fpill"             style="left:6%;  --r:-5deg; --dur:46s; --d:-3s">🏦 Linked · 4 accounts</span>
+  <span class="fpill fpill--blue" style="left:88%; --r:4deg;  --dur:52s; --d:-31s">Safe to spend · <b>$312</b></span>
+  <span class="fpill fpill--soft" style="left:18%; --r:3deg;  --dur:56s; --d:-44s">☕ Coffee · $4.50</span>
+  <span class="fpill fpill--light" style="left:72%; --r:-3deg; --dur:48s; --d:-14s">Netflix · $15.49</span>
+  <span class="fpill fpill--soft" style="left:3%;  --r:5deg;  --dur:54s; --d:-38s">🍔 Dining · $128</span>
+  <span class="fpill fpill--blue" style="left:60%; --r:-6deg; --dur:44s; --d:-22s">📈 On budget</span>
+  <span class="fpill"             style="left:42%; --r:-4deg; --dur:58s; --d:-49s">Rent · $1,850</span>
+  <span class="fpill"             style="left:82%; --r:2deg;  --dur:52s; --d:-35s">Income · <b>+$3,200</b></span>
+  <span class="fpill fpill--soft" style="left:12%; --r:-3deg; --dur:45s; --d:-19s">🛒 Groceries · $96</span>
+  <span class="fpill fpill--blue" style="left:52%; --r:3deg;  --dur:55s; --d:-12s">⚠️ Unusual charge</span>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="wrap nav">
+    <a class="logo" href="/index.html">
+      <div class="logo__mark"><img src="./assets/app-icon.png" alt="" /></div>
+      <span>Finesse</span>
+    </a>
+    <div class="nav__links">
+      <a href="/index.html#features">Features</a>
+      <a href="/pricing.html" class="is-active">Pricing</a>
+      <a href="/index.html#faq">FAQ</a>
+    </div>
+    <a class="nav__cta" href="/index.html#founding">Founding · $49.99 →</a>
+  </div>
+</nav>
+
+<!-- Header -->
+<header class="phead">
+  <div class="wrap">
+    <div class="phead__eyebrow">Pricing</div>
+    <h1>Simple plans.<br/><em>Serious</em> clarity.</h1>
+    <p>Every budgeting feature is free. Upgrade to Pro when you want Finesse watching your money around the clock.</p>
+
+    <div class="toggle" id="toggle">
+      <button data-cycle="monthly" class="is-active">Monthly</button>
+      <button data-cycle="annual">Annual <span class="toggle__save">save 29%</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- Plans -->
+<section>
+  <div class="wrap">
+    <div class="plans">
+
+      <!-- Free -->
+      <div class="plan">
+        <div class="plan__tag">For everyone</div>
+        <div class="plan__name">Free</div>
+        <div class="plan__price">
+          <span class="plan__amt">$0</span>
+        </div>
+        <p class="plan__sub">All the budgeting essentials, no cost.</p>
+        <a class="plan__cta plan__cta--ghost" href="/index.html#join">Join the waitlist</a>
+        <ul class="plan__feats">
+          <li>Budget ring &amp; <strong>end-of-month forecast</strong></li>
+          <li>Safe-to-spend, every day</li>
+          <li>Transactions, tagged &amp; sorted</li>
+          <li>Recurring &amp; subscription detection</li>
+          <li>Spending insights by category</li>
+          <li>Link unlimited banks via <strong>Plaid</strong></li>
+        </ul>
+      </div>
+
+      <!-- Pro -->
+      <div class="plan plan--pro">
+        <div class="plan__tag">● Most popular</div>
+        <div class="plan__name">Pro</div>
+        <div class="plan__price">
+          <span class="plan__amt" id="proAmt">$9.99</span>
+          <span class="plan__per" id="proPer">/ month</span>
+        </div>
+        <p class="plan__sub" id="proSub">Billed monthly. Cancel anytime.</p>
+        <a class="plan__cta plan__cta--solid" href="/index.html#founding">Get Pro →</a>
+        <ul class="plan__feats">
+          <li><strong>Everything in Free</strong>, plus:</li>
+          <li><strong>Account monitoring</strong> — around-the-clock</li>
+          <li>Anomaly alerts, <strong>severity-tagged</strong></li>
+          <li><strong>Custom alerts</strong> you set yourself</li>
+          <li><strong>Profile-based alerting</strong> tuned to your habits</li>
+          <li>Smart budgets &amp; suggestions</li>
+          <li>Advanced insights &amp; trends</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Founding callout -->
+    <div class="founding">
+      <div class="founding__l">
+        <span class="founding__badge">Founding member · limited spots</span>
+        <div class="founding__title">A year of <b>Pro</b> for <em>$49.99</em></div>
+        <p class="founding__note">Prelaunch price only — a limited founding rate before we launch this July. Locks in a full year of Finesse Pro. Once the spots are gone, they're gone.</p>
+      </div>
+      <!-- TODO: replace href with your live Stripe Payment Link (https://buy.stripe.com/...) -->
+      <a class="founding__btn" href="https://buy.stripe.com/REPLACE_WITH_YOUR_LINK" target="_blank" rel="noopener">Claim founding membership →</a>
+    </div>
+
+    <p class="pnote">Prices in USD. Founding membership is a one-time prelaunch offer and is limited — it won't return after launch. Free and Pro plans go live with the app this July.</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="/index.html">
+      <div class="logo__mark"><img src="./assets/app-icon.png" alt="" /></div>
+      <span>Finesse</span>
+    </a>
+    <div class="foot__links">
+      <a href="/index.html#features">Features</a>
+      <a href="/support.html">Support</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+    <div class="foot__copy">© 2026 Finesse Finance</div>
+  </div>
+</footer>
+
+<script>
+// Nav: detach into a floating island once scrolled
+(function () {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+  function onScroll() { nav.classList.toggle('is-island', window.scrollY > 24); }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
+// Billing toggle
+(function () {
+  const toggle = document.getElementById('toggle');
+  if (!toggle) return;
+  const amt = document.getElementById('proAmt');
+  const per = document.getElementById('proPer');
+  const sub = document.getElementById('proSub');
+  const btns = Array.prototype.slice.call(toggle.querySelectorAll('button'));
+  toggle.addEventListener('click', function (e) {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    btns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+    if (btn.dataset.cycle === 'annual') {
+      amt.textContent = '$84.99';
+      per.textContent = '/ year';
+      sub.textContent = 'Billed annually — that’s $7.08/mo.';
+    } else {
+      amt.textContent = '$9.99';
+      per.textContent = '/ month';
+      sub.textContent = 'Billed monthly. Cancel anytime.';
+    }
+  });
+})();
+
+</script>
+
+</body>
+</html>
