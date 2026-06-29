@@ -42,7 +42,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }  /* clip (not hidden) — kills sideways scroll without breaking sticky */
 body {
   position: relative;
   background: var(--bg);
@@ -1093,40 +1093,58 @@ footer {
   .hero { padding: 0; }
   .hero__inner { padding: 0 16px; }
   .hero__head {
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    min-height: 100svh; box-sizing: border-box;
-    padding: 70px 0 24px;   /* clear the sticky nav */
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+    min-height: 92svh; box-sizing: border-box;
+    padding: 9vh 0 0;   /* sit just below the nav — small gap, not centered */
   }
-  .hero__stickers { margin-bottom: 26px; }
-  .hero h1 { font-size: clamp(50px, 14vw, 92px); margin-bottom: 0; }
-  .hero__inner .offer { margin-top: 7vh; margin-bottom: 80px; }
+  .hero__stickers { margin-bottom: 22px; }
+  .hero h1 { font-size: clamp(60px, 17.5vw, 112px); line-height: 0.92; margin-bottom: 0; }
+  .hero__inner .offer { margin-top: 5vh; margin-bottom: 72px; }
 
   /* HOW IT WORKS centered */
   .how__step { text-align: center; }
   .how__icon { margin-left: auto; margin-right: auto; }
   .how__desc { margin-left: auto; margin-right: auto; }
 
-  /* FEATURES: JS flattens the two stacks into one interleaved list of
-     direct .fstack__inner children (text → its screen). No display:contents
-     / order tricks — those silently break the interleave on iOS Safari. */
-  .sec--stack { padding: 64px 0; }
+  /* FEATURES: JS builds a horizontal swipe carousel — one feature (screen +
+     text) per slide. Mirrors the web "one at a time" feel via scroll-snap. */
+  .sec--stack { padding: 64px 0 52px; }
   .fstack, .fstack.is-ready { height: auto; }
   .fstack__stage, .fstack.is-ready .fstack__stage { position: static; height: auto; overflow: visible; display: block; }
-  .fstack__inner { display: flex; flex-direction: column; align-items: center; gap: 0; }
-  .fstack__lead { text-align: center; max-width: 100%; margin: 0 auto 8px; }
+  .fstack__inner { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .fstack__lead { text-align: center; max-width: 100%; margin: 0 auto 22px; align-self: center; }
   .fstack__text, .fstack__cards, .fstack__left { display: contents; } /* fallback if JS is off */
-  .ftext {
+  /* no readability plate behind the feature heading / text on mobile */
+  .ftext::before, .fstack__lead::before { display: none; }
+
+  .fcarousel {
+    display: flex; width: 100%;
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .fcarousel::-webkit-scrollbar { display: none; }
+  .fslide {
+    flex: 0 0 100%; scroll-snap-align: center;
+    box-sizing: border-box; padding: 2px 12px 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  }
+  .fslide .ftext {
     position: static; text-align: center; align-items: center;
-    max-width: 100%; margin: 40px auto 16px;
+    max-width: 100%; margin: 0 auto;
     transform: none !important; opacity: 1 !important;
   }
-  .ftext .bcard__body { margin-left: auto; margin-right: auto; }
-  .ftext__stickers { justify-content: center; }
-  .fdevice {
-    position: static; margin: 0 auto;
-    transform: none !important; opacity: 1 !important;
-  }
-  .fdevice .phone-frame { width: 232px; }
+  /* glue the screen to the slide bottom so every screenshot bottom-aligns —
+     the dots then sit a consistent short distance below each one */
+  .fslide .fdevice { position: static; margin: 24px auto 0; margin-top: auto; transform: none !important; opacity: 1 !important; }
+  .fslide .fdevice .phone-frame { width: 226px; }
+  .fslide .ftext .bcard__body { margin-left: auto; margin-right: auto; }
+  .fslide .ftext__stickers { justify-content: center; }
+
+  .fdots { display: flex; justify-content: center; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+  .fdot { width: 7px; height: 7px; border-radius: 999px; background: var(--border-strong); transition: background 220ms, width 220ms; }
+  .fdot.is-active { background: var(--blue); width: 20px; }
+  .fhint { text-align: center; color: var(--text-mute); font-size: 12px; font-family: var(--mono); margin-top: 12px; letter-spacing: 0.04em; transition: opacity 300ms; }
 
   /* BY THE NUMBERS: swipeable infinite carousel */
   .stats {
@@ -1152,8 +1170,8 @@ footer {
   }
   .faq--open .faq__a { max-height: 480px; opacity: 1; margin-top: 10px; }
 
-  /* FOOTER: compact + centered */
-  footer { padding: 32px 0 28px; margin-top: 64px; }
+  /* FOOTER: compact + centered, flush against the CTA (no empty bar) */
+  footer { padding: 32px 0 28px; margin-top: 0; }
   .foot { flex-direction: column; align-items: center; text-align: center; gap: 14px; }
   .foot .logo, .foot__links, .foot__copy { flex: none; justify-content: center; text-align: center; }
 }
@@ -1409,7 +1427,7 @@ footer {
       </div>
       <div class="faq">
         <div class="faq__q">What will it cost after launch?</div>
-        <div class="faq__a">All budgeting features are free. <strong>Pro</strong> is $9.99/mo or $84.99/yr. See the full breakdown on the <a href="/pricing.html">pricing page</a>.</div>
+        <div class="faq__a">All budgeting features are free. <strong>Pro</strong> is $9.99/mo or $99.99/yr. See the full breakdown on the <a href="/pricing.html">pricing page</a>.</div>
       </div>
       <div class="faq">
         <div class="faq__q">What's the difference between Free and Pro?</div>
@@ -1610,7 +1628,7 @@ fetchCount();
   }, { passive: true });
 })();
 
-// ── Mobile: flatten features into one interleaved list (text → its screen) ──
+// ── Mobile: build a swipe carousel — one feature (screen + text) per slide ──
 (function () {
   if (window.innerWidth > 820) return;
   const inner = document.querySelector('#fstack .fstack__inner');
@@ -1619,14 +1637,47 @@ fetchCount();
   const texts = Array.prototype.slice.call(inner.querySelectorAll('#fstackText .ftext'));
   const devices = Array.prototype.slice.call(inner.querySelectorAll('#fstackCards .fdevice'));
   if (!texts.length) return;
-  const frag = document.createDocumentFragment();
-  if (lead) frag.appendChild(lead);
+
+  const carousel = document.createElement('div');
+  carousel.className = 'fcarousel';
   texts.forEach(function (t, i) {
-    frag.appendChild(t);
-    if (devices[i]) frag.appendChild(devices[i]);
+    const slide = document.createElement('div');
+    slide.className = 'fslide';
+    slide.appendChild(t);                            // text on top
+    if (devices[i]) slide.appendChild(devices[i]);   // screen below
+    carousel.appendChild(slide);
   });
-  inner.innerHTML = '';           // drop the now-empty wrappers
-  inner.appendChild(frag);        // direct children, interleaved in DOM order
+
+  const dots = document.createElement('div');
+  dots.className = 'fdots';
+  texts.forEach(function (_, i) {
+    const d = document.createElement('span');
+    d.className = 'fdot' + (i === 0 ? ' is-active' : '');
+    dots.appendChild(d);
+  });
+
+  const hint = document.createElement('div');
+  hint.className = 'fhint';
+  hint.textContent = 'swipe to explore →';
+
+  inner.innerHTML = '';
+  if (lead) inner.appendChild(lead);
+  inner.appendChild(carousel);
+  inner.appendChild(dots);
+  inner.appendChild(hint);
+
+  const dotEls = Array.prototype.slice.call(dots.children);
+  let raf = false;
+  carousel.addEventListener('scroll', function () {
+    if (raf) return;
+    raf = true;
+    requestAnimationFrame(function () {
+      raf = false;
+      const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+      dotEls.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
+      if (carousel.scrollLeft > 8) hint.style.opacity = '0';
+    });
+  }, { passive: true });
 })();
 
 // ── Features: scroll-driven sticky card stack ──
