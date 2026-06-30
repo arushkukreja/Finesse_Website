@@ -613,14 +613,7 @@ nav.is-island .nav {
   color: var(--text-mute);
   text-transform: uppercase;
   margin-bottom: 16px;
-  display: flex; align-items: center; gap: 10px;
-}
-.bcard__num::before {
-  content: "";
-  width: 8px; height: 8px;
-  background: var(--blue);
-  border-radius: 999px;
-  box-shadow: 0 0 6px var(--blue);
+  display: flex; align-items: center;
 }
 .bcard__title {
   font-size: clamp(24px, 2.6vw, 36px);
@@ -846,7 +839,6 @@ nav.is-island .nav {
 
 /* ── How it works ──────────────────────────────────────── */
 .sec__h--center { text-align: center; margin-left: auto; margin-right: auto; }
-.sec__h--center .sec__eyebrow::before { display: none; }
 .how {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1165,12 +1157,13 @@ footer {
     max-width: 100%; margin: 0 auto;
     transform: none !important; opacity: 1 !important;
   }
-  /* glue the screen to the slide bottom so every screenshot bottom-aligns —
-     the dots then sit a consistent short distance below each one */
-  .fslide .fdevice { position: static; margin: 24px auto 0; margin-top: auto; transform: none !important; opacity: 1 !important; }
+  /* keep only the feature heading on mobile — drop the grey label, body copy and stickers */
+  .fslide .bcard__num,
+  .fslide .ftext .bcard__body,
+  .fslide .ftext__stickers { display: none; }
+  /* screen sits just below the heading with a tight gap */
+  .fslide .fdevice { position: static; margin: 16px auto 0; transform: none !important; opacity: 1 !important; }
   .fslide .fdevice .phone-frame { width: 226px; }
-  .fslide .ftext .bcard__body { margin-left: auto; margin-right: auto; }
-  .fslide .ftext__stickers { justify-content: center; }
 
   .fdots { display: flex; justify-content: center; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
   .fdot { width: 7px; height: 7px; border-radius: 999px; background: var(--border-strong); transition: background 220ms, width 220ms; }
@@ -1220,7 +1213,7 @@ footer {
 }
 @media (max-width: 720px) {
   .download { padding: 72px 0 64px; }
-  .download__inner { flex-direction: column; gap: 36px; text-align: center; }
+  .download__inner { flex-direction: column; gap: 16px; text-align: center; }
   .download__sub { margin-left: auto; margin-right: auto; }
   .download__title { font-size: 40px; }
   .download__qr img { width: 168px; height: 168px; }
