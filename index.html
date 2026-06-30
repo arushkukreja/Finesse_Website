@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Finesse — your money, but it actually makes sense</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Link your accounts, and Finesse surfaces the spending you'd never catch on your own. Join the waitlist for early access.">
+<meta name="description" content="Link your accounts, and Finesse surfaces the spending you'd never catch on your own. Download on iOS, and stay connected with the team and feature roadmap.">
 <link rel="canonical" href="https://finessefinance.us/">
 <meta property="og:url" content="https://finessefinance.us/">
 <meta property="og:title" content="Finesse — your money, but it actually makes sense">
@@ -51,7 +51,7 @@ body {
   font-size: 16px;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;   /* clip (not hidden) — kills sideways scroll without breaking sticky features */
 }
 /* Soft drifting colour blobs — give the frosted glass something to refract */
 body::before {
@@ -397,6 +397,9 @@ nav.is-island .nav {
 }
 .offer__btn:hover { background: var(--blue-2); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,122,255,0.55); }
 .offer__btn:active { transform: scale(0.98); }
+.offer__store { display: inline-block; line-height: 0; transition: transform 100ms; }
+.offer__store:hover { transform: translateY(-1px); }
+.offer__store img { width: 200px; height: 67px; object-fit: contain; }
 .offer__alt {
   font-family: var(--mono); font-size: 13px;
   color: var(--text-mute); text-decoration: none;
@@ -796,34 +799,50 @@ nav.is-island .nav {
 
 /* ── FAQ ───────────────────────────────────────────────── */
 .faq-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 760px;   /* single-column reading width, centered under the heading */
+  margin-left: auto;
+  margin-right: auto;
 }
 .faq {
   background: rgba(22,22,31,0.5);
   backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   border: 1.5px solid rgba(255,255,255,0.10);
-  border-radius: 20px;
-  padding: 24px 28px;
+  border-radius: 16px;
+  padding: 22px 26px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease;
 }
+.faq:hover { border-color: var(--border-strong); background: rgba(28,28,38,0.6); }
+.faq--open { border-color: rgba(0,122,255,0.35); }
 .faq__q {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  text-align: left;
 }
+.faq__q::after {
+  content: ""; flex: 0 0 auto; width: 10px; height: 10px;
+  border-right: 2px solid var(--text-mute); border-bottom: 2px solid var(--text-mute);
+  transform: rotate(45deg); transition: transform 300ms ease; margin-bottom: 3px;
+}
+.faq--open .faq__q::after { transform: rotate(-135deg); border-color: var(--blue-2); }
 .faq__a {
   color: var(--text-dim);
   font-size: 15px;
   line-height: 1.5;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 340ms ease, opacity 280ms ease, margin-top 340ms ease;
 }
+.faq--open .faq__a { max-height: 480px; opacity: 1; margin-top: 12px; }
 .faq__a strong { color: var(--text); font-weight: 600; }
 .faq__a a { color: var(--blue-2); text-decoration: underline; text-underline-offset: 2px; }
 .faq__a a:hover { color: var(--blue); }
-@media (max-width: 720px) { .faq-grid { grid-template-columns: 1fr; } }
 
 /* ── How it works ──────────────────────────────────────── */
 .sec__h--center { text-align: center; margin-left: auto; margin-right: auto; }
@@ -902,6 +921,18 @@ nav.is-island .nav {
   margin-bottom: 32px;
   max-width: 520px; margin-left: auto; margin-right: auto;
 }
+.connect__ig {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 22px;
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em;
+  color: var(--text-dim); text-decoration: none;
+  padding: 11px 20px; border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: rgba(22,22,31,0.55);
+  transition: color 150ms, border-color 150ms, background 150ms, transform 100ms;
+}
+.connect__ig:hover { color: var(--text); border-color: var(--blue); background: var(--blue-soft); transform: translateY(-1px); }
+.connect__ig svg { display: block; }
 
 /* ── Footer ────────────────────────────────────────────── */
 footer {
@@ -1155,25 +1186,44 @@ footer {
   .stats::-webkit-scrollbar { display: none; }
   .stat { flex: 0 0 78%; scroll-snap-align: center; }
 
-  /* FAQ: collapsed, tap to expand */
-  .faq { cursor: pointer; }
-  .faq__q { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 0; text-align: left; }
-  .faq__q::after {
-    content: ""; flex: 0 0 auto; width: 10px; height: 10px;
-    border-right: 2px solid var(--text-mute); border-bottom: 2px solid var(--text-mute);
-    transform: rotate(45deg); transition: transform 300ms ease; margin-bottom: 3px;
-  }
-  .faq--open .faq__q::after { transform: rotate(-135deg); }
-  .faq__a {
-    max-height: 0; overflow: hidden; opacity: 0;
-    transition: max-height 320ms ease, opacity 280ms ease, margin-top 320ms ease;
-  }
-  .faq--open .faq__a { max-height: 480px; opacity: 1; margin-top: 10px; }
-
   /* FOOTER: compact + centered, flush against the CTA (no empty bar) */
   footer { padding: 32px 0 28px; margin-top: 0; }
   .foot { flex-direction: column; align-items: center; text-align: center; gap: 14px; }
   .foot .logo, .foot__links, .foot__copy { flex: none; justify-content: center; text-align: center; }
+}
+
+/* ── Download section ─────────────────────────────────── */
+.download { padding: 110px 0 90px; position: relative; }
+.download__inner {
+  max-width: 920px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 56px; flex-wrap: wrap;
+}
+.download__copy { flex: 1 1 360px; min-width: 280px; }
+.download__eyebrow {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--blue-2); margin-bottom: 16px;
+}
+.download__title { font-size: 52px; line-height: 1.02; letter-spacing: -0.02em; font-weight: 600; }
+.download__title em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--blue-2); }
+.download__sub { color: var(--text-dim); font-size: 17px; margin: 18px 0 0; max-width: 420px; }
+.download__qr {
+  flex: 0 0 auto; text-align: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 24px; padding: 22px;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+}
+.download__qr img { width: 188px; height: 188px; display: block; border-radius: 14px; }
+.download__qr span {
+  display: block; margin-top: 14px; font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-mute);
+}
+@media (max-width: 720px) {
+  .download { padding: 72px 0 64px; }
+  .download__inner { flex-direction: column; gap: 36px; text-align: center; }
+  .download__sub { margin-left: auto; margin-right: auto; }
+  .download__title { font-size: 40px; }
+  .download__qr img { width: 168px; height: 168px; }
 }
 </style>
 
@@ -1201,10 +1251,10 @@ footer {
     </div>
     <div class="nav__links">
       <a href="#features">Features</a>
-      <a href="/pricing.html">Pricing</a>
+      <a href="#download">Download</a>
       <a href="#faq">FAQ</a>
     </div>
-    <a class="nav__cta" href="#founding">Founding · $49.99 →</a>
+    <a class="nav__cta" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&itsct=apps_box_badge&mttnsubad=6771177015" target="_blank" rel="noopener">Download →</a>
   </div>
 </nav>
 
@@ -1224,21 +1274,16 @@ footer {
       </h1>
     </div>
 
-    <!-- Founding-member prelaunch offer — centered -->
-    <div class="offer" id="founding">
-      <span class="offer__badge">Founding member · limited spots</span>
-      <div class="offer__price">
-        <span class="offer__amt">$49.99</span>
-        <span class="offer__per">/ year</span>
-      </div>
+    <!-- Hero CTA — download / stay connected -->
+    <div class="offer">
+      <span class="offer__badge">Live on the App Store · iOS</span>
       <p class="offer__note">
-        A full year of Finesse <strong>Pro</strong> at the prelaunch price. A limited founding rate before we launch this July — once the spots are gone, they're gone.
+        Link your accounts and let Finesse watch your money around the clock. Free to start — every budgeting feature, no cost.
       </p>
-      <!-- TODO: replace href with your live Stripe Payment Link (https://buy.stripe.com/...) -->
-      <a class="offer__btn" href="https://buy.stripe.com/REPLACE_WITH_YOUR_LINK" target="_blank" rel="noopener">
-        Claim founding membership →
+      <a class="offer__store" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&itsct=apps_box_badge&mttnsubad=6771177015">
+        <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1782691200" alt="Download on the App Store" />
       </a>
-      <a class="offer__alt" href="#join">or join the free waitlist ↓</a>
+      <a class="offer__alt" href="#connect">or stay connected ↓</a>
     </div>
   </div>
 </section>
@@ -1388,7 +1433,7 @@ footer {
 <!-- ── Stats ──────────────────────────────────────────────── -->
 <section id="numbers" class="sec" style="padding-top: 90px;">
   <div class="wrap">
-    <div class="sec__h reveal">
+    <div class="sec__h sec__h--center reveal">
       <div class="sec__eyebrow">By the numbers</div>
       <h2 class="sec__title">Money you'd <em>never</em> find on your own.</h2>
     </div>
@@ -1412,22 +1457,18 @@ footer {
 <!-- ── FAQ ────────────────────────────────────────────────── -->
 <section id="faq" class="sec" style="padding-top: 40px;">
   <div class="wrap">
-    <div class="sec__h reveal">
+    <div class="sec__h sec__h--center reveal">
       <div class="sec__eyebrow">FAQ</div>
       <h2 class="sec__title">Quick <em>answers.</em></h2>
     </div>
     <div class="faq-grid reveal">
-      <div class="faq">
+      <div class="faq faq--open">
         <div class="faq__q">When does Finesse launch?</div>
-        <div class="faq__a">This July, on iOS first. Claim the founding-member rate now and you're set the moment we go live.</div>
+        <div class="faq__a">This July, on iOS first. Follow along on Instagram or drop your email below for the roadmap and launch news.</div>
       </div>
       <div class="faq">
-        <div class="faq__q">What's the $49.99 founding membership?</div>
-        <div class="faq__a">A full year of Finesse <strong>Pro</strong> at the prelaunch price — a limited founding rate. Once the spots are claimed it's gone, and pricing returns to the standard plans.</div>
-      </div>
-      <div class="faq">
-        <div class="faq__q">What will it cost after launch?</div>
-        <div class="faq__a">All budgeting features are free. <strong>Pro</strong> is $9.99/mo or $99.99/yr. See the full breakdown on the <a href="/pricing.html">pricing page</a>.</div>
+        <div class="faq__q">What does it cost?</div>
+        <div class="faq__a">All budgeting features are free. <strong>Pro</strong> is $3.99/wk, $9.99/mo, or $99.99/yr.</div>
       </div>
       <div class="faq">
         <div class="faq__q">What's the difference between Free and Pro?</div>
@@ -1446,27 +1487,50 @@ footer {
 </section>
 
 <!-- ── CTA ────────────────────────────────────────────────── -->
-<section class="cta-strip" id="join">
+<!-- ── Download (live on iOS) ─────────────────────────────── -->
+<section class="download" id="download">
+  <div class="download__inner reveal">
+    <div class="download__copy">
+      <div class="download__eyebrow">● Live on the App Store</div>
+      <h2 class="download__title">Download <em>Finesse</em><br/>for free today</h2>
+      <p class="download__sub">Point your camera at the code to grab Finesse on the App Store — anomaly alerts, true subscription costs, and a budget that thinks ahead.</p>
+    </div>
+    <div class="download__qr">
+      <img src="./assets/qr-code.png" alt="Scan to download Finesse on the App Store" />
+      <span>Scan to download</span>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip" id="connect">
   <div class="cta-strip__inner reveal">
-    <h2>Not ready to<br/><em>commit?</em></h2>
-    <p>Join the free waitlist and we'll email you the moment Finesse goes live this July. No newsletters, no spam, no shame.</p>
-    <div id="waitlist-wrap-2">
-      <form class="waitlist" onsubmit="handleWaitlist(event, 'waitlist-wrap-2')">
+    <h2>Stay in the<br/><em>loop.</em></h2>
+    <p>Follow the team and our feature roadmap — see what we're shipping next, and help shape where Finesse goes. Drop your email or come say hi on Instagram.</p>
+    <div id="connect-wrap">
+      <form class="waitlist" onsubmit="handleWaitlist(event, 'connect-wrap')">
         <input type="text" id="honeypot2" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;" />
         <div class="waitlist__field">
           <input class="waitlist__input" type="email" required placeholder="you@email.com" />
         </div>
-        <button class="waitlist__btn" type="submit">Get on the list →</button>
+        <button class="waitlist__btn" type="submit">Keep me posted →</button>
       </form>
       <div class="waitlist__success">
         <span style="font-size: 18px;">✓</span>
-        You're in. We'll email you when it's live.
+        You're in. We'll share what's next.
       </div>
       <div class="waitlist__already">
         <span style="font-size: 18px;">→</span>
-        You're already on the list. We'll be in touch.
+        You're already subscribed. Talk soon.
       </div>
     </div>
+    <a class="connect__ig" href="https://instagram.com/try.finesse" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+      Follow @try.finesse
+    </a>
   </div>
 </section>
 
@@ -1533,7 +1597,7 @@ async function handleWaitlist(e, wrapperId) {
 
   const btn = form.querySelector('button');
   const origText = btn.textContent;
-  btn.textContent = 'Joining...';
+  btn.textContent = 'Subscribing…';
   btn.disabled = true;
 
   const body = { email };
@@ -1589,11 +1653,10 @@ fetchCount();
   window.addEventListener('scroll', onScroll, { passive: true });
 })();
 
-// ── Mobile: FAQ accordion (collapsed, tap to expand) ──
+// ── FAQ accordion (collapsed dropdown, click to expand) ──
 (function () {
   document.querySelectorAll('.faq').forEach(function (faq) {
     faq.addEventListener('click', function () {
-      if (window.innerWidth > 820) return; // only collapse on mobile
       faq.classList.toggle('faq--open');
     });
   });

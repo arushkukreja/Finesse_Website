@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Pricing — Finesse</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Finesse pricing. All budgeting features are free. Pro adds monitoring, custom alerts, profile-based alerting and deeper insights — $9.99/mo or $99.99/yr. Founding members lock in a year of Pro for $49.99.">
+<meta name="description" content="Finesse pricing. All budgeting features are free. Pro adds monitoring, custom alerts, profile-based alerting and deeper insights — $3.99/wk, $9.99/mo, or $99.99/yr. Founding members lock in a year of Pro for $49.99.">
 <link rel="canonical" href="https://finessefinance.us/pricing.html">
 <link rel="icon" type="image/png" href="./assets/app-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -265,6 +265,7 @@ footer { border-top: 1.5px solid var(--border); padding: 48px 0 36px; margin-top
     <p>Every budgeting feature is free. Upgrade to Pro when you want Finesse watching your money around the clock.</p>
 
     <div class="toggle" id="toggle">
+      <button data-cycle="weekly">Weekly</button>
       <button data-cycle="monthly" class="is-active">Monthly</button>
       <button data-cycle="annual">Annual <span class="toggle__save">save 17%</span></button>
     </div>
@@ -376,6 +377,10 @@ footer { border-top: 1.5px solid var(--border); padding: 48px 0 36px; margin-top
       amt.textContent = '$99.99';
       per.textContent = '/ year';
       sub.textContent = 'Billed annually — that’s $8.33/mo.';
+    } else if (btn.dataset.cycle === 'weekly') {
+      amt.textContent = '$3.99';
+      per.textContent = '/ week';
+      sub.textContent = 'Billed weekly. Cancel anytime.';
     } else {
       amt.textContent = '$9.99';
       per.textContent = '/ month';
