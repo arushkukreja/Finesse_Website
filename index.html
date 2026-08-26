@@ -1,1899 +1,397 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Finesse — your money, but it actually makes sense</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Link your accounts, and Finesse surfaces the spending you'd never catch on your own. Download on iOS, and stay connected with the team and feature roadmap.">
-<link rel="canonical" href="https://finessefinance.us/">
-<meta property="og:url" content="https://finessefinance.us/">
-<meta property="og:title" content="Finesse — your money, but it actually makes sense">
-<meta property="og:description" content="Link your accounts, and Finesse surfaces the spending you'd never catch on your own.">
-<meta property="og:image" content="https://finessefinance.us/assets/og-preview.png">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://finessefinance.us/assets/og-preview.png">
-<link rel="icon" type="image/png" href="./assets/app-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #0B0B10;
-  --bg-2: #12121A;
-  --surface: #16161F;
-  --surface-2: #1C1C26;
-  --border: rgba(255,255,255,0.08);
-  --border-strong: rgba(255,255,255,0.16);
-  --text: #F5F5F7;
-  --text-dim: rgba(245,245,247,0.62);
-  --text-mute: rgba(245,245,247,0.42);
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b10">
+  <title>Finesse — money clarity without the busywork</title>
+  <meta name="description" content="Finesse watches your connected accounts, builds practical budgets, finds recurring costs, and flags unusual spending. Available free on iOS.">
+  <link rel="canonical" href="https://finessefinance.us/">
 
-  --blue: #007AFF;       /* iOS blue — primary accent */
-  --blue-2: #4DA8FF;     /* lighter blue for highlights */
-  --blue-soft: rgba(0,122,255,0.18);
-  --lime: #007AFF;       /* aliased to blue (legacy refs) */
-  --pink: #1488FF;       /* aliased to blue-bright (legacy refs) */
-  --danger: #FF3B30;
-  --warm: #F59E0B;
-  --success: #34D399;
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://finessefinance.us/">
+  <meta property="og:title" content="Finesse — money clarity without the busywork">
+  <meta property="og:description" content="A budget that updates itself, recurring costs you can actually see, and alerts that matter.">
+  <meta property="og:image" content="https://finessefinance.us/assets/og-preview-v2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Finesse — money clarity without the busywork">
+  <meta name="twitter:description" content="A budget that updates itself, recurring costs you can actually see, and alerts that matter.">
+  <meta name="twitter:image" content="https://finessefinance.us/assets/og-preview-v2.png">
 
-  --serif: "Instrument Serif", "Times New Roman", serif;
-  --sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, monospace;
-}
+  <link rel="icon" type="image/png" href="./assets/app-icon.png">
+  <link rel="apple-touch-icon" href="./assets/app-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/site.css">
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; overflow-x: clip; }  /* clip (not hidden) — kills sideways scroll without breaking sticky */
-body {
-  position: relative;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.45;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: clip;   /* clip (not hidden) — kills sideways scroll without breaking sticky features */
-}
-/* Soft drifting colour blobs — give the frosted glass something to refract */
-body::before {
-  content: "";
-  position: fixed; inset: -25%;
-  z-index: -2;
-  pointer-events: none;
-  background:
-    radial-gradient(38% 38% at 20% 22%, rgba(0,122,255,0.20), transparent 70%),
-    radial-gradient(34% 34% at 82% 30%, rgba(77,168,255,0.16), transparent 70%),
-    radial-gradient(42% 42% at 66% 82%, rgba(0,122,255,0.14), transparent 70%),
-    radial-gradient(30% 30% at 12% 78%, rgba(20,136,255,0.12), transparent 70%);
-  filter: blur(40px);
-  animation: auroraDrift 26s ease-in-out infinite alternate;
-}
-@keyframes auroraDrift {
-  from { transform: translate3d(-2%, -1%, 0) scale(1); }
-  to   { transform: translate3d(2%, 2.5%, 0) scale(1.08); }
-}
-@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
-
-/* Readability plate — soft black rounded backing behind text so the
-   falling pills don't reduce legibility. Sits above the pills, below the text. */
-.hero h1,
-.sec__h,
-.fstack__lead,
-.ftext,
-.cta-strip h2,
-.cta-strip p { position: relative; z-index: 0; }
-.hero h1::before,
-.sec__h::before,
-.fstack__lead::before,
-.ftext::before,
-.cta-strip h2::before,
-.cta-strip p::before {
-  content: "";
-  position: absolute; inset: -22px -34px;
-  z-index: -1;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.34) 48%, rgba(0,0,0,0) 80%);
-  border-radius: 30px;
-  filter: blur(20px);
-  pointer-events: none;
-}
-img { display: block; max-width: 100%; }
-button { font-family: inherit; }
-
-/* ── Layout ────────────────────────────────────────────── */
-.wrap { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
-@media (max-width: 720px) { .wrap { padding: 0 20px; } }
-
-/* ── Sticker primitive (used everywhere) ───────────────── */
-.sticker {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 12px;
-  background: var(--blue);
-  color: #fff;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-family: var(--mono);
-  border: 1.5px solid rgba(0,0,0,0.6);
-  box-shadow: 2px 2px 0 0 #000;
-  white-space: nowrap;
-}
-.sticker--alt { background: #fff; color: #000; }
-.sticker--soft { background: var(--blue-soft); color: var(--blue-2); border-color: rgba(0,122,255,0.4); box-shadow: none; }
-.sticker--dark { background: #000; color: var(--blue-2); border-color: var(--blue); }
-.sticker--ghost {
-  background: transparent;
-  color: var(--text);
-  border-color: rgba(255,255,255,0.25);
-  box-shadow: none;
-}
-
-/* ── Nav ───────────────────────────────────────────────── */
-nav {
-  position: sticky; top: 0; z-index: 50;
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  background: rgba(11,11,16,0.6);
-  border-bottom: 1px solid var(--border);
-  transition: background 300ms ease, border-color 300ms ease, top 320ms ease;
-}
-.nav { transition: max-width 380ms cubic-bezier(0.32,0.72,0,1), margin 380ms cubic-bezier(0.32,0.72,0,1), padding 320ms ease, background 320ms ease, border-radius 320ms ease, box-shadow 320ms ease, border-color 320ms ease; }
-/* On scroll the bar detaches into a floating island */
-nav.is-island {
-  top: 16px;
-  background: transparent;
-  backdrop-filter: none; -webkit-backdrop-filter: none;
-  border-bottom-color: transparent;
-}
-nav.is-island .nav {
-  max-width: 940px;
-  margin: 0 auto;
-  padding: 8px 10px 8px 22px;
-  background: rgba(16,16,24,0.72);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  box-shadow: 0 16px 44px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
-}
-.nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 0;
-}
-.logo {
-  display: flex; align-items: center; gap: 12px;
-  font-weight: 700; font-size: 20px;
-  letter-spacing: -0.04em;
-}
-.logo__mark {
-  width: 32px; height: 32px;
-  background: #000;
-  border: 1.5px solid rgba(255,255,255,0.12);
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.logo__mark img { width: 100%; height: 100%; object-fit: cover; }
-.nav__links {
-  display: flex; gap: 28px; align-items: center;
-}
-.nav__links a {
-  color: var(--text-dim);
-  text-decoration: none; font-size: 14px; font-weight: 500;
-  transition: color 150ms;
-}
-.nav__links a:hover { color: var(--text); }
-.nav__cta {
-  display: inline-flex; align-items: center;
-  background: var(--blue); color: #fff;
-  border: 0;
-  border-radius: 999px;
-  padding: 10px 18px;
-  font-weight: 600; font-size: 14px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 150ms, transform 100ms;
-}
-.nav__cta:hover { background: var(--blue-2); }
-.nav__cta:active { transform: scale(0.97); }
-@media (max-width: 720px) { .nav__links { display: none; } }
-
-/* ── Hero ──────────────────────────────────────────────── */
-.hero {
-  position: relative;
-  padding: 64px 0 40px;
-  overflow: hidden;
-}
-.hero__bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,122,255,0.28), transparent 60%),
-    radial-gradient(ellipse 40% 40% at 15% 60%, rgba(0,122,255,0.14), transparent 60%);
-  pointer-events: none;
-}
-.hero__inner {
-  position: relative; z-index: 2;
-  text-align: center;
-  max-width: 1100px; margin: 0 auto;
-}
-.hero__head { display: contents; }   /* desktop: stickers + h1 flow normally */
-.hero__stickers {
-  display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
-  margin-bottom: 28px;
-}
-.hero__pill__dot {
-  width: 6px; height: 6px; border-radius: 999px;
-  background: #fff;
-  box-shadow: 0 0 8px rgba(255,255,255,0.8);
-  animation: pulse 1.6s ease-in-out infinite;
-}
-@keyframes pulse { 50% { opacity: 0.3; } }
-
-.hero h1 {
-  font-family: var(--sans);
-  font-size: clamp(56px, 11vw, 156px);
-  font-weight: 700;
-  line-height: 0.88;
-  letter-spacing: -0.05em;
-  margin-bottom: 28px;
-}
-.hero h1 .serif {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 400;
-  color: var(--blue-2);
-  letter-spacing: -0.02em;
-}
-.hero h1 .strike {
-  position: relative;
-  color: var(--text-mute);
-  white-space: nowrap;
-}
-.hero h1 .strike::after {
-  content: "";
-  position: absolute; left: -2%; right: -2%; top: 52%;
-  height: 8px;
-  background: var(--blue);
-  transform: rotate(-2deg);
-  border-radius: 2px;
-}
-.hero h1 .underline {
-  position: relative;
-  display: inline-block;
-}
-.hero h1 .underline::after {
-  content: "";
-  position: absolute; left: 0; right: 0; bottom: -4px;
-  height: 14px;
-  background: var(--blue);
-  z-index: -1;
-  border-radius: 4px;
-  transform: skewX(-8deg);
-}
-
-.hero__sub {
-  font-size: clamp(17px, 1.8vw, 21px);
-  color: var(--text-dim);
-  max-width: 580px;
-  margin: 0 auto 36px;
-  line-height: 1.45;
-}
-.hero__sub strong { color: var(--text); font-weight: 600; }
-
-/* Waitlist form */
-.waitlist {
-  display: flex; gap: 8px; justify-content: center;
-  max-width: 520px; margin: 0 auto 20px;
-  flex-wrap: wrap;
-}
-.waitlist__field {
-  flex: 1 1 240px;
-  min-width: 0;
-  position: relative;
-}
-.waitlist__input {
-  width: 100%;
-  background: var(--surface);
-  border: 1.5px solid var(--border-strong);
-  border-radius: 999px;
-  padding: 14px 20px;
-  font-family: var(--sans);
-  font-size: 15px;
-  color: var(--text);
-  outline: none;
-  transition: border-color 150ms;
-}
-.waitlist__input::placeholder { color: var(--text-mute); }
-.waitlist__input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
-.waitlist__btn {
-  background: var(--blue); color: #fff;
-  border: 0;
-  border-radius: 999px;
-  padding: 14px 26px;
-  font-weight: 600; font-size: 15px;
-  cursor: pointer;
-  white-space: nowrap;
-  display: inline-flex; align-items: center; gap: 6px;
-  box-shadow: 0 4px 16px rgba(0,122,255,0.35);
-  transition: transform 100ms, box-shadow 200ms, background 150ms;
-}
-.waitlist__btn:hover { background: var(--blue-2); box-shadow: 0 6px 24px rgba(0,122,255,0.5); }
-.waitlist__btn:active { transform: scale(0.97); }
-.waitlist__success {
-  display: none;
-  background: var(--surface);
-  border: 1.5px solid var(--blue);
-  border-radius: 16px;
-  padding: 18px 24px;
-  font-size: 15px;
-  color: var(--blue-2);
-  font-weight: 600;
-}
-.waitlist--done .waitlist,
-.waitlist--duplicate .waitlist { display: none !important; }
-.waitlist--done .waitlist__success { display: inline-flex !important; align-items: center; gap: 10px; }
-.waitlist--duplicate .waitlist__already { display: inline-flex !important; align-items: center; gap: 10px; }
-.waitlist__already {
-  display: none;
-  background: var(--surface);
-  border: 1.5px solid var(--border-strong);
-  border-radius: 16px;
-  padding: 18px 24px;
-  font-size: 15px;
-  color: var(--text-dim);
-  font-weight: 600;
-}
-
-.hero__meta {
-  display: flex; gap: 14px; justify-content: center; align-items: center;
-  font-size: 13px; color: var(--text-mute);
-  font-family: var(--mono);
-  letter-spacing: 0.02em;
-  flex-wrap: wrap;
-}
-.hero__meta__dot {
-  width: 4px; height: 4px; border-radius: 999px;
-  background: var(--text-mute);
-}
-.hero__meta__count { color: var(--blue-2); font-weight: 600; }
-
-/* Founding-member offer card */
-.offer {
-  display: inline-flex; flex-direction: column; align-items: center; gap: 14px;
-  max-width: 480px; margin: 0 auto;
-  padding: 28px 36px 26px;
-  background: rgba(22,22,31,0.55);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border: 1.5px solid rgba(255,255,255,0.14);
-  border-radius: 28px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,122,255,0.18), inset 0 1px 0 rgba(255,255,255,0.14);
-}
-.offer__badge {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--blue-2);
-  background: var(--blue-soft);
-  border: 1px solid rgba(0,122,255,0.4);
-  padding: 6px 14px; border-radius: 999px;
-}
-.offer__price { display: flex; align-items: baseline; gap: 8px; }
-.offer__amt {
-  font-family: var(--sans);
-  font-size: clamp(52px, 8vw, 76px);
-  font-weight: 700; letter-spacing: -0.05em; line-height: 1;
-}
-.offer__per { font-family: var(--serif); font-style: italic; font-size: 24px; color: var(--text-dim); }
-.offer__note { color: var(--text-dim); font-size: 14px; line-height: 1.5; max-width: 380px; }
-.offer__note strong { color: var(--text); font-weight: 600; }
-.offer__btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--blue); color: #fff;
-  border-radius: 999px;
-  padding: 16px 34px;
-  font-weight: 600; font-size: 16px;
-  text-decoration: none;
-  box-shadow: 0 6px 24px rgba(0,122,255,0.45);
-  transition: transform 100ms, box-shadow 200ms, background 150ms;
-}
-.offer__btn:hover { background: var(--blue-2); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,122,255,0.55); }
-.offer__btn:active { transform: scale(0.98); }
-.offer__store { display: inline-block; line-height: 0; transition: transform 100ms; }
-.offer__store:hover { transform: translateY(-1px); }
-.offer__store img { width: 200px; height: 67px; object-fit: contain; }
-.offer__alt {
-  font-family: var(--mono); font-size: 13px;
-  color: var(--text-mute); text-decoration: none;
-  transition: color 120ms;
-}
-.offer__alt:hover { color: var(--text); }
-@media (max-width: 480px) {
-  .offer { padding: 24px 22px; max-width: 100%; }
-  .offer__btn { width: 100%; justify-content: center; }
-}
-
-/* Centered founding offer inside the hero */
-.hero__inner .offer {
-  margin-top: 180px;
-  animation: heroIn 800ms 600ms cubic-bezier(0.32, 0.72, 0, 1) backwards;
-}
-@media (max-width: 600px) { .hero__inner .offer { margin-top: 104px; } }
-
-/* Ambient finance pills that slowly fall through the viewport.
-   Fixed, so they rain independently of scroll — same feel in every
-   section (including the pinned features section) and they never
-   affect page height. */
-.pagefall {
-  position: fixed;
-  inset: 0;
-  z-index: -1;                /* behind in-flow content, above body background */
-  overflow: hidden;
-  pointer-events: none;
-  transition: opacity 300ms ease;   /* faded out while the features section is pinned */
-}
-.fpill {
-  position: absolute;
-  top: 0;
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 15px;
-  border-radius: 999px;
-  font-size: 13px; font-weight: 600;
-  white-space: nowrap;
-  letter-spacing: -0.01em;
-  background: var(--surface-2);
-  color: var(--text);
-  border: 1.5px solid var(--border-strong);
-  box-shadow: 0 14px 34px rgba(0,0,0,0.45);
-  opacity: 0.5;
-  will-change: transform;
-  backface-visibility: hidden;
-  animation: fallPill var(--dur, 44s) linear infinite;
-  animation-delay: var(--d, 0s);
-}
-.fpill b { font-weight: 700; }
-.fpill--blue  { background: var(--blue); color: #fff; border-color: rgba(0,0,0,0.25); }
-.fpill--soft  { background: var(--blue-soft); color: var(--blue-2); border-color: rgba(0,122,255,0.4); }
-.fpill--light { background: #fff; color: #0B0B10; border-color: rgba(0,0,0,0.15); }
-@keyframes fallPill {
-  from { transform: translate3d(0, -14vh, 0) rotate(var(--r, 0deg)); }
-  to   { transform: translate3d(0, 114vh, 0) rotate(var(--r, 0deg)); }
-}
-@media (max-width: 600px) {
-  .fpill { font-size: 12px; padding: 7px 12px; opacity: 0.4; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pagefall { display: none; }
-}
-
-/* Hero device */
-.hero__device {
-  position: relative; z-index: 2;
-  margin: 0 auto;
-  width: fit-content;
-}
-.hero__device::before {
-  content: "";
-  position: absolute; inset: -40px;
-  background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(33,150,243,0.20), transparent 70%);
-  z-index: -1;
-  filter: blur(20px);
-}
-.hero__device .sticker--float {
-  position: absolute;
-  z-index: 3;
-}
-.hero__device .sticker--float.s1 { top: -20px; left: -120px; transform: rotate(-8deg); }
-.hero__device .sticker--float.s2 { top: 30%; right: -160px; transform: rotate(6deg); }
-.hero__device .sticker--float.s3 { bottom: 50px; left: -180px; transform: rotate(4deg); }
-.hero__device .sticker--float.s4 { bottom: -10px; right: -140px; transform: rotate(-5deg); }
-@media (max-width: 880px) {
-  .hero__device .sticker--float { display: none; }
-}
-
-.phone-frame {
-  width: 320px;
-  border-radius: 44px;
-  background: #000;
-  padding: 8px;
-  box-shadow:
-    0 0 0 1.5px #2A2A33,
-    0 60px 120px rgba(0,0,0,0.6),
-    0 30px 60px rgba(33,150,243,0.15);
-  position: relative;
-}
-.phone-frame img {
-  width: 100%;
-  border-radius: 36px;
-  display: block;
-}
-
-/* Home screenshot greeting wrapper */
-.phone-frame--home {
-  position: relative;
-}
-/* ── Marquee ───────────────────────────────────────────── */
-.marquee {
-  background: var(--blue);
-  color: #fff;
-  border-top: 1.5px solid rgba(0,0,0,0.2);
-  border-bottom: 1.5px solid rgba(0,0,0,0.2);
-  overflow: hidden;
-  padding: 16px 0;
-  position: relative;
-  transform: rotate(-1.5deg);
-  margin: 60px -20px;
-}
-.marquee__track span::after {
-  color: #fff !important;
-}
-.marquee__track {
-  display: flex;
-  gap: 40px;
-  animation: scroll 30s linear infinite;
-  white-space: nowrap;
-  font-family: var(--sans);
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-}
-.marquee__track span {
-  display: inline-flex; align-items: center; gap: 40px;
-}
-.marquee__track span::after {
-  content: "✺";
-  font-size: 0.7em;
-}
-@keyframes scroll {
-  to { transform: translateX(-50%); }
-}
-
-/* ── Section ───────────────────────────────────────────── */
-.sec {
-  padding: 150px 0;
-  position: relative;
-}
-.sec__h {
-  text-align: left;
-  margin: 0 0 48px;
-  max-width: 780px;
-}
-.sec__eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--blue-2);
-  margin-bottom: 16px;
-}
-.sec__eyebrow::before {
-  content: ""; width: 8px; height: 8px;
-  background: var(--blue);
-  border-radius: 999px;
-  box-shadow: 0 0 8px var(--blue);
-}
-.sec__title {
-  font-family: var(--sans);
-  font-size: clamp(40px, 6.5vw, 88px);
-  font-weight: 700;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  margin-bottom: 16px;
-}
-.sec__title em {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  color: var(--blue);
-}
-.sec__sub {
-  color: var(--text-dim);
-  font-size: 18px;
-  max-width: 560px;
-}
-
-/* ── Bento Feature grid ────────────────────────────────── */
-.bento {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: minmax(120px, auto);
-  gap: 16px;
-}
-.bcard {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 28px;
-  padding: 32px;
-  position: relative;
-  overflow: hidden;
-  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1), border-color 200ms;
-}
-.bcard:hover { transform: translateY(-4px); border-color: var(--border-strong); }
-
-.bcard__num {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--text-mute);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-  display: flex; align-items: center;
-}
-.bcard__title {
-  font-size: clamp(24px, 2.6vw, 36px);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  margin-bottom: 16px;
-}
-.bcard__title em {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-}
-.bcard__title .hl { background: var(--blue); color: #fff; padding: 0 8px; border-radius: 6px; }
-.bcard__title .hl-soft { background: var(--blue-soft); color: var(--blue-2); padding: 0 8px; border-radius: 6px; }
-.bcard__title .hl-blue { background: var(--blue); color: #fff; padding: 0 8px; border-radius: 6px; }
-
-.bcard__body {
-  color: var(--text-dim);
-  font-size: 16px;
-  line-height: 1.5;
-  max-width: 460px;
-  margin-bottom: 24px;
-}
-
-.bcard__visual {
-  position: relative;
-  display: flex; justify-content: center; align-items: flex-end;
-  margin-top: auto;
-}
-.bcard__visual .phone-frame {
-  width: 240px;
-  transform: rotate(-3deg);
-  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.bcard:hover .bcard__visual .phone-frame { transform: rotate(0) translateY(-6px); }
-
-/* Bento span helpers */
-.bcard--big   { grid-column: span 8; grid-row: span 2; display: flex; flex-direction: column; min-height: 480px; }
-.bcard--med   { grid-column: span 4; display: flex; flex-direction: column; min-height: 240px; }
-.bcard--med-tall { grid-column: span 4; grid-row: span 2; display: flex; flex-direction: column; min-height: 480px; }
-.bcard--wide  { grid-column: span 6; display: flex; flex-direction: column; min-height: 280px; }
-.bcard--full  { grid-column: span 12; display: flex; flex-direction: column; min-height: 360px; }
-
-/* On large bento cards, make the phone the right side instead of bottom */
-.bcard--split {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 24px;
-  align-items: center;
-}
-.bcard--split .bcard__visual { margin-top: 0; }
-
-@media (max-width: 1080px) {
-  .bento { grid-template-columns: repeat(6, 1fr); }
-  .bcard--big, .bcard--full, .bcard--wide, .bcard--med, .bcard--med-tall { grid-column: span 6; }
-  .bcard--split { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  .bcard { padding: 24px; }
-  .bcard__visual .phone-frame { width: 200px !important; }
-  .bcard__title { font-size: 22px; }
-  .bcard__body { font-size: 14px; }
-}
-
-/* ── Mobile-specific responsive fixes ──────────────────── */
-@media (max-width: 480px) {
-  /* Hero phone */
-  .phone-frame { width: 260px; border-radius: 36px; padding: 6px; }
-  .phone-frame img { border-radius: 30px; }
-  .hero { padding: 48px 0 32px; }
-  .hero h1 { font-size: 48px; }
-  .hero__sub { font-size: 16px; }
-  .hero__device { margin-top: 48px; }
-  .hero__stickers { gap: 6px; }
-  .sticker { font-size: 10px; padding: 5px 10px; }
-
-  /* Marquee — prevent horizontal overflow */
-  .marquee { margin: 40px -10px; overflow: hidden; }
-  .marquee__track { font-size: 24px; }
-
-  /* Waitlist form */
-  .waitlist { flex-direction: column; max-width: 100%; }
-  .waitlist__field { flex: 1 1 100%; }
-  .waitlist__input { width: 100%; }
-  .waitlist__btn { width: 100%; justify-content: center; }
-
-  /* Bento cards */
-  .bcard { padding: 20px; border-radius: 20px; }
-  .bcard__visual .phone-frame { width: 180px !important; }
-  .bcard__title { font-size: 20px; }
-  .bcard__body { font-size: 14px; }
-  .bcard--split { gap: 16px; }
-
-  /* Section titles */
-  .sec { padding: 90px 0; }
-  .sec__title { font-size: 36px; }
-  .sec__sub { font-size: 16px; }
-
-  /* Stats */
-  .stat { padding: 24px 20px; border-radius: 16px; }
-  .stat__num { font-size: 48px; }
-  .stat__label { font-size: 12px; }
-
-  /* FAQ */
-  .faq { padding: 18px 20px; border-radius: 16px; }
-  .faq__q { font-size: 16px; }
-  .faq__a { font-size: 14px; }
-
-  /* CTA strip */
-  .cta-strip { padding: 80px 20px; }
-  .cta-strip h2 { font-size: 48px; }
-  .cta-strip p { font-size: 16px; }
-
-  /* Footer */
-  .foot { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .foot .logo, .foot__links, .foot__copy { flex: none; }
-  .foot__links { gap: 16px; justify-content: flex-start; }
-  .foot__copy { text-align: left; }
-
-  /* Hero meta */
-  .hero__meta { font-size: 11px; gap: 8px; }
-}
-
-/* Decorative arrow scribble */
-.scribble {
-  position: absolute;
-  pointer-events: none;
-  color: var(--lime);
-}
-
-/* ── Stat row (still bento, just numbers) ──────────────── */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 32px;
-}
-.stat {
-  background: rgba(22,22,31,0.5);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1.5px solid rgba(255,255,255,0.12);
-  border-radius: 24px;
-  padding: 36px 28px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
-}
-.stat:nth-child(3n+1) { background: var(--blue); color: #fff; border-color: rgba(0,0,0,0.2); }
-.stat:nth-child(3n+2) { background: rgba(22,22,31,0.5); color: var(--text); border-color: rgba(255,255,255,0.14); }
-.stat:nth-child(3n)   { background: #fff; color: #000; border-color: rgba(0,0,0,0.2); }
-
-.stat__num {
-  font-family: var(--sans);
-  font-size: clamp(48px, 6vw, 88px);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  margin-bottom: 12px;
-}
-.stat__num em {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  font-size: 0.55em;
-  vertical-align: 0.2em;
-  opacity: 0.85;
-}
-.stat:nth-child(3n+2) .stat__num em { color: var(--blue-2); }
-.stat__label {
-  font-size: 14px;
-  font-weight: 600;
-  font-family: var(--mono);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  opacity: 0.85;
-}
-@media (max-width: 720px) { .stats { grid-template-columns: 1fr; } }
-
-/* ── FAQ ───────────────────────────────────────────────── */
-.faq-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 760px;   /* single-column reading width, centered under the heading */
-  margin-left: auto;
-  margin-right: auto;
-}
-.faq {
-  background: rgba(22,22,31,0.5);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  border: 1.5px solid rgba(255,255,255,0.10);
-  border-radius: 16px;
-  padding: 22px 26px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-  cursor: pointer;
-  transition: border-color 180ms ease, background 180ms ease;
-}
-.faq:hover { border-color: var(--border-strong); background: rgba(28,28,38,0.6); }
-.faq--open { border-color: rgba(0,122,255,0.35); }
-.faq__q {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  text-align: left;
-}
-.faq__q::after {
-  content: ""; flex: 0 0 auto; width: 10px; height: 10px;
-  border-right: 2px solid var(--text-mute); border-bottom: 2px solid var(--text-mute);
-  transform: rotate(45deg); transition: transform 300ms ease; margin-bottom: 3px;
-}
-.faq--open .faq__q::after { transform: rotate(-135deg); border-color: var(--blue-2); }
-.faq__a {
-  color: var(--text-dim);
-  font-size: 15px;
-  line-height: 1.5;
-  max-height: 0; overflow: hidden; opacity: 0;
-  transition: max-height 340ms ease, opacity 280ms ease, margin-top 340ms ease;
-}
-.faq--open .faq__a { max-height: 480px; opacity: 1; margin-top: 12px; }
-.faq__a strong { color: var(--text); font-weight: 600; }
-.faq__a a { color: var(--blue-2); text-decoration: underline; text-underline-offset: 2px; }
-.faq__a a:hover { color: var(--blue); }
-
-/* ── How it works ──────────────────────────────────────── */
-.sec__h--center { text-align: center; margin-left: auto; margin-right: auto; }
-.how {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
-  position: relative;
-  margin-top: 64px;
-}
-.how::before {
-  content: "";
-  position: absolute;
-  top: 31px; left: 4%; right: 4%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(0,122,255,0.35) 12%, rgba(0,122,255,0.35) 88%, transparent);
-  z-index: 0;
-}
-.how__step { position: relative; z-index: 1; }
-.how__icon {
-  width: 64px; height: 64px;
-  border-radius: 999px;
-  background: var(--surface-2);
-  border: 1.5px solid var(--border-strong);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--blue-2);
-  margin-bottom: 28px;
-  box-shadow: 0 0 0 8px var(--bg);
-}
-.how__icon svg { width: 28px; height: 28px; }
-.how__title {
-  font-size: clamp(22px, 2.2vw, 30px);
-  font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
-  margin-bottom: 14px;
-}
-.how__desc { color: var(--text-dim); font-size: 16px; line-height: 1.55; max-width: 320px; }
-@media (max-width: 820px) {
-  .how { grid-template-columns: 1fr; gap: 36px; }
-  .how::before { display: none; }
-  .how__icon { margin-bottom: 18px; }
-  .how__desc { max-width: 100%; }
-}
-
-/* ── Final CTA ─────────────────────────────────────────── */
-.cta-strip {
-  text-align: center;
-  padding: 120px 32px;
-  position: relative;
-  overflow: hidden;
-}
-.cta-strip::before {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,122,255,0.28), transparent 65%),
-    radial-gradient(ellipse 40% 40% at 70% 30%, rgba(0,122,255,0.14), transparent 60%);
-  pointer-events: none;
-}
-.cta-strip__inner { position: relative; z-index: 2; max-width: 880px; margin: 0 auto; }
-.cta-strip h2 {
-  font-family: var(--sans);
-  font-size: clamp(48px, 9vw, 132px);
-  font-weight: 700;
-  line-height: 0.88;
-  letter-spacing: -0.05em;
-  margin-bottom: 24px;
-}
-.cta-strip h2 em {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  color: var(--blue-2);
-}
-.cta-strip p {
-  color: var(--text-dim);
-  font-size: 18px;
-  margin-bottom: 32px;
-  max-width: 520px; margin-left: auto; margin-right: auto;
-}
-.connect__ig {
-  display: inline-flex; align-items: center; gap: 10px;
-  margin-top: 22px;
-  font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em;
-  color: var(--text-dim); text-decoration: none;
-  padding: 11px 20px; border-radius: 999px;
-  border: 1px solid var(--border-strong);
-  background: rgba(22,22,31,0.55);
-  transition: color 150ms, border-color 150ms, background 150ms, transform 100ms;
-}
-.connect__ig:hover { color: var(--text); border-color: var(--blue); background: var(--blue-soft); transform: translateY(-1px); }
-.connect__ig svg { display: block; }
-
-/* ── Footer ────────────────────────────────────────────── */
-footer {
-  border-top: 1.5px solid var(--border);
-  padding: 48px 0 36px;
-}
-.foot {
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 20px;
-}
-.foot .logo { flex: 1; }
-.foot__links {
-  display: flex; gap: 20px; flex-wrap: wrap;
-  flex: 1; justify-content: center;
-}
-.foot__links a {
-  color: var(--text-mute);
-  text-decoration: none;
-  font-size: 13px;
-  transition: color 120ms;
-}
-.foot__links a:hover { color: var(--text); }
-.foot__copy {
-  flex: 1; text-align: right;
-  color: var(--text-mute);
-  font-size: 13px;
-  font-family: var(--mono);
-}
-
-/* ── Reveal animation ──────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.32, 0.72, 0, 1);
-}
-.reveal.in { opacity: 1; transform: none; }
-
-/* Hero entrance */
-@keyframes heroIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: none; }
-}
-.hero__stickers { animation: heroIn 700ms 100ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-.hero h1     { animation: heroIn 800ms 250ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-.hero__sub   { animation: heroIn 800ms 400ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-.waitlist    { animation: heroIn 800ms 550ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-.hero__meta  { animation: heroIn 800ms 700ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-.hero__device{ animation: heroIn 1000ms 800ms cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-
-/* ── Features (scroll-driven: text left, device right) ─── */
-.sec--stack { padding: 0; }
-
-.fstack { position: relative; height: auto; }              /* fallback height when JS off */
-.fstack.is-ready { height: 600vh; }                        /* tall scroll track when active */
-
-.fstack__stage { position: static; }
-.fstack.is-ready .fstack__stage {
-  position: sticky; top: 0;
-  height: 100vh;
-  display: flex; align-items: center;
-  overflow: hidden;
-}
-
-.fstack__inner {
-  display: grid;
-  grid-template-columns: 1fr 1.05fr;
-  gap: 56px;
-  align-items: center;
-  width: 100%;
-}
-
-/* LEFT — persistent heading sits above the rotating feature text */
-.fstack__left {
-  display: flex; flex-direction: column; justify-content: center;
-  gap: 28px;
-  min-height: min(640px, 74vh);
-}
-.fstack__lead { max-width: 520px; }
-.fstack__lead .sec__eyebrow { margin-bottom: 12px; }
-.fstack__heading {
-  font-family: var(--sans);
-  font-size: clamp(28px, 3.4vw, 52px);
-  font-weight: 700; line-height: 0.95; letter-spacing: -0.04em;
-}
-.fstack__heading em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--blue); }
-
-/* LEFT — text layer (one feature visible at a time) */
-.fstack__text {
-  position: relative;
-  height: 240px;
-}
-.ftext {
-  display: flex; flex-direction: column; justify-content: flex-start;
-  max-width: 520px;
-}
-.fstack.is-ready .ftext {
-  /* top-anchored (not inset:0) so every feature starts at the same y —
-     extra copy flows onto lines below instead of shifting the block up/down */
-  position: absolute; top: 0; left: 0; right: 0; margin: 0;
-  will-change: transform, opacity;
-}
-.ftext__title {
-  font-size: clamp(28px, 3vw, 48px);
-  font-weight: 700; line-height: 1.0; letter-spacing: -0.03em;
-  margin: 14px 0 18px;
-}
-.ftext__title em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--blue); }
-.ftext__title .hl { background: var(--blue); color: #fff; padding: 0 8px; border-radius: 6px; }
-.ftext__title .hl-blue { background: var(--blue); color: #fff; padding: 0 8px; border-radius: 6px; }
-.ftext .bcard__body { font-size: 18px; max-width: 480px; margin-bottom: 0; }
-.ftext__stickers { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
-
-/* RIGHT — device-only stack (no card box, no background) */
-.fstack__cards {
-  position: relative;
-  height: min(720px, 80vh);
-  perspective: 1700px;
-}
-.fdevice {
-  display: flex; align-items: center; justify-content: center;
-}
-.fstack.is-ready .fdevice {
-  position: absolute; inset: 0; margin: 0;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  transform-origin: 50% 50%;
-}
-.fdevice .phone-frame {
-  width: 300px;
-  box-shadow: 0 0 0 1.5px #2A2A33, 0 60px 120px rgba(0,0,0,0.6), 0 30px 70px rgba(0,122,255,0.16);
-}
-
-/* Fallback (JS off): simple vertical flow */
-.fstack:not(.is-ready) .fstack__left { min-height: 0; }
-.fstack:not(.is-ready) .fstack__text,
-.fstack:not(.is-ready) .fstack__cards { display: flex; flex-direction: column; gap: 24px; height: auto; }
-.fstack:not(.is-ready) .ftext { max-width: 100%; }
-
-@media (max-width: 1080px) {
-  .fstack.is-ready { height: 560vh; }
-  .fstack__inner { grid-template-columns: 1fr; gap: 22px; align-content: center; justify-items: center; }
-  .fstack__left { order: 2; min-height: 0; gap: 20px; align-items: center; text-align: center; width: 100%; max-width: 540px; }
-  .fstack__lead { max-width: 100%; }
-  .fstack__text { height: auto; min-height: 200px; width: 100%; }
-  .ftext { text-align: center; align-items: center; max-width: 100%; }
-  .fstack__cards { order: 1; height: min(520px, 58vh); width: 100%; }
-  .fdevice .phone-frame { width: 280px; }
-}
-@media (max-width: 640px) {
-  .fstack.is-ready { height: 540vh; }
-  .fstack__heading { font-size: 30px; }
-  .ftext__title { font-size: 26px; }
-  .ftext .bcard__body { font-size: 15px; }
-  .fdevice .phone-frame { width: 220px; }
-  .fstack__cards { height: min(440px, 50vh); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .fstack.is-ready { height: auto; }
-  .fstack.is-ready .fstack__stage { position: static; height: auto; overflow: visible; }
-  .fstack.is-ready .fstack__left { min-height: 0; }
-  .fstack.is-ready .ftext,
-  .fstack.is-ready .fdevice { position: relative; inset: auto; }
-  .fstack.is-ready .fstack__text,
-  .fstack.is-ready .fstack__cards { display: flex; flex-direction: column; gap: 24px; height: auto; }
-}
-
-/* ════════════ MOBILE OVERHAUL (≤820px) ════════════ */
-@media (max-width: 820px) {
-
-  /* Nav: solid, always-visible sticky bar — NO island morph (no left/right jiggle) */
-  nav, nav.is-island {
-    position: sticky; top: 0;
-    background: rgba(11,11,16,0.92);
-    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border-bottom: 1px solid var(--border);
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Finesse Finance",
+    "operatingSystem": "iOS",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://finessefinance.us/",
+    "downloadUrl": "https://apps.apple.com/us/app/finesse-finance/id6771177015",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Finesse watches connected accounts, builds practical budgets, finds recurring costs, and flags unusual spending."
   }
-  .nav, nav.is-island .nav {
-    max-width: none; margin: 0; padding: 13px 20px;
-    background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none;
-    border: 0; border-radius: 0; box-shadow: none;
-    transition: none;
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can I download Finesse now?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes. Finesse is available now on the iOS App Store."}
+      },
+      {
+        "@type": "Question",
+        "name": "What does Finesse cost?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Every core budgeting feature is free. Optional Pro monitoring is available weekly, monthly, or annually."}
+      },
+      {
+        "@type": "Question",
+        "name": "Is my bank data safe?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Accounts connect through Plaid. Finesse never receives your bank password, encrypts data in transit and at rest, and does not sell personal information."}
+      }
+    ]
   }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  /* Every section centered */
-  .sec__h { text-align: center; margin-left: auto; margin-right: auto; }
-  .sec__sub { margin-left: auto; margin-right: auto; }
-
-  /* HERO: headline fills the first screen; founding offer sits below the fold */
-  .hero { padding: 0; }
-  .hero__inner { padding: 0 16px; }
-  .hero__head {
-    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
-    min-height: 92svh; box-sizing: border-box;
-    padding: 9vh 0 0;   /* sit just below the nav — small gap, not centered */
-  }
-  .hero__stickers { margin-bottom: 22px; }
-  .hero h1 { font-size: clamp(60px, 17.5vw, 112px); line-height: 0.92; margin-bottom: 0; }
-  .hero__inner .offer { margin-top: 5vh; margin-bottom: 72px; }
-
-  /* HOW IT WORKS centered */
-  .how__step { text-align: center; }
-  .how__icon { margin-left: auto; margin-right: auto; }
-  .how__desc { margin-left: auto; margin-right: auto; }
-
-}
-
-/* ════ FEATURES — one fixed phone; the screenshot scrolls vertically inside it,
-   like scrolling on a real phone. DESKTOP keeps the original 2-column layout
-   (feature text left, phone right); MOBILE is single-column. The phone + clipped
-   screen below is shared by both layouts (sized by height in each). ════ */
-
-/* Shared: single phone with a clipped, vertically-scrolling screen. */
-.fstack__cards { display: flex; align-items: center; justify-content: center; }
-.fphone { height: 100%; display: flex; align-items: center; justify-content: center; }
-.fphone .phone-frame {
-  height: 100%; width: auto; padding: 8px; border-radius: 42px;
-  box-sizing: border-box; display: flex;
-}
-.fscreen {
-  position: relative; height: 100%; width: auto;
-  aspect-ratio: 1179 / 2556; border-radius: 34px; overflow: hidden;
-}
-.fscreen img {
-  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-  object-fit: cover; border-radius: 0; display: block; will-change: transform;
-}
-/* progress dots + scroll hint are mobile-only; desktop keeps its original look */
-.fdots, .fhint { display: none; }
-
-/* ── MOBILE (≤820): single-column pinned stack ── */
-@media (max-width: 820px) {
-  .sec--stack { padding: 0; }
-  .fstack, .fstack.is-ready { height: 640vh; }             /* tall scroll track */
-  .fstack:not(.is-ready) { height: auto; }                 /* fallback: simple flow */
-  .fstack__stage { position: static; }
-  .fstack.is-ready .fstack__stage {
-    position: sticky; top: 0;
-    height: 100vh; height: 100svh;
-    display: flex; align-items: center; overflow: hidden;
-  }
-  .fstack__inner {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 0; width: 100%;
-  }
-  .fstack.is-ready .fstack__inner {
-    height: 100%; padding: 48px 16px 14px; box-sizing: border-box;
-    justify-content: center;
-  }
-  .fstack__left {
-    order: 1; width: 100%; max-width: 540px; min-height: 0; flex: 0 0 auto;
-    display: flex; flex-direction: column; align-items: center;
-    gap: 0; text-align: center;
-  }
-  .fstack__lead { text-align: center; max-width: 100%; margin: 0 0 14px; align-self: center; }
-  .fstack__heading { font-size: clamp(23px, 6.4vw, 30px); }
-  .fstack__text { position: relative; width: 100%; min-height: 0; }
-  .fstack.is-ready .fstack__text { height: 50px; min-height: 0; }
-  .fstack.is-ready .ftext {
-    position: absolute; inset: 0; margin: 0;
-    justify-content: center;
-    text-align: center; align-items: center;
-  }
-  .ftext__title { font-size: clamp(23px, 6.2vw, 29px); margin: 0; }
-  /* mobile shows only the rotating title — drop the grey label, body, stickers */
-  .ftext .bcard__num,
-  .ftext .bcard__body,
-  .ftext__stickers { display: none; }
-  .fstack__cards { order: 2; width: 100%; }
-  .fstack.is-ready .fstack__cards {
-    height: min(48vh, 420px);
-    height: min(48svh, 420px);
-    margin-top: 12px;
-  }
-  .fphone .phone-frame { padding: 6px; border-radius: 40px; }
-  .ftext::before, .fstack__lead::before { display: none; }
-
-  .fdots { display: flex; order: 3; justify-content: center; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
-  .fdot { width: 7px; height: 7px; border-radius: 999px; background: var(--border-strong); transition: background 220ms, width 220ms; }
-  .fdot.is-active { background: var(--blue); width: 20px; }
-  .fhint { display: block; order: 4; text-align: center; color: var(--text-mute); font-size: 12px; font-family: var(--mono); margin-top: 8px; letter-spacing: 0.04em; transition: opacity 300ms; }
-}
-
-@media (max-width: 820px) {
-  /* BY THE NUMBERS: swipeable infinite carousel */
-  .stats {
-    display: flex; grid-template-columns: none; gap: 14px; margin-top: 28px;
-    overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; padding: 4px 2px 10px;
-  }
-  .stats::-webkit-scrollbar { display: none; }
-  .stat { flex: 0 0 78%; scroll-snap-align: center; }
-
-  /* FOOTER: compact + centered, flush against the CTA (no empty bar) */
-  footer { padding: 32px 0 28px; margin-top: 0; }
-  .foot { flex-direction: column; align-items: center; text-align: center; gap: 14px; }
-  .foot .logo, .foot__links, .foot__copy { flex: none; justify-content: center; text-align: center; }
-}
-
-/* ── Download section ─────────────────────────────────── */
-.download { padding: 110px 0 90px; position: relative; }
-.download__inner {
-  max-width: 920px; margin: 0 auto; padding: 0 24px;
-  display: flex; align-items: center; justify-content: center;
-  gap: 56px; flex-wrap: wrap;
-}
-.download__copy { flex: 1 1 360px; min-width: 280px; }
-.download__eyebrow {
-  font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--blue-2); margin-bottom: 16px;
-}
-.download__title { font-size: 52px; line-height: 1.02; letter-spacing: -0.02em; font-weight: 600; }
-.download__title em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--blue-2); }
-.download__sub { color: var(--text-dim); font-size: 17px; margin: 18px 0 0; max-width: 420px; }
-.download__qr {
-  flex: 0 0 auto; text-align: center;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 24px; padding: 22px;
-  box-shadow: 0 18px 50px rgba(0,0,0,0.45);
-}
-.download__qr img { width: 188px; height: 188px; display: block; border-radius: 14px; }
-.download__qr span {
-  display: block; margin-top: 14px; font-family: var(--mono);
-  font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-mute);
-}
-@media (max-width: 720px) {
-  .download { padding: 72px 0 64px; }
-  .download__inner { flex-direction: column; gap: 4px; text-align: center; }
-  .download__sub { margin-left: auto; margin-right: auto; }
-  .download__title { font-size: 40px; }
-  .download__qr img { width: 168px; height: 168px; }
-}
-</style>
-
-<!-- ── Falling finance pills (page-wide ambient background) ─ -->
-<div class="pagefall" aria-hidden="true">
-  <span class="fpill"             style="left:6%;  --r:-5deg; --dur:46s; --d:-3s">🏦 Linked · 4 accounts</span>
-  <span class="fpill fpill--blue" style="left:88%; --r:4deg;  --dur:52s; --d:-31s">Safe to spend · <b>$312</b></span>
-  <span class="fpill fpill--soft" style="left:18%; --r:3deg;  --dur:56s; --d:-44s">☕ Coffee · $4.50</span>
-  <span class="fpill fpill--light" style="left:72%; --r:-3deg; --dur:48s; --d:-14s">Netflix · $15.49</span>
-  <span class="fpill fpill--soft" style="left:3%;  --r:5deg;  --dur:54s; --d:-38s">🍔 Dining · $128</span>
-  <span class="fpill fpill--blue" style="left:60%; --r:-6deg; --dur:44s; --d:-22s">📈 On budget</span>
-  <span class="fpill"             style="left:42%; --r:-4deg; --dur:58s; --d:-49s">Rent · $1,850</span>
-  <span class="fpill"             style="left:82%; --r:2deg;  --dur:52s; --d:-35s">Income · <b>+$3,200</b></span>
-  <span class="fpill fpill--soft" style="left:12%; --r:-3deg; --dur:45s; --d:-19s">🛒 Groceries · $96</span>
-  <span class="fpill fpill--blue" style="left:52%; --r:3deg;  --dur:55s; --d:-12s">⚠️ Unusual charge</span>
-  <span class="fpill fpill--light" style="left:68%; --r:-5deg; --dur:49s; --d:-42s">$1.1K/yr in subs found</span>
-</div>
-
-<!-- ── Nav ────────────────────────────────────────────────── -->
-<nav>
-  <div class="wrap nav">
-    <div class="logo">
-      <div class="logo__mark"><img src="./assets/app-icon.png" alt="" /></div>
-      <span>Finesse</span>
-    </div>
-    <div class="nav__links">
-      <a href="#features">Features</a>
-      <a href="#download">Download</a>
-      <a href="#faq">FAQ</a>
-    </div>
-    <a class="nav__cta" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&itsct=apps_box_badge&mttnsubad=6771177015" target="_blank" rel="noopener">Download →</a>
+  <div class="ambient" aria-hidden="true">
+    <span class="ambient__orb ambient__orb--one"></span>
+    <span class="ambient__orb ambient__orb--two"></span>
   </div>
-</nav>
 
-<!-- ── Hero ───────────────────────────────────────────────── -->
-<section class="hero">
-  <div class="hero__bg"></div>
-
-  <div class="wrap hero__inner">
-    <div class="hero__head">
-      <div class="hero__stickers">
-        <span class="sticker"><span class="hero__pill__dot"></span> LIVE ON THE APP STORE · IOS</span>
-      </div>
-      <h1>
-        Your money,<br/>
-        but it actually <span class="serif">watches itself</span>
-      </h1>
-    </div>
-
-    <!-- Hero CTA — download / stay connected -->
-    <div class="offer">
-      <span class="offer__badge">Live on the App Store · iOS</span>
-      <p class="offer__note">
-        Link your accounts and let Finesse watch your money around the clock. Free to start — every budgeting feature, no cost.
-      </p>
-      <a class="offer__store" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&itsct=apps_box_badge&mttnsubad=6771177015">
-        <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1782691200" alt="Download on the App Store" />
+  <header class="site-header" data-header>
+    <nav class="nav wrap" aria-label="Primary navigation">
+      <a class="logo" href="/" aria-label="Finesse home">
+        <span class="logo__mark"><img src="./assets/app-icon.png" width="1024" height="1024" alt=""></span>
+        <span>Finesse</span>
       </a>
-      <a class="offer__alt" href="#connect">or stay connected ↓</a>
-    </div>
-  </div>
-</section>
 
-<!-- ── Marquee ────────────────────────────────────────────── -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    <span>track every dollar</span>
-    <span>spot every leak</span>
-    <span>cancel that gym</span>
-    <span>find $2,348/yr</span>
-    <span>know your number</span>
-    <span>track every dollar</span>
-    <span>spot every leak</span>
-    <span>cancel that gym</span>
-    <span>find $2,348/yr</span>
-    <span>know your number</span>
-  </div>
-</div>
+      <div class="nav__links">
+        <a href="#features">Features</a>
+        <a href="#security">Security</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
 
-<!-- ── Features (scroll-driven: text left, device right) ─── -->
-<section id="features" class="sec sec--stack">
-  <div class="fstack" id="fstack">
-    <div class="fstack__stage">
-      <div class="wrap fstack__inner">
+      <a class="button button--small" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&amp;itsct=apps_box_badge&amp;mttnsubad=6771177015" target="_blank" rel="noopener">
+        Download
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </nav>
+  </header>
 
-        <!-- LEFT — persistent heading + rotating feature text -->
-        <div class="fstack__left">
-          <div class="fstack__lead">
-            <div class="sec__eyebrow">What it does</div>
-            <h2 class="fstack__heading">Six things your bank app will <em>never</em> do.</h2>
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <div class="eyebrow reveal">
+            <span class="eyebrow__dot"></span>
+            Available now on iOS
           </div>
 
-          <div class="fstack__text" id="fstackText">
+          <h1 class="reveal">Your money,<br>but it actually <em>watches itself.</em></h1>
+          <p class="hero__lede reveal">Finesse turns connected accounts into a live budget, catches unusual spending, and shows where your money is heading—before the month is over.</p>
 
-          <article class="ftext">
-            <div class="bcard__num">01 / Home</div>
-            <h3 class="ftext__title">Your whole month, <em>one ring.</em></h3>
-            <p class="bcard__body">One screen — your forecast, safe-to-spend, and anything that needs attention.</p>
+          <div class="hero__actions reveal">
+            <a class="store-button" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&amp;itsct=apps_box_badge&amp;mttnsubad=6771177015" target="_blank" rel="noopener">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M16.5 12.7c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.6-1.9-1.5-.2-3 .9-3.8.9-.8 0-2-1-3.3-1-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.5 1.3-.1 1.8-.8 3.4-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.2 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-3-.9-3-4.1ZM14 5.5c.7-.9 1.2-2.1 1.1-3.3-1.1 0-2.4.7-3.2 1.6-.7.8-1.3 2-1.1 3.1 1.2.1 2.5-.6 3.2-1.4Z"/></svg>
+              <span><small>Download on the</small>App Store</span>
+            </a>
+            <a class="button button--ghost" href="#features">See how it works</a>
+          </div>
+
+          <ul class="hero__trust reveal" aria-label="Product commitments">
+            <li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Free budgeting</li>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Bank links by Plaid</li>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>No ad tracking</li>
+          </ul>
+        </div>
+
+        <div class="hero__visual reveal" aria-label="Finesse app home screen preview">
+          <div class="float-chip float-chip--left"><span></span>Unusual spend caught</div>
+          <div class="float-chip float-chip--right"><span></span>$3,360 under forecast</div>
+          <div class="phone phone--hero">
+            <div class="phone__screen">
+              <img src="./assets/marketing/screen-v2-home.png" width="1260" height="2736" fetchpriority="high" decoding="async" alt="Finesse home screen showing an end-of-month forecast, safe-to-spend amount, and spending alerts">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof-bar" aria-label="Why people choose Finesse">
+      <div class="wrap proof-bar__grid">
+        <div><strong>12K+</strong><span>bank and card connections supported through Plaid</span></div>
+        <div><strong>$0</strong><span>for budgets, transactions, recurring costs, and insights</span></div>
+        <div><strong>0</strong><span>bank passwords received or stored by Finesse</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div class="eyebrow"><span class="eyebrow__dot"></span>Inside the app</div>
+          <h2>Six clearer ways to understand <em>your money.</em></h2>
+          <p>Explore the screens that turn everyday transactions into useful decisions. No spreadsheet upkeep required.</p>
+        </div>
+
+        <div class="feature-explorer reveal">
+          <div class="feature-tabs" role="tablist" aria-label="Finesse features">
+            <button class="feature-tab is-active" id="feature-home-tab" role="tab" aria-selected="true" aria-controls="feature-screen" tabindex="0" data-image="./assets/marketing/screen-v2-home.png" data-width="1260" data-height="2736" data-alt="Finesse home screen with forecast and safe-to-spend summary">
+              <span class="feature-tab__number">01</span><span><strong>See your whole month at once</strong><small>Forecast and safe-to-spend with the next action made clear.</small></span>
+            </button>
+            <button class="feature-tab" id="feature-recap-tab" role="tab" aria-selected="false" aria-controls="feature-screen" tabindex="-1" data-image="./assets/marketing/screen-v2-recap.png" data-width="1260" data-height="2736" data-alt="Daily spending recap in Finesse">
+              <span class="feature-tab__number">02</span><span><strong>Get a clear daily recap</strong><small>See where your money went and what comes next.</small></span>
+            </button>
+            <button class="feature-tab" id="feature-budget-tab" role="tab" aria-selected="false" aria-controls="feature-screen" tabindex="-1" data-image="./assets/marketing/screen-v2-budgets.png" data-width="1260" data-height="2736" data-alt="Budget suggestions generated from spending patterns">
+              <span class="feature-tab__number">03</span><span><strong>Build budgets around your life</strong><small>Use practical suggestions based on how you actually spend.</small></span>
+            </button>
+            <button class="feature-tab" id="feature-alert-tab" role="tab" aria-selected="false" aria-controls="feature-screen" tabindex="-1" data-image="./assets/marketing/screen-v2-anomaly.png" data-width="1179" data-height="2591" data-alt="Severity-tagged unusual spending alert">
+              <span class="feature-tab__number">04</span><span><strong>Catch unusual charges</strong><small>Get focused alerts linked to the transactions behind them.</small></span>
+            </button>
+            <button class="feature-tab" id="feature-recurring-tab" role="tab" aria-selected="false" aria-controls="feature-screen" tabindex="-1" data-image="./assets/marketing/screen-v2-recurring.png" data-width="1179" data-height="2556" data-alt="Recurring subscription with annual cost and payment history">
+              <span class="feature-tab__number">05</span><span><strong>Track every subscription</strong><small>See annual cost and the next charge date in one place.</small></span>
+            </button>
+            <button class="feature-tab" id="feature-insight-tab" role="tab" aria-selected="false" aria-controls="feature-screen" tabindex="-1" data-image="./assets/marketing/screen-v2-insights.png" data-width="1179" data-height="2556" data-alt="Spending insight broken down by category">
+              <span class="feature-tab__number">06</span><span><strong>Understand every category</strong><small>Open any category for totals and transaction-level detail.</small></span>
+            </button>
+          </div>
+
+          <div class="feature-preview" id="feature-screen" role="tabpanel" aria-labelledby="feature-home-tab" tabindex="0">
+            <div class="feature-preview__glow"></div>
+            <div class="phone phone--feature">
+              <div class="phone__screen">
+                <img data-feature-image src="./assets/marketing/screen-v2-home.png" width="1260" height="2736" decoding="async" alt="Finesse home screen with forecast and safe-to-spend summary">
+              </div>
+            </div>
+            <p class="feature-preview__hint">Choose a feature to preview it</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--compact">
+      <div class="wrap">
+        <div class="section-heading section-heading--center reveal">
+          <div class="eyebrow"><span class="eyebrow__dot"></span>How it works</div>
+          <h2>From linked account to useful answer in <em>three steps.</em></h2>
+        </div>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step__number">01</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.8 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.8-1.7"/></svg>
+            <h3>Link your accounts</h3>
+            <p>Connect supported banks through Plaid. Your bank credentials never pass through Finesse.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__number">02</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <h3>Finesse does the upkeep</h3>
+            <p>Transactions are categorized, recurring costs are detected, and your forecast updates automatically.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__number">03</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M10 21h4"/></svg>
+            <h3>Act on what matters</h3>
+            <p>Get focused alerts, adjust a suggested budget, or trace an insight back to the transactions behind it.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section security" id="security">
+      <div class="wrap security__grid">
+        <div class="security__copy reveal">
+          <div class="eyebrow"><span class="eyebrow__dot"></span>Built for financial data</div>
+          <h2>Your money is personal. <em>We treat it that way.</em></h2>
+          <p>Finesse is designed to deliver useful financial context without turning your data into an advertising product.</p>
+          <a class="text-link" href="/privacy.html">Read the full privacy policy <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="security__cards">
+          <article class="security-card reveal">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <h3>Credentials stay with Plaid</h3>
+            <p>You enter bank credentials inside Plaid’s secure connection flow, not into Finesse.</p>
           </article>
-
-          <article class="ftext">
-            <div class="bcard__num">02 / Daily recap</div>
-            <h3 class="ftext__title">Every day, <em>a recap.</em></h3>
-            <p class="bcard__body">A quick daily read on where your money went and what's coming up.</p>
+          <article class="security-card reveal">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+            <h3>Encrypted and access-controlled</h3>
+            <p>Financial data is encrypted in transit and at rest, with scoped access controls.</p>
           </article>
-
-          <article class="ftext">
-            <div class="bcard__num">03 / Budgets</div>
-            <h3 class="ftext__title">Budgets built <span class="hl-blue">for you.</span></h3>
-            <p class="bcard__body">Suggestions based on what you actually spend — not guesses.</p>
+          <article class="security-card reveal">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 10.6A2 2 0 0 0 13.4 13.4M9.9 4.2A10.8 10.8 0 0 1 12 4c7 0 10 8 10 8a16.7 16.7 0 0 1-2.2 3.4M6.6 6.6C3.7 8.4 2 12 2 12s3 8 10 8a10.3 10.3 0 0 0 4.1-.8"/></svg>
+            <h3>No data brokerage</h3>
+            <p>Finesse does not sell personal information or run third-party advertising trackers.</p>
           </article>
+        </div>
+      </div>
+    </section>
 
-          <article class="ftext">
-            <div class="bcard__num">04 / Anomaly Alerts</div>
-            <h3 class="ftext__title">It caught that <span class="hl">charge.</span></h3>
-            <p class="bcard__body">Severity-tagged alerts across every account — linked to the transactions behind them.</p>
-          </article>
+    <section class="section pricing" id="pricing">
+      <div class="wrap">
+        <div class="pricing__intro reveal">
+          <div class="section-heading">
+            <div class="eyebrow"><span class="eyebrow__dot"></span>Simple pricing</div>
+            <h2>Start free. Go Pro when you want <em>more oversight.</em></h2>
+            <p>Everyday money clarity stays free. Pro adds continuous monitoring and more ways to catch what needs your attention.</p>
+          </div>
 
-          <article class="ftext">
-            <div class="bcard__num">05 / Recurring</div>
-            <h3 class="ftext__title">Every sub, <span class="hl">tracked.</span></h3>
-            <p class="bcard__body">Auto-detected. True annual cost, next charge date, full history.</p>
-          </article>
-
-          <article class="ftext">
-            <div class="bcard__num">06 / Insights</div>
-            <h3 class="ftext__title">Where it <em>actually</em> went.</h3>
-            <p class="bcard__body">Tap any category. See the percentage, the total, and where it all went.</p>
-          </article>
-
+          <div class="pricing-toggle" role="group" aria-label="Choose a Pro billing period">
+            <button type="button" data-price-cycle="weekly" aria-pressed="false">Weekly</button>
+            <button type="button" class="is-active" data-price-cycle="monthly" aria-pressed="true">Monthly</button>
+            <button type="button" data-price-cycle="annual" aria-pressed="false">Annual <span>Save 17%</span></button>
           </div>
         </div>
 
-        <!-- RIGHT — device only, no card box / background -->
-        <div class="fstack__cards" id="fstackCards">
-          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-v2-home.png" alt="Home — safe to spend" /></div></div>
-          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-v2-recap.png" alt="Daily spending recap" /></div></div>
-          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-v2-budgets.png" alt="Budget suggestions" /></div></div>
-          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-v2-anomaly.png" alt="Caught anomaly alert" /></div></div>
-          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-v2-recurring.png" alt="Recurring subscription with history" /></div></div>
-          <div class="fdevice"><div class="phone-frame"><img src="./assets/marketing/screen-v2-insights.png" alt="Spend by category" /></div></div>
+        <div class="pricing-grid">
+          <article class="price-card reveal">
+            <div class="price-card__topline"><span>Free</span><small>For everyday clarity</small></div>
+            <div class="price-card__price"><strong>$0</strong><span>forever</span></div>
+            <p>Everything you need to understand your month without maintaining a spreadsheet.</p>
+            <a class="button button--ghost price-card__cta" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&amp;itsct=apps_box_badge&amp;mttnsubad=6771177015" target="_blank" rel="noopener">Download free</a>
+            <ul class="price-card__features">
+              <li>Budget ring and monthly forecast</li>
+              <li>Safe-to-spend guidance</li>
+              <li>Transaction tagging</li>
+              <li>Recurring cost detection</li>
+              <li>Category insights</li>
+              <li>Unlimited bank links through Plaid</li>
+            </ul>
+          </article>
+
+          <article class="price-card price-card--pro reveal">
+            <div class="price-card__badge">Most popular</div>
+            <div class="price-card__topline"><span>Pro</span><small>For continuous monitoring</small></div>
+            <div class="price-card__price"><strong data-pro-price>$9.99</strong><span data-pro-period>/ month</span></div>
+            <p data-pro-note>Billed monthly. Cancel anytime.</p>
+            <a class="button price-card__cta" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&amp;itsct=apps_box_badge&amp;mttnsubad=6771177015" target="_blank" rel="noopener">Get Finesse Pro</a>
+            <ul class="price-card__features">
+              <li>Everything in Free</li>
+              <li>Continuous account monitoring</li>
+              <li>Severity-tagged anomaly alerts</li>
+              <li>Alerts you define yourself</li>
+              <li>Alerts tuned to your profile</li>
+              <li>Deeper insights and trends</li>
+            </ul>
+          </article>
         </div>
 
+        <p class="pricing__note reveal">Prices are in USD and may vary by App Store region. Subscriptions renew automatically unless canceled through your Apple account settings.</p>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ── How it works ───────────────────────────────────────── -->
-<section id="how" class="sec">
-  <div class="wrap">
-    <div class="sec__h sec__h--center reveal">
-      <div class="sec__eyebrow">How it works</div>
-      <h2 class="sec__title">Finesse, in <em>three steps.</em></h2>
-    </div>
-    <div class="how">
-      <div class="how__step reveal">
-        <div class="how__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    <section class="section" id="faq">
+      <div class="wrap faq-layout">
+        <div class="section-heading reveal">
+          <div class="eyebrow"><span class="eyebrow__dot"></span>Quick answers</div>
+          <h2>Good questions deserve <em>straight answers.</em></h2>
         </div>
-        <h3 class="how__title">Link your accounts</h3>
-        <p class="how__desc">Securely connect your banks with Plaid in seconds. Finesse pulls in your transactions automatically — we never see your credentials.</p>
-      </div>
-      <div class="how__step reveal">
-        <div class="how__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+
+        <div class="faq-list reveal">
+          <details open>
+            <summary>Can I download Finesse now?</summary>
+            <p>Yes. Finesse is live on the iOS App Store today. Download it free and connect your first account in a few minutes.</p>
+          </details>
+          <details>
+            <summary>What does it cost?</summary>
+            <p>Budgets, transactions, recurring-cost detection, and spending insights are free. Optional Pro monitoring is $3.99 weekly, $9.99 monthly, or $99.99 annually.</p>
+          </details>
+          <details>
+            <summary>What does Pro add?</summary>
+            <p>Pro adds around-the-clock account monitoring, anomaly and custom alerts, profile-based alerting, and deeper insights.</p>
+          </details>
+          <details>
+            <summary>Is my bank data safe?</summary>
+            <p>Accounts connect through Plaid. Finesse never receives your bank password, encrypts data in transit and at rest, and does not sell your personal information.</p>
+          </details>
+          <details>
+            <summary>Is Android supported?</summary>
+            <p>Not yet. Finesse is currently available on iOS; join the product updates below to hear when Android plans are ready.</p>
+          </details>
         </div>
-        <h3 class="how__title">Finesse does the watching</h3>
-        <p class="how__desc">It tags every charge, detects recurring subscriptions, and builds budgets from how you actually spend — not guesses.</p>
       </div>
-      <div class="how__step reveal">
-        <div class="how__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+    </section>
+
+    <section class="download" id="download">
+      <div class="wrap download__card reveal">
+        <div class="download__copy">
+          <div class="eyebrow"><span class="eyebrow__dot"></span>Free on the App Store</div>
+          <h2>Give your money a clearer <em>next move.</em></h2>
+          <p>Start with every budgeting feature free. Upgrade only if you want continuous monitoring and advanced alerts.</p>
+          <a class="store-button" href="https://apps.apple.com/us/app/finesse-finance/id6771177015?itscg=30200&amp;itsct=apps_box_badge&amp;mttnsubad=6771177015" target="_blank" rel="noopener">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M16.5 12.7c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.6-1.9-1.5-.2-3 .9-3.8.9-.8 0-2-1-3.3-1-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.5 1.3-.1 1.8-.8 3.4-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.2 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-3-.9-3-4.1ZM14 5.5c.7-.9 1.2-2.1 1.1-3.3-1.1 0-2.4.7-3.2 1.6-.7.8-1.3 2-1.1 3.1 1.2.1 2.5-.6 3.2-1.4Z"/></svg>
+            <span><small>Download on the</small>App Store</span>
+          </a>
         </div>
-        <h3 class="how__title">Get alerts that matter</h3>
-        <p class="how__desc">Anomaly and profile-based alerts flag unusual spending the moment it happens — and celebrate the weeks you come in under budget.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── Stats ──────────────────────────────────────────────── -->
-<section id="numbers" class="sec" style="padding-top: 90px;">
-  <div class="wrap">
-    <div class="sec__h sec__h--center reveal">
-      <div class="sec__eyebrow">By the numbers</div>
-      <h2 class="sec__title">Money you'd <em>never</em> find on your own.</h2>
-    </div>
-    <div class="stats reveal">
-      <div class="stat">
-        <div class="stat__num">$1.1K<em>/yr</em></div>
-        <div class="stat__label">Avg. surfaced sub costs</div>
-      </div>
-      <div class="stat">
-        <div class="stat__num">27<em>%</em></div>
-        <div class="stat__label">Catch a hidden charge wk 1</div>
-      </div>
-      <div class="stat">
-        <div class="stat__num">12K<em>+</em></div>
-        <div class="stat__label">Banks &amp; cards supported</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── FAQ ────────────────────────────────────────────────── -->
-<section id="faq" class="sec" style="padding-top: 40px;">
-  <div class="wrap">
-    <div class="sec__h sec__h--center reveal">
-      <div class="sec__eyebrow">FAQ</div>
-      <h2 class="sec__title">Quick <em>answers.</em></h2>
-    </div>
-    <div class="faq-grid reveal">
-      <div class="faq faq--open">
-        <div class="faq__q">When does Finesse launch?</div>
-        <div class="faq__a">This July, on iOS first. Follow along on Instagram or drop your email below for the roadmap and launch news.</div>
-      </div>
-      <div class="faq">
-        <div class="faq__q">What does it cost?</div>
-        <div class="faq__a">All budgeting features are free. <strong>Pro</strong> is $3.99/wk, $9.99/mo, or $99.99/yr.</div>
-      </div>
-      <div class="faq">
-        <div class="faq__q">What's the difference between Free and Pro?</div>
-        <div class="faq__a">Free covers budgeting — budgets, transactions, recurring detection, and spending insights. Pro adds account monitoring, anomaly &amp; custom alerts, profile-based alerting, and deeper insights.</div>
-      </div>
-      <div class="faq">
-        <div class="faq__q">Is my bank data safe?</div>
-        <div class="faq__a">Accounts link via Plaid — same secure pipe Cash App, Venmo, and Robinhood use. We never see your bank password.</div>
-      </div>
-      <div class="faq">
-        <div class="faq__q">Android?</div>
-        <div class="faq__a">Eventually. iOS first because it's where we can ship the cleanest experience right now. Sorry Android friends.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── CTA ────────────────────────────────────────────────── -->
-<!-- ── Download (live on iOS) ─────────────────────────────── -->
-<section class="download" id="download">
-  <div class="download__inner reveal">
-    <div class="download__copy">
-      <div class="download__eyebrow">● Live on the App Store</div>
-      <h2 class="download__title">Download <em>Finesse</em><br/>for free today</h2>
-      <p class="download__sub">Point your camera at the code to grab Finesse on the App Store — anomaly alerts, true subscription costs, and a budget that thinks ahead.</p>
-    </div>
-    <div class="download__qr">
-      <img src="./assets/qr-code.png" alt="Scan to download Finesse on the App Store" />
-      <span>Scan to download</span>
-    </div>
-  </div>
-</section>
-
-<section class="cta-strip" id="connect">
-  <div class="cta-strip__inner reveal">
-    <h2>Stay in the<br/><em>loop.</em></h2>
-    <p>Follow the team and our feature roadmap — see what we're shipping next, and help shape where Finesse goes. Drop your email or come say hi on Instagram.</p>
-    <div id="connect-wrap">
-      <form class="waitlist" onsubmit="handleWaitlist(event, 'connect-wrap')">
-        <input type="text" id="honeypot2" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;" />
-        <div class="waitlist__field">
-          <input class="waitlist__input" type="email" required placeholder="you@email.com" />
+        <div class="download__qr" aria-label="QR code to download Finesse from the App Store">
+          <img src="./assets/qr-code.png" width="400" height="400" loading="lazy" decoding="async" alt="Scan to download Finesse on the App Store">
+          <span>Scan with your iPhone</span>
         </div>
-        <button class="waitlist__btn" type="submit">Keep me posted →</button>
-      </form>
-      <div class="waitlist__success">
-        <span style="font-size: 18px;">✓</span>
-        You're in. We'll share what's next.
       </div>
-      <div class="waitlist__already">
-        <span style="font-size: 18px;">→</span>
-        You're already subscribed. Talk soon.
+    </section>
+
+    <section class="connect" id="connect">
+      <div class="wrap connect__inner reveal">
+        <div>
+          <div class="eyebrow"><span class="eyebrow__dot"></span>Product updates</div>
+          <h2>See what Finesse ships <em>next.</em></h2>
+          <p>Occasional product news, roadmap updates, and Android availability. No financial data, no marketing noise.</p>
+        </div>
+
+        <div class="connect__action" id="connect-wrap">
+          <form class="waitlist" data-waitlist-form novalidate>
+            <div class="honeypot" aria-hidden="true">
+              <label for="website">Leave this field empty</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+            <label class="sr-only" for="connect-email">Email address</label>
+            <div class="waitlist__row">
+              <input class="waitlist__input" id="connect-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" spellcheck="false" required placeholder="you@email.com" aria-describedby="connect-status">
+              <button class="button waitlist__button" type="submit"><span data-button-label>Keep me posted</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+          </form>
+          <p class="form-status" id="connect-status" role="status" aria-live="polite"></p>
+          <a class="instagram-link" href="https://instagram.com/try.finesse" target="_blank" rel="noopener">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
+            Follow @try.finesse
+          </a>
+        </div>
       </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer__grid">
+      <a class="logo" href="/" aria-label="Finesse home">
+        <span class="logo__mark"><img src="./assets/app-icon.png" width="1024" height="1024" loading="lazy" alt=""></span>
+        <span>Finesse</span>
+      </a>
+      <nav class="footer__links" aria-label="Footer navigation">
+        <a href="#pricing">Pricing</a>
+        <a href="/support.html">Support</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </nav>
+      <p>© 2026 Finesse Finance</p>
     </div>
-    <a class="connect__ig" href="https://instagram.com/try.finesse" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-      </svg>
-      Follow @try.finesse
-    </a>
-  </div>
-</section>
+  </footer>
 
-<!-- ── Footer ─────────────────────────────────────────────── -->
-<footer>
-  <div class="wrap foot">
-    <div class="logo">
-      <div class="logo__mark"><img src="./assets/app-icon.png" alt="" /></div>
-      <span>Finesse</span>
-    </div>
-    <div class="foot__links">
-      <a href="/support.html">Support</a>
-      <a href="/privacy.html">Privacy</a>
-      <a href="/terms.html">Terms</a>
-    </div>
-    <div class="foot__copy">© 2026 Finesse Finance — built with too much coffee</div>
-  </div>
-</footer>
-
-<script>
-// Scroll reveal
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add("in");
-      io.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-document.querySelectorAll(".reveal").forEach(el => io.observe(el));
-
-// ── Bot protection ──
-const PAGE_LOAD_TIME = Date.now();
-const DISPOSABLE_DOMAINS = new Set([
-  'mailinator.com', 'guerrillamail.com', 'tempmail.com', 'throwam.com',
-  'yopmail.com', 'trashmail.com', 'fakeinbox.com', '10minutemail.com',
-  'sharklasers.com'
-]);
-
-function isBot(form, email) {
-  // Layer 1 — honeypot
-  const honeypot = form.querySelector('input[name="website"]');
-  if (honeypot && honeypot.value) return true;
-  // Layer 2 — time check (< 3s = bot)
-  if (Date.now() - PAGE_LOAD_TIME < 3000) return true;
-  // Layer 3 — disposable email
-  const domain = email.split('@')[1]?.toLowerCase();
-  if (DISPOSABLE_DOMAINS.has(domain)) return true;
-  return false;
-}
-
-// ── Waitlist form handler ──
-async function handleWaitlist(e, wrapperId) {
-  e.preventDefault();
-  const wrapper = document.getElementById(wrapperId);
-  const form = wrapper.querySelector('form');
-  const email = form.querySelector('input[type="email"]').value;
-
-  // Silent reject if bot detected
-  if (isBot(form, email)) {
-    wrapper.classList.add('waitlist--done');
-    return;
-  }
-
-  const btn = form.querySelector('button');
-  const origText = btn.textContent;
-  btn.textContent = 'Subscribing…';
-  btn.disabled = true;
-
-  const body = { email };
-
-  try {
-    const res = await fetch('/api/waitlist', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) throw new Error('Failed');
-    const data = await res.json();
-    if (data.message === 'Already on the list') {
-      wrapper.classList.add('waitlist--duplicate');
-    } else {
-      wrapper.classList.add('waitlist--done');
-      fetchCount();
-    }
-  } catch (err) {
-    btn.textContent = origText;
-    btn.disabled = false;
-    alert('Something went wrong — please try again.');
-  }
-}
-
-// ── Live waitlist count ──
-const heroCounter = document.querySelector('.hero__meta__count');
-const statCounter = document.getElementById('stat-count');
-
-function updateCounters(count) {
-  if (heroCounter) heroCounter.textContent = count.toLocaleString();
-  if (statCounter) statCounter.textContent = count.toLocaleString();
-}
-
-async function fetchCount() {
-  try {
-    const res = await fetch('/api/waitlist');
-    if (res.ok) {
-      const { count } = await res.json();
-      updateCounters(count);
-    }
-  } catch (_) {}
-}
-
-fetchCount();
-
-// ── Nav: detach into a floating island once scrolled (desktop) ──
-(function () {
-  const nav = document.querySelector('nav');
-  if (!nav) return;
-  function onScroll() { nav.classList.toggle('is-island', window.scrollY > 24); }
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
-})();
-
-// ── FAQ accordion (collapsed dropdown, click to expand) ──
-(function () {
-  document.querySelectorAll('.faq').forEach(function (faq) {
-    faq.addEventListener('click', function () {
-      faq.classList.toggle('faq--open');
-    });
-  });
-})();
-
-// ── Mobile: "By the numbers" infinite swipe carousel ──
-(function () {
-  if (window.innerWidth > 820) return;
-  const track = document.querySelector('.stats');
-  if (!track) return;
-  const reals = Array.prototype.slice.call(track.children);
-  if (reals.length < 2) return;
-  // Build three identical sets so swiping loops both ways forever
-  for (let c = 0; c < 2; c++) {
-    reals.forEach(function (node) {
-      const clone = node.cloneNode(true);
-      if (clone.id) clone.removeAttribute('id');
-      clone.querySelectorAll('[id]').forEach(function (e) { e.removeAttribute('id'); });
-      track.appendChild(clone);
-    });
-  }
-  function setW() { return track.scrollWidth / 3; }
-  requestAnimationFrame(function () { track.scrollLeft = setW(); }); // start in the middle set
-  let t;
-  track.addEventListener('scroll', function () {
-    clearTimeout(t);
-    t = setTimeout(function () {
-      const w = setW();
-      if (track.scrollLeft < w * 0.5) track.scrollLeft += w;
-      else if (track.scrollLeft > w * 1.5) track.scrollLeft -= w;
-    }, 90);
-  }, { passive: true });
-})();
-
-// ── Features: scroll-driven sticky card stack (desktop + mobile) ──
-(function () {
-  const stack = document.getElementById('fstack');
-  if (!stack) return;
-
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return; // keep the simple vertical fallback
-
-  // Web now matches mobile: one fixed phone, screenshots scroll vertically inside it.
-  const isMobile = true;
-
-  const devices = Array.prototype.slice.call(stack.querySelectorAll('#fstackCards .fdevice'));
-  const texts = Array.prototype.slice.call(stack.querySelectorAll('#fstackText .ftext'));
-  const n = devices.length;
-  if (!n) return;
-
-  stack.classList.add('is-ready');
-
-  // Ambient background pills clutter the heading/title while pinned — fade them
-  // out whenever the features section fills the viewport, restore them after.
-  const pagefall = document.querySelector('.pagefall');
-
-  // Mobile: progress dots + a scroll hint appended below the pinned stage.
-  let dotEls = [];
-  let hintEl = null;
-  let mobileImgs = [];
-  if (isMobile) {
-    // Collapse the 8 phones into ONE fixed frame: the screenshots stack inside
-    // a single clipped screen and scroll vertically — nothing animates outside.
-    mobileImgs = devices.map(function (d) { return d.querySelector('img'); });
-    const cards = stack.querySelector('#fstackCards');
-    if (cards) {
-      const screen = document.createElement('div');
-      screen.className = 'fscreen';
-      mobileImgs.forEach(function (img) {
-        if (img) { img.style.transform = 'translateY(100%)'; screen.appendChild(img); }
-      });
-      const frame = document.createElement('div');
-      frame.className = 'phone-frame';
-      frame.appendChild(screen);
-      const phone = document.createElement('div');
-      phone.className = 'fphone';
-      phone.appendChild(frame);
-      cards.innerHTML = '';
-      cards.appendChild(phone);
-    }
-
-    // Dots + scroll hint are mobile-only; desktop keeps its original 2-column look.
-    const inner = window.innerWidth <= 820 ? stack.querySelector('.fstack__inner') : null;
-    if (inner) {
-      const dots = document.createElement('div');
-      dots.className = 'fdots';
-      texts.forEach(function (_, i) {
-        const d = document.createElement('span');
-        d.className = 'fdot' + (i === 0 ? ' is-active' : '');
-        dots.appendChild(d);
-      });
-      hintEl = document.createElement('div');
-      hintEl.className = 'fhint';
-      hintEl.textContent = 'scroll to explore ↓';
-      inner.appendChild(dots);
-      inner.appendChild(hintEl);
-      dotEls = Array.prototype.slice.call(dots.children);
-    }
-  }
-
-  let ticking = false;
-  let snapTimer = null;
-  let releaseTimer = null;
-  let snapping = false;
-
-  function render() {
-    ticking = false;
-    const pinDist = stack.offsetHeight - window.innerHeight;
-    if (pinDist <= 0) return;
-    const scrolled = Math.min(Math.max(-stack.getBoundingClientRect().top, 0), pinDist);
-    const p = scrolled / pinDist;            // 0 → 1 across the pinned track
-
-    // Ease within each step so the view DWELLS on a settled screen and
-    // moves quickly through the blurry in-between (paired with snap below).
-    const raw = p * (n - 1);
-    const base = Math.floor(raw);
-    const frac = raw - base;
-    // Linear mapping — the screenshot tracks the scroll at a constant rate, so it
-    // reads as one continuous, buttery scroll (like scrolling on a real phone).
-    const eased = isMobile ? frac : frac * frac * (3 - 2 * frac);
-    const pos = Math.min(base + eased, n - 1);    // continuous "active" feature index
-
-    for (let i = 0; i < n; i++) {
-      const offset = i - pos;                 // >0 upcoming (behind), <0 leaving (gone up)
-
-      if (isMobile) {
-        // Screenshots scroll vertically inside the fixed, clipped screen:
-        // active sits at 0, the next waits just below (+100%), the previous
-        // has scrolled off the top (-100%). Clipped by the bezel — no overflow.
-        const img = mobileImgs[i];
-        if (img) {
-          let ty = offset * 100;
-          if (ty > 100) ty = 100; else if (ty < -100) ty = -100;
-          img.style.transform = 'translateY(' + ty + '%)';
-        }
-      } else {
-        // RIGHT — device stack: peek behind, then slide up & rotate away
-        let dTransform, dOpacity, dZ;
-        if (offset >= 0) {
-          const k = Math.min(offset, 4);
-          const y = k * 24;                     // px downward
-          const scale = 1 - k * 0.05;
-          dTransform = 'translate3d(0,' + y + 'px,0) scale(' + scale + ')';
-          dOpacity = offset > 3 ? 0 : 1 - k * 0.14;
-          dZ = n - i;
-        } else {
-          const k = Math.min(-offset, 1);
-          const scale = 1 - k * 0.06;
-          const rot = -k * 7;
-          dTransform = 'translate3d(0,' + (-k * 120) + '%,0) rotate(' + rot + 'deg) scale(' + scale + ')';
-          dOpacity = 1 - k;
-          dZ = n + i;
-        }
-        const dev = devices[i];
-        dev.style.transform = dTransform;
-        dev.style.opacity = dOpacity;
-        dev.style.zIndex = dZ;
-      }
-
-      // LEFT — text: only the active one visible, gentle slide + cross-fade
-      const txt = texts[i];
-      if (txt) {
-        const d = Math.abs(offset);
-        const ty = offset * -28;              // px: leaving slides up, upcoming starts lower
-        txt.style.transform = 'translate3d(0,' + ty + 'px,0)';
-        txt.style.opacity = d < 1 ? 1 - d : 0;
-        txt.style.zIndex = d < 0.5 ? 2 : 1;
-        txt.style.pointerEvents = d < 0.5 ? 'auto' : 'none';
-      }
-    }
-
-    // Mobile: light up the active dot and fade the hint away after first scroll.
-    if (isMobile && dotEls.length) {
-      const active = Math.round(pos);
-      for (let i = 0; i < dotEls.length; i++) {
-        dotEls[i].classList.toggle('is-active', i === active);
-      }
-      if (hintEl) hintEl.style.opacity = p > 0.02 ? '0' : '';
-    }
-
-    // Hide the ambient pills while the section covers most of the screen.
-    if (pagefall) {
-      const r = stack.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const covered = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-      pagefall.style.opacity = covered / vh > 0.7 ? '0' : '';
-    }
-  }
-
-  // Snap to the nearest feature once scrolling settles, so you always
-  // land on one screen instead of an awkward halfway state.
-  function maybeSnap() {
-    if (snapping) return;
-    const rect = stack.getBoundingClientRect();
-    const pinDist = stack.offsetHeight - window.innerHeight;
-    if (pinDist <= 0) return;
-    const pinned = rect.top <= 0 && rect.bottom >= window.innerHeight;
-    if (!pinned) return;
-    const scrolled = Math.min(Math.max(-rect.top, 0), pinDist);
-    const raw = (scrolled / pinDist) * (n - 1);
-    const nearest = Math.round(raw);
-    if (Math.abs(raw - nearest) < 0.015) return;   // already aligned
-    const target = window.scrollY + rect.top + (nearest / (n - 1)) * pinDist;
-    snapping = true;
-    window.scrollTo({ top: Math.round(target), behavior: 'smooth' });
-    clearTimeout(releaseTimer);
-    releaseTimer = setTimeout(function () { snapping = false; }, 650);
-  }
-
-  function onScroll() {
-    if (!ticking) { ticking = true; requestAnimationFrame(render); }
-    if (snapping) return;                  // don't fight our own smooth scroll
-    // Snap once scrolling settles (after touch momentum ends on mobile), so
-    // you always land locked onto one screen — same feel as desktop.
-    clearTimeout(snapTimer);
-    snapTimer = setTimeout(maybeSnap, isMobile ? 160 : 120);
-  }
-
-  // Let an active user override an in-progress snap immediately.
-  function cancelSnap() { snapping = false; clearTimeout(releaseTimer); }
-  ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
-    window.addEventListener(ev, cancelSnap, { passive: true });
-  });
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  render();
-})();
-</script>
-
+  <script src="./assets/site.js" defer></script>
 </body>
 </html>
