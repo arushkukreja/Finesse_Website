@@ -118,13 +118,15 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
 .foot__links a { color: var(--text-dim); font-size: 14px; }
 .foot__links a:hover { color: var(--text); text-decoration: none; }
 .foot__copy { flex: 1; text-align: right; color: var(--text-mute); font-size: 13px; }
+  .logo--inherit { color: inherit; }
+  .legal-location { margin-top: 18px; color: var(--text-mute); font-size: 14px; }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav">
-    <a href="/" class="logo" style="color:inherit;">
+    <a href="/" class="logo logo--inherit">
       <div class="logo__mark"><img src="./assets/app-icon.png" alt="" /></div>
       <span>Finesse</span>
     </a>
@@ -354,13 +356,13 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
     <p>
       Questions about these Terms? Reach us at <a href="mailto:support@finessefinance.us">support@finessefinance.us</a>.
     </p>
-    <p style="margin-top:18px;color:var(--text-mute);font-size:14px;">Finesse Finance · Virginia, United States</p>
+    <p class="legal-location">Finesse Finance · Virginia, United States</p>
   </div>
 </main>
 
 <footer>
   <div class="foot">
-    <a href="/" class="logo" style="color:inherit;">
+    <a href="/" class="logo logo--inherit">
       <div class="logo__mark"><img src="./assets/app-icon.png" alt="" /></div>
       <span>Finesse</span>
     </a>
