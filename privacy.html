@@ -139,226 +139,165 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
   <div class="wrap">
     <div class="doc__eyebrow">Legal</div>
     <h1 class="doc__title">Privacy <em>Policy</em></h1>
-    <div class="doc__meta">Last updated: June 3, 2026 · Effective: June 3, 2026</div>
+    <div class="doc__meta">Last updated: September 7, 2026 · Effective: September 7, 2026</div>
 
     <p class="doc__intro">
-      Finesse is a personal-finance app that links to your bank accounts and helps you understand your
-      spending. Because we work with your financial data, your privacy is the whole point. This policy
-      explains what we collect, why, who we share it with, and the control you have over it. We do
-      <strong>not</strong> sell your personal information, and we run no third-party advertising or tracking.
+      Finesse Finance ("Finesse," "we," "us," or "our") provides a personal-finance application and
+      related website services. This policy explains what information we collect, why we use it, who
+      processes it, and the choices available to you. We do not sell personal information, use financial
+      information for advertising, or run cross-app advertising trackers.
     </p>
 
     <div class="callout">
-      <strong>The short version:</strong> Finesse uses <strong>Plaid</strong> to connect to your bank — we never
-      see or store your bank login credentials. We use your transaction data only to power the app's features
-      (budgets, insights, alerts, recurring-charge detection). Some insights are generated with the help of
-      third-party AI providers under strict no-training, no-retention terms. You can disconnect your banks or
-      delete your account and data at any time.
+      <strong>The short version:</strong> Plaid connects your financial institutions without sharing your bank
+      username or password with Finesse. We use financial information to provide the app's features, not for
+      advertising. Peer benchmarking is optional and off by default. You can disconnect an institution, delete
+      your account, or contact us about your privacy choices at any time.
     </div>
 
     <div class="toc">
       <h4>Contents</h4>
       <ol>
-        <li><a href="#who">Who we are</a></li>
         <li><a href="#collect">Information we collect</a></li>
-        <li><a href="#plaid">Bank data &amp; Plaid</a></li>
-        <li><a href="#use">How we use your information</a></li>
-        <li><a href="#ai">AI-generated insights</a></li>
-        <li><a href="#share">How we share information</a></li>
-        <li><a href="#sell">We don't sell your data</a></li>
-        <li><a href="#retention">Data retention</a></li>
-        <li><a href="#rights">Your rights &amp; choices</a></li>
-        <li><a href="#delete">Deleting your account</a></li>
-        <li><a href="#security">Security</a></li>
-        <li><a href="#children">Children's privacy</a></li>
-        <li><a href="#intl">Where data is stored</a></li>
-        <li><a href="#changes">Changes to this policy</a></li>
-        <li><a href="#contact">Contact us</a></li>
+        <li><a href="#use">How we use information</a></li>
+        <li><a href="#benchmarks">Optional peer benchmarks</a></li>
+        <li><a href="#providers">Service providers &amp; disclosure</a></li>
+        <li><a href="#retention">Retention &amp; deletion</a></li>
+        <li><a href="#security">Security &amp; international processing</a></li>
+        <li><a href="#children">Children</a></li>
+        <li><a href="#changes">Changes &amp; contact</a></li>
       </ol>
     </div>
 
-    <h2 id="who"><span class="n">01</span>Who we are</h2>
+    <h2 id="collect"><span class="n">01</span>Information we collect</h2>
+
+    <h3>Account and profile information</h3>
     <p>
-      Finesse ("Finesse," "we," "us," or "our") is a personal-finance application operated by
-      <strong>Finesse Finance</strong>, based in Virginia, United States. For the purposes of applicable
-      data-protection laws, Finesse Finance is the data controller responsible for your personal
-      information processed through the Finesse app and website.
+      We collect the email address and display name associated with your account. If you use Apple or Google
+      sign-in, we receive the identifier and profile details that provider makes available under your choices.
+      We also collect the financial preferences you choose to provide, including an optional monthly income
+      estimate, monthly savings goal, age range, state or region, household size and setup, housing status,
+      annual household-income range, financial goal, spending limits, alert frequency, and update preference.
     </p>
     <p>
-      This Privacy Policy applies to the Finesse iOS application, the Finesse website (including this waitlist
-      site), and any related services that link to it (together, the "Service").
+      Finesse does not request or use a phone number, exact birth date or year, or gender through onboarding or
+      Profile. On September 7, 2026, Finesse permanently deleted all previously stored values in those legacy
+      profile fields and in a separate legacy state field, then removed the corresponding database columns. The
+      optional current state or region preference described above is stored separately and was not part of that
+      deletion. The deleted legacy fields are not used for personalization, benchmarks, analytics, or marketing.
     </p>
 
-    <h2 id="collect"><span class="n">02</span>Information we collect</h2>
-
-    <h3>a. Information you provide to us</h3>
-    <ul>
-      <li><strong>Account details.</strong> When you create an account, we collect your email address and a securely hashed password, or, if you use Sign in with Apple, the identifier and name/email Apple shares with us (which may be an Apple private-relay email if you choose to hide your address).</li>
-      <li><strong>Waitlist sign-ups.</strong> If you join our waitlist, we collect the email address you submit.</li>
-      <li><strong>Support communications.</strong> If you contact us, we keep the messages and contact details you send.</li>
-    </ul>
-
-    <h3>b. Financial information (via Plaid)</h3>
-    <p>When you connect a financial institution, our data provider <strong>Plaid</strong> retrieves account and transaction data on your behalf and shares it with us. This may include:</p>
-    <ul>
-      <li>Account information — institution name, account names, account type (checking, savings, credit, etc.), masked account numbers, and current/available balances;</li>
-      <li>Transaction information — amount, date, authorized date, description, merchant name, category, payment channel, and pending status;</li>
-      <li>Recurring-transaction streams — detected subscriptions and recurring charges, including estimated cadence and next-charge dates.</li>
-    </ul>
-    <div class="callout">
-      <strong>We never receive your bank username or password.</strong> Your credentials are entered directly
-      into Plaid's secure flow and are never visible to or stored by Finesse.
-    </div>
-
-    <h3>c. Subscription &amp; purchase information</h3>
+    <h3>Linked financial information</h3>
     <p>
-      If you subscribe to a paid plan, the purchase is processed by <strong>Apple</strong> through in-app
-      purchase. Apple handles your payment method; we do not receive your card or bank-card details. We receive
-      your subscription status (active, expired, trial, etc.) so we can unlock paid features.
+      When you connect an institution, Plaid retrieves and transmits account and transaction information to
+      Finesse. That information can include institution and account names, account type, masked account details,
+      balances, credit limits, transaction amount and date, merchant or description, category, payment channel,
+      pending status, and merchant-location data. Finesse also stores derived data such as recurring
+      transactions, budgets, daily totals, forecasts, and insights.
     </p>
-
-    <h3>d. Information collected automatically</h3>
-    <ul>
-      <li><strong>Device &amp; app data</strong> — device model, operating-system version, app version, language/region, and similar technical details;</li>
-      <li><strong>Push notification token</strong> — if you enable notifications, the Apple Push Notification token needed to deliver alerts to your device;</li>
-      <li><strong>Diagnostics &amp; usage</strong> — crash logs, error reports, and limited usage events used to keep the app stable and improve it.</li>
-    </ul>
     <p>
-      <strong>Biometric unlock.</strong> If you enable Face ID or Touch ID to lock the app, the authentication
-      happens entirely on your device through Apple's system. Finesse never receives or stores your biometric data.
+      We never receive your bank username or password. Those credentials are entered in Plaid's interface and
+      are not visible to Finesse.
     </p>
 
-    <h2 id="plaid"><span class="n">03</span>Bank data &amp; Plaid</h2>
+    <h3>Purchases, notifications, and communications</h3>
     <p>
-      Finesse uses Plaid Inc. ("Plaid") to securely connect to your bank accounts. By linking an account, you
-      authorize Plaid to access and transmit your financial data to Finesse in accordance with Plaid's own
-      <a href="https://plaid.com/legal/#end-user-privacy-policy" target="_blank" rel="noopener">End User Privacy Policy</a>.
-      Plaid's handling of your information is governed by its policy, and we encourage you to review it. You can
-      manage or revoke the connections you've shared through Plaid at
-      <a href="https://my.plaid.com" target="_blank" rel="noopener">my.plaid.com</a>, and you can disconnect any
-      institution from within the Finesse app at any time.
+      Apple processes subscription payments. RevenueCat provides Finesse with subscription and entitlement
+      status; Finesse does not receive your full payment card details. If you enable notifications, we store the
+      APNs token required to deliver them. If you contact support, we retain the message and contact details you
+      provide as needed to respond.
     </p>
-
-    <h2 id="use"><span class="n">04</span>How we use your information</h2>
-    <p>We use the information described above to:</p>
-    <ul>
-      <li>Provide the core Service — sync and display your accounts, balances, and transactions;</li>
-      <li>Generate budgets and personalized budget suggestions based on your actual spending history;</li>
-      <li>Detect spending anomalies and produce severity-tagged alerts and positive-reinforcement insights;</li>
-      <li>Identify recurring charges and subscriptions and estimate their annual cost and next charge date;</li>
-      <li>Calculate forecasts, safe-to-spend figures, and category breakdowns;</li>
-      <li>Send push notifications and other communications you've enabled;</li>
-      <li>Authenticate you, operate paid subscriptions, and provide customer support;</li>
-      <li>Maintain security, prevent fraud and abuse, and debug and improve the Service;</li>
-      <li>Comply with legal obligations and enforce our Terms of Service.</li>
-    </ul>
-
-    <h2 id="ai"><span class="n">05</span>AI-generated insights</h2>
     <p>
-      Some of Finesse's insights, alerts, and explanatory text are generated with the assistance of
-      <strong>third-party artificial-intelligence providers</strong>. To produce these, we send a limited set of
-      spending-derived data (for example, transaction amounts, merchant or category labels, and computed totals)
-      to those providers' models and receive generated text in return.
+      Face ID and Touch ID matching occurs on your device. Finesse does not receive or store biometric templates.
     </p>
-    <ul>
-      <li>We send only the data needed to generate the insight, and we minimize what is shared wherever possible;</li>
-      <li>Our AI processing is performed under enterprise terms that prohibit using your data to train the providers' models and that provide for zero or limited data retention;</li>
-      <li>The number of AI-assisted operations is rate-limited per user;</li>
-      <li>AI-generated content is informational only and may occasionally be inaccurate or incomplete — see our <a href="/terms.html">Terms of Service</a>.</li>
-    </ul>
 
-    <h2 id="share"><span class="n">06</span>How we share information</h2>
-    <p>We share personal information only in the following circumstances:</p>
-    <ul>
-      <li><strong>Service providers / processors</strong> who operate the Service on our behalf, including: Plaid (bank connectivity), our cloud database and hosting providers, our AI providers (as described above), Apple (authentication, push delivery, and in-app purchases), and our website/serverless host;</li>
-      <li><strong>Legal &amp; safety</strong> — when required by law, subpoena, or legal process, or to protect the rights, property, or safety of Finesse, our users, or the public;</li>
-      <li><strong>Business transfers</strong> — in connection with a merger, acquisition, financing, or sale of assets, in which case we will notify you and any successor will be bound by this policy;</li>
-      <li><strong>With your direction or consent</strong> — when you ask us to share information with a third party.</li>
-    </ul>
-    <p>These providers are permitted to use your information only to perform services for us and are bound by confidentiality and data-protection obligations.</p>
-
-    <h2 id="sell"><span class="n">07</span>We don't sell your data</h2>
+    <h3>Technical and usage information</h3>
     <p>
-      We do <strong>not</strong> sell your personal information, and we do not share it for cross-context
-      behavioral advertising. Finesse runs no advertising networks and embeds no third-party ad or marketing
-      trackers in the app. We do not use your financial data to market third-party products to you.
+      When you use Finesse, we and our service providers may process technical data needed to operate, protect,
+      and improve the service. This can include IP address, device and app identifiers, app version, sign-in and
+      feature-use events, and diagnostic or security logs. If you choose Google Sign-In, Google may also process
+      coarse location, device identifiers, and usage data for app functionality and analytics. Finesse does not
+      use this information for cross-app tracking or targeted advertising.
     </p>
 
-    <h2 id="retention"><span class="n">08</span>Data retention</h2>
+    <h2 id="use"><span class="n">02</span>How we use information</h2>
     <p>
-      We keep your personal information for as long as your account is active and as needed to provide the
-      Service. When you delete your account, we delete or de-identify your personal data — including your linked
-      financial data — within a commercially reasonable period, except where we are required to retain certain
-      records to comply with legal, tax, accounting, or fraud-prevention obligations, or to resolve disputes and
-      enforce our agreements. Aggregated or de-identified data that cannot reasonably be linked to you may be
-      retained.
+      We use information to authenticate accounts; synchronize and display financial activity; generate budgets,
+      forecasts, alerts, and explanations; identify recurring activity; operate subscriptions and notifications;
+      provide support; secure and debug the service; and meet legal obligations.
+    </p>
+    <p>
+      Some insight, budget-suggestion, and notification text is produced using Vercel AI Gateway, which currently
+      routes requests to Google Gemini and may fall back to OpenAI. The selected context sent for this purpose can
+      include transaction amounts, merchant or category labels, dates, budget amounts, and derived spending
+      trends. We do not intentionally include your name, email address, bank-login credentials, account or routing
+      numbers, Plaid access tokens, or authentication secrets in these prompts.
     </p>
 
-    <h2 id="rights"><span class="n">09</span>Your rights &amp; choices</h2>
-    <p>Depending on where you live, you may have some or all of the following rights regarding your personal information:</p>
-    <ul>
-      <li><strong>Access</strong> — request a copy of the personal information we hold about you;</li>
-      <li><strong>Correction</strong> — ask us to correct inaccurate information;</li>
-      <li><strong>Deletion</strong> — ask us to delete your information (see Section 10);</li>
-      <li><strong>Portability</strong> — request your data in a portable format, where applicable;</li>
-      <li><strong>Withdraw consent</strong> — disconnect a linked bank, disable notifications, or close your account at any time;</li>
-      <li><strong>Non-discrimination</strong> — we will not deny you service for exercising these rights.</li>
-    </ul>
+    <h2 id="benchmarks"><span class="n">03</span>Optional peer benchmarks</h2>
     <p>
-      To exercise any of these rights, email us at <a href="mailto:support@finessefinance.us">support@finessefinance.us</a>.
-      We may need to verify your identity before acting on a request. Residents of California, the EU/UK, and
-      other regions may have additional rights under laws such as the CCPA/CPRA and GDPR; we honor those rights
-      where they apply.
+      Peer benchmarking is optional and off by default. Finesse stores the comparison profile you provide, your
+      benchmark consent choice, the time of an active opt-in, and the consent-text version. No peer-benchmark
+      dataset is currently produced or shown.
+    </p>
+    <p>
+      Before peer benchmarks are activated, Finesse will limit results to normalized, aggregate statistics for
+      sufficiently large groups. Other users will not see your identity, accounts, balances, transactions,
+      merchants, or exact dollar amounts. You can withdraw consent from Profile; doing so clears the active
+      consent timestamp and version. We will update this policy before materially changing this use.
     </p>
 
-    <h2 id="delete"><span class="n">10</span>Deleting your account</h2>
+    <h2 id="providers"><span class="n">04</span>Service providers and disclosure</h2>
     <p>
-      You can request deletion of your Finesse account and associated data at any time from within the app or by
-      emailing <a href="mailto:support@finessefinance.us">support@finessefinance.us</a>. Deleting your account removes
-      your linked bank connections and the financial data we store, subject to the limited retention exceptions
-      described in Section 8. You can also revoke Plaid's access independently at
-      <a href="https://my.plaid.com" target="_blank" rel="noopener">my.plaid.com</a>.
+      Service providers process information for the purposes described in this policy. These providers include
+      Plaid for bank connectivity; Supabase for authentication, database, and serverless services; Apple and
+      RevenueCat for purchases; Apple for push delivery; Google and Apple for optional sign-in; and Vercel,
+      Google, and OpenAI for limited AI-generated insight and notification copy. Providers may process information
+      in the United States or other locations where they operate.
+    </p>
+    <p>
+      We may also disclose information when legally required, to protect users and the service, in connection with
+      a business transfer subject to this policy, or at your direction. We do not sell personal information or
+      share it for cross-context behavioral advertising.
     </p>
 
-    <h2 id="security"><span class="n">11</span>Security</h2>
+    <h2 id="retention"><span class="n">05</span>Retention and deletion</h2>
     <p>
-      We take the protection of your financial data seriously. We use industry-standard safeguards, including
-      encryption of data in transit and at rest, scoped access controls, and a bank-connection architecture
-      (Plaid) that keeps your bank credentials out of our systems entirely. The app also supports on-device
-      biometric locking (Face ID / Touch ID). No method of transmission or storage is ever 100% secure, however,
-      and we cannot guarantee absolute security. If we become aware of a breach affecting your personal
-      information, we will notify you as required by applicable law.
+      We retain account and financial information while your account is active and as needed to provide the
+      service. Disconnecting an institution removes its active connection and associated data through the app's
+      unlinking process. Deleting your account initiates removal of your profile, linked financial records,
+      derived records, device tokens, and authentication account, subject to limited retention required for legal,
+      tax, security, or dispute-resolution purposes.
+    </p>
+    <p>
+      Benchmark-consent records are retained with your account so we can honor and audit your choice. Turning
+      participation off clears the active opt-in timestamp and consent version. Notification tokens are retained
+      only as needed to deliver enabled notifications and are removed when invalid or when your account is deleted.
+    </p>
+    <p>
+      Aggregated or de-identified information that cannot reasonably be linked back to you may be retained. You
+      may request access, correction, deletion, or portability, and may withdraw optional consent where applicable.
     </p>
 
-    <h2 id="children"><span class="n">12</span>Children's privacy</h2>
+    <h2 id="security"><span class="n">06</span>Security and international processing</h2>
     <p>
-      Finesse is not directed to children. The Service is intended only for users who are at least 18 years old,
-      and we do not knowingly collect personal information from anyone under 18. If you believe a child has
-      provided us with personal information, please contact us and we will delete it.
+      Finesse uses encryption in transit and at rest, row-level access controls, and on-device privacy protections.
+      No security method is perfect. Finesse operates from the United States, and information may be processed and
+      stored there.
     </p>
 
-    <h2 id="intl"><span class="n">13</span>Where your data is stored</h2>
-    <p>
-      Finesse is operated from the United States, and your information is processed and stored on servers located
-      in the United States. If you access the Service from outside the United States, you understand that your
-      information will be transferred to, stored, and processed in the United States, where data-protection laws
-      may differ from those in your country.
-    </p>
+    <h2 id="children"><span class="n">07</span>Children</h2>
+    <p>Finesse is intended for people 18 and older and is not directed to children.</p>
 
-    <h2 id="changes"><span class="n">14</span>Changes to this policy</h2>
+    <h2 id="changes"><span class="n">08</span>Changes and contact</h2>
     <p>
-      We may update this Privacy Policy from time to time. When we make material changes, we will update the
-      "Last updated" date above and, where appropriate, notify you in the app or by email. Your continued use of
-      the Service after an update means you accept the revised policy.
+      We may update this policy as the service changes. Material changes will be identified by a revised date and,
+      when appropriate, an in-app or email notice.
     </p>
-
-    <h2 id="contact"><span class="n">15</span>Contact us</h2>
     <p>
-      Questions, requests, or concerns about this policy or your data? Reach us at:
+      To exercise a privacy choice or ask a question, contact
+      <a href="mailto:support@finessefinance.us">support@finessefinance.us</a>.
     </p>
-    <ul>
-      <li>Privacy requests, general questions &amp; support: <a href="mailto:support@finessefinance.us">support@finessefinance.us</a></li>
-    </ul>
     <p class="legal-location">Finesse Finance · Virginia, United States</p>
   </div>
 </main>
