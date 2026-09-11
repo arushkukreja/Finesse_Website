@@ -87,17 +87,17 @@
     weekly: {
       price: '$3.99',
       period: '/ week',
-      note: 'Billed weekly. Cancel anytime.'
+      note: 'Billed weekly after your 14-day free trial. Cancel anytime.'
     },
     monthly: {
-      price: '$9.99',
+      price: '$7.99',
       period: '/ month',
-      note: 'Billed monthly. Cancel anytime.'
+      note: 'Billed monthly after your 14-day free trial. Cancel anytime.'
     },
     annual: {
-      price: '$99.99',
+      price: '$59.99',
       period: '/ year',
-      note: 'Billed annually — that’s $8.33 per month.'
+      note: 'Billed annually after your 14-day free trial — that’s $5.00 per month.'
     }
   };
 

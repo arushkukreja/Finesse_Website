@@ -763,6 +763,11 @@ h2 em {
   margin-top: 58px;
 }
 
+.pricing-grid--single {
+  grid-template-columns: minmax(0, 680px);
+  justify-content: center;
+}
+
 .price-card {
   position: relative;
   padding: clamp(28px, 4vw, 46px);
