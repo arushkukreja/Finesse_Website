@@ -139,7 +139,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
   <div class="wrap">
     <div class="doc__eyebrow">Legal</div>
     <h1 class="doc__title">Privacy <em>Policy</em></h1>
-    <div class="doc__meta">Last updated: September 23, 2026 · Effective: September 23, 2026</div>
+    <div class="doc__meta">Last updated: September 25, 2026 · Effective: September 25, 2026</div>
 
     <p class="doc__intro">
       Finesse Finance ("Finesse," "we," "us," or "our") provides a personal-finance application and
@@ -227,20 +227,35 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
 
     <h3>Product analytics</h3>
     <p>
-      We use PostHog, hosted in the United States, to understand onboarding completion, feature use,
-      bank-connection setup reliability, and return visits. Events include an anonymous installation identifier
-      before sign-in, your internal account ID after sign-in, app and operating-system versions, screen and step
-      names, elapsed setup times, subscription status, and predefined outcome codes. RevenueCat may send
-      subscription lifecycle events, product and transaction identifiers, and subscription purchase revenue to
-      PostHog. These are subscription purchases, not your linked-bank transactions.
+      We use PostHog, hosted in the United States, to understand feature use, onboarding completion,
+      bank-connection setup reliability, subscription performance, and return visits. Product analytics is
+      optional and <strong>off by default</strong>. We begin collection only after you choose to enable it during
+      onboarding or under <strong>Profile → Privacy → Share app analytics</strong>, and that choice has been saved
+      to your account. You can use all app features and subscriptions without enabling analytics.
     </p>
     <p>
-      Our app does not send names, email addresses, bank balances, transaction details, merchant names, income,
-      financial goals, authentication tokens, notification contents, or form answers to PostHog. Session
-      recording, automatic interaction capture, surveys, and automatic crash capture are disabled. We disable
-      IP-based geolocation enrichment for app events; providers still receive network connection information when
-      requests reach their services. Analytics is used to improve Finesse, not for advertising or cross-app
-      tracking.
+      When enabled, analytics may include your internal account ID, installation and session identifiers, app and
+      operating-system versions, screen and step names, event times, feature-use events, setup durations,
+      subscription status, and predefined outcome codes. Selected RevenueCat subscription events are forwarded
+      through our servers only while your recorded analytics consent is active. These include purchases, trials,
+      renewals, cancellations, subscription product identifiers, billing periods, purchase platform, and Finesse
+      subscription purchase amounts. We do not forward purchase transaction identifiers or subscriber contact
+      information to PostHog.
+    </p>
+    <p>
+      We do not send your name, email address, bank balances, linked-bank transaction details, merchant names,
+      income, financial goals, authentication secrets, notification contents, or form answers to PostHog. Session
+      recording, automatic interaction capture, surveys, and automatic crash capture are disabled. IP-based
+      geolocation enrichment is disabled, although service providers receive network connection information when
+      processing requests. We do not use this analytics for targeted advertising or cross-app tracking.
+    </p>
+    <p>
+      We save your analytics choice, the time it is recorded, and the version of the analytics explanation
+      associated with that choice. You may withdraw consent at any time using the Profile toggle. Turning it off
+      stops app analytics on that device immediately and stops subscription-event forwarding once the choice
+      reaches our servers. Offline choices are retained and retried; the app shows a notice when a save fails.
+      Other devices apply your choice when they next synchronize. Events already transmitted cannot be recalled.
+      Events from before your opt-in are not collected retroactively.
     </p>
 
     <h2 id="use"><span class="n">02</span>How we use information</h2>
@@ -299,9 +314,12 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
       only as needed to deliver enabled notifications and are removed when invalid or when your account is deleted.
     </p>
     <p>
-      Signing out resets the app's analytics identity. This does not by itself erase previously collected
-      analytics. You can request deletion of linked analytics records through the support contact below; this is
-      handled separately from the app's account-data deletion until automated provider deletion is available.
+      Signing out stops app analytics on that device but does not change your account's subscription-analytics
+      preference. Turning analytics off, signing out, or deleting your Finesse account does not automatically erase
+      previously collected PostHog records. To request deletion of analytics linked to your account, contact
+      <a href="mailto:support@finessefinance.us">support@finessefinance.us</a>. These requests are handled separately
+      from the app's account-deletion process. Analytics preference records are removed with your authentication
+      account.
     </p>
     <p>
       Aggregated or de-identified information that cannot reasonably be linked back to you may be retained. You
