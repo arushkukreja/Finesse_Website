@@ -84,11 +84,6 @@
   });
 
   const pricingOptions = {
-    weekly: {
-      price: '$3.99',
-      period: '/ week',
-      note: 'Billed weekly after your 14-day free trial. Cancel anytime.'
-    },
     monthly: {
       price: '$7.99',
       period: '/ month',

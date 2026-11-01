@@ -716,7 +716,7 @@ h2 em {
 .pricing-toggle {
   flex: 0 0 auto;
   display: inline-grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(2, auto);
   gap: 4px;
   padding: 5px;
   border: 1px solid var(--line);
@@ -1158,7 +1158,7 @@ footer { padding: 36px 0; border-top: 1px solid var(--line); }
   .security-card { padding: 23px; }
 
   .pricing__intro { gap: 28px; }
-  .pricing-toggle { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pricing-toggle { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pricing-toggle button { padding-inline: 8px; font-size: 12px; }
   .pricing-toggle button span { display: block; margin: -2px 0 0; font-size: 8px; }
   .pricing-grid { margin-top: 38px; }
